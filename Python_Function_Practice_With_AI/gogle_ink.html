@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PYTHON — Ink Reference</title>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:wght@400;700&family=Nunito:wght@400;600;700&family=Caveat:wght@400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --seal-red: #D32F2F;   
+  --ink-black: #0F0F0F;  
+  --ink-dark: #2A2A2A;   
+  --ink-gray: #555555;   
+  --ink-light: #999999;  
+  --paper-bg: #FFFFFF;   
+  --paper-card: #FAFAFA; 
+  --code-bg: #f9f9f9;
+  --nav-bg: rgba(255,255,255,0.9);
+  --node-bg: rgba(255,255,255,0.7);
+  --node-bg-hover: rgba(255,255,255,0.9);
+  --border-color: #eeeeee;
+
+  --font-hand: 'Caveat', cursive;
+  --font-read: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-code: 'Fira Code', monospace;
+}
+
+body.dark-mode {
+  --seal-red: #EF5350;   
+  --ink-black: #E0E0E0;  
+  --ink-dark: #BDBDBD;   
+  --ink-gray: #9E9E9E;   
+  --ink-light: #616161;  
+  --paper-bg: #121212;   
+  --paper-card: #1E1E1E;
+  --code-bg: #2A2A2A;
+  --nav-bg: rgba(18, 18, 18, 0.9);
+  --node-bg: rgba(30, 30, 30, 0.7);
+  --node-bg-hover: rgba(30, 30, 30, 0.9);
+  --border-color: #333333;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background-color: var(--paper-bg);
+  color: var(--ink-black);
+  font-family: var(--font-read);
+  font-size: 1.15rem;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Texture Overlay */
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+
+/* Background Elements */
+.bg-sun {
+  position: fixed; top: -5vh; right: -5vw; width: 35vw; height: 35vw;
+  background: var(--seal-red); border-radius: 50%; z-index: 0; opacity: 0.8;
+  filter: url(#roughEdge); pointer-events: none;
+}
+
+.bg-mountains {
+  position: fixed; bottom: 0; left: 0; width: 100%; height: 25vh;
+  z-index: 0; pointer-events: none; opacity: 0.5;
+}
+
+/* Custom Image Background Overlay */
+#customBgContainer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.85;
+  transition: background-image 0.5s ease, opacity 0.5s ease;
+  display: none;
+}
+
+/* ROUTING */
+.view {
+  display: none; width: 100%; min-height: 100vh;
+  animation: fadeIn 0.6s ease forwards;
+}
+.view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* HEADER */
+header{position:relative;z-index:10;text-align:center;padding:2rem 1rem 1rem;}
+.logo-container { display: flex; justify-content: center; align-items: center; gap: 15px; }
+.logo{
+  font-family: var(--font-read);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  color: var(--ink-black);
+  letter-spacing: 0.05em;
+}
+.seal {
+  background: var(--seal-red);
+  color: #fff;
+  font-family: var(--font-read);
+  font-weight: 700;
+  font-size: 1.5rem;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  box-shadow: 2px 3px 0 rgba(0,0,0,0.1);
+  transform: rotate(-3deg);
+  filter: url(#inkText);
+}
+.logo-sub{font-family:var(--font-hand);font-size:1.6rem;color:var(--ink-gray);letter-spacing:0.1em;margin-top:0.2rem;}
+
+.map-controls {
+  display: flex; gap: 15px; justify-content: center; align-items: center; margin-top: 1rem; position: relative; z-index: 10; flex-wrap: wrap;
+}
+
+/* STATS & TABS */
+.stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding:0.5rem;font-family:var(--font-read);font-size:.85rem;color:var(--ink-gray);position:relative;z-index:10; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;}
+.sn{color:var(--seal-red); font-weight: 900;}
+
+#TB { display: flex; justify-content: center; gap: 10px; padding: 1rem; flex-wrap: wrap; position: relative; z-index: 10; }
+.tab { font-family: var(--font-read); font-size: 0.9rem; padding: 0.4rem 1rem; font-weight: bold; text-transform: uppercase; border: 1px solid var(--ink-light); border-radius: 20px; background: transparent; color: var(--ink-gray); cursor: pointer; transition: all 0.2s; }
+.tab:hover, .tab.active { background: var(--seal-red); border-color: var(--seal-red); color: white; }
+
+/* DRAGON MAP VIEW (2D CANVAS) */
+#mapContainer {
+  position: relative; width: 100%; max-width: 1200px;
+  margin: 1rem auto 2rem; height: 65vh; min-height: 450px;
+  filter: contrast(1.1) drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+}
+#mapCanvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; mix-blend-mode: multiply; pointer-events: none;
+}
+#nodeLayer {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
+}
+.map-node {
+  position: absolute; display: flex; flex-direction: column;
+  align-items: center; cursor: pointer; z-index: 100;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+.node-pearl {
+  width: 16px; height: 16px; background: var(--ink-black);
+  border-radius: 50%; box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+  filter: url(#inkText);
+}
+.node-label {
+  margin-top: 6px; font-family: var(--font-hand); font-size: 1.3rem;
+  font-weight: bold; background: var(--node-bg); color: var(--ink-black);
+  padding: 2px 8px; border-radius: 4px; white-space: nowrap; transition: all 0.3s;
+}
+.map-node:hover .node-pearl { transform: scale(1.8); background: var(--seal-red); }
+.map-node:hover .node-label { color: var(--seal-red); transform: scale(1.1); background: var(--node-bg-hover); }
+.map-node.active .node-pearl { transform: scale(2.2); background: var(--seal-red); border: 2px solid var(--paper-bg); border-radius: 2px; }
+.map-node.active .node-label { color: var(--seal-red); font-weight: 900; background: var(--node-bg-hover); }
+
+/* ANIMATION PANEL */
+#animationPanel {
+  display: none; padding: 1rem 1.5rem; background: var(--nav-bg);
+  border: 1px solid var(--border-color); border-radius: 4px; margin: 1rem auto; 
+  position: relative; z-index: 50; max-width: 600px; text-align: left;
+}
+.anim-title { font-family: var(--font-read); font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: var(--seal-red); }
+.anim-controls { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+
+/* CONTENT VIEW */
+.content-nav {
+  position: sticky; top: 0; z-index: 200; background: var(--nav-bg);
+  padding: 1rem 2rem; display: flex; gap: 20px; align-items: center; justify-content: center;
+  border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px); flex-wrap: wrap;
+}
+.sw{position:relative;flex:1;min-width:250px;max-width:400px;}
+.sw span{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--ink-black);font-family:var(--font-code);font-weight: bold;pointer-events:none}
+#Q{width:100%;background:transparent;border:none;border-bottom:2px solid var(--ink-light);color:var(--ink-black);font-family:var(--font-code);font-size:1.05rem;padding:.65rem 1rem .65rem 2.4rem;outline:none;transition:all 0.3s;}
+#Q::placeholder{color:var(--ink-light); font-family: var(--font-read); font-style: italic;}
+#Q:focus{border-bottom-color:var(--seal-red);background:var(--code-bg);}
+
+main { padding: 2rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
+
+.section { margin-bottom: 2rem; }
+.sec-hdr { display: flex; align-items: center; margin-bottom: 1rem; font-family: var(--font-read); font-weight: 900; font-size: 1.5rem; }
+.sec-line { flex: 1; height: 1px; background: currentColor; margin: 0 15px; opacity: 0.3; }
+.sec-cnt { font-family: var(--font-code); font-size: 1rem; opacity: 0.7; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.card {
+  background: var(--paper-card); border: 1px solid var(--border-color); border-top: 4px solid var(--ink-black);
+  padding: 20px; border-radius: 2px; cursor: pointer; transition: all 0.3s; position: relative;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+.card.active-card { transform: scale(0.95); opacity: 0.5; }
+.card-title { font-family: var(--font-code); font-size: 1.2rem; font-weight: bold; color: var(--ink-black); margin-bottom: 8px; }
+.card-desc { font-family: var(--font-read); font-size: 1rem; color: var(--ink-gray); }
+.card-hint { font-family: var(--font-code); font-size: 0.8rem; color: var(--seal-red); margin-top: 10px; opacity: 0; transition: opacity 0.3s; }
+.card:hover .card-hint { opacity: 1; }
+
+#panel {
+  position: fixed; bottom: 0; left: 0; right: 0; background: var(--paper-bg);
+  border-top: 4px solid var(--ink-black); z-index: 500; height: 75vh;
+  display: none; flex-direction: column; box-shadow: 0 -20px 50px rgba(0,0,0,0.3);
+  transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.27), height 0.3s ease;
+}
+#panel.open { display: flex; transform: translateY(0); }
+
+/* Left & Right Pane layout structure */
+.panel-body { display: flex; width: 100%; flex: 1; overflow: hidden; }
+.pane { flex: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 1.5rem; transition: all 0.3s ease; }
+#leftPane { border-right: 1px solid var(--border-color); }
+@media(max-width: 800px) { .panel-body { flex-direction: column; } #leftPane { border-right: none; border-bottom: 1px solid var(--border-color); } }
+
+#codeArea, #outBox {
+  font-family: var(--font-code); font-size: 0.9rem; padding: 15px;
+  background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 2px; width: 100%;
+  color: var(--ink-black); transition: height 0.3s ease;
+}
+#outBox.err { border-left-color: var(--seal-red); color: var(--seal-red); background: rgba(211,47,47,0.03); }
+#outBox.ok { border-left-color: #2e8b57; }
+
+.pane-header {
+  display: flex; justify-content: space-between; align-items: center; 
+  border-bottom: 1px dashed var(--border-color); margin-bottom: 10px; padding-bottom: 4px;
+}
+.pane-label {
+  font-family: var(--font-read); font-size: 0.9rem; font-weight: bold;
+  color: var(--ink-gray); text-transform: uppercase;
+}
+
+/* AI Sage Styling */
+#aiBox {
+  background: var(--paper-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--seal-red);
+  padding: 15px; margin-top: 15px; border-radius: 2px; font-family: var(--font-read);
+  font-size: 1rem; display: none; line-height: 1.6; animation: fadeIn 0.4s ease;
+  transition: max-height 0.3s ease;
+}
+#aiBox strong { color: var(--seal-red); }
+#aiBox code { font-family: var(--font-code); font-size: 0.9em; }
+
+.action-btn {
+  font-family: var(--font-read); font-size: 0.9rem; padding: 0.4rem 1.2rem; font-weight: bold;
+  border: 1px solid var(--seal-red); border-radius: 2px; background: transparent;
+  color: var(--seal-red); cursor: pointer; transition: all 0.2s; text-transform: uppercase;
+}
+.action-btn:hover:not(:disabled) { background: var(--seal-red); color: white; }
+.action-btn:disabled { opacity: 0.5; cursor: wait; border-color: var(--ink-light); color: var(--ink-light); }
+
+.custom-input {
+  width:100%; background: var(--paper-bg); color:var(--ink-black); border: 1px solid var(--border-color); 
+  border-radius:2px; padding: 10px 12px; font-family:var(--font-read); font-size:1rem; 
+  margin-bottom: 8px; outline:none; transition:all 0.2s;
+}
+.custom-input:focus { border-color: var(--seal-red); box-shadow: 0 0 0 2px rgba(211,47,47,0.1); }
+#noteCode, #aiGenPrompt { font-family: var(--font-code); font-size: 0.9rem; }
+
+.pulsate { animation: pulse 1.5s infinite; }
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+</style>
+</head>
+<body>
+
+<svg style="position:absolute; height:0; width:0;">
+  <filter id="roughEdge">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" />
+    <feDisplacementMap in="SourceGraphic" scale="15" />
+  </filter>
+  <filter id="inkText">
+    <feTurbulence type="fractalNoise" baseFrequency="0.12" numOctaves="3" />
+    <feDisplacementMap in="SourceGraphic" scale="2.5" />
+  </filter>
+</svg>
+
+<div class="bg-sun"></div>
+<div id="customBgContainer"></div>
+
+<!-- SECURE HIDDEN INPUTS WITH BOUND EVENT LISTENERS -->
+<input type="file" id="fullBgInput" accept="image/*" style="display:none;" />
+<input type="file" id="mapImageInput" accept="image/*" style="display:none;" onchange="handleMapImage(event)" />
+<input type="file" id="bgFileInput" accept="image/*" style="display:none;" onchange="handleBgFile(event)" />
+<input type="file" id="fileInput" accept="image/*,video/mp4,video/webm" style="display:none;" onchange="handleNoteMedia(event)" />
+
+<div id="flash"></div>
+
+<!-- MAP VIEW -->
+<div id="view-map" class="view active">
+  <header>
+    <div class="logo-container">
+      <div class="logo">PYTHON</div>
+      <div class="seal">PY</div>
+    </div>
+    <div class="logo-sub">Interactive Map System</div>
+  </header>
+
+  <div class="map-controls">
+    <button id="toggleAnimBtn" class="action-btn" style="color:var(--ink-gray);border-color:var(--ink-light)" onclick="toggleAnimationPanel()">⚙️ SETTINGS</button>
+  </div>
+
+  <div id="animationPanel">
+    <div class="anim-title">⚙️ Settings</div>
+    
+    <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border-color);">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Font Style:</label>
+      <select id="fontSelect" class="custom-input" style="font-family:var(--font-code); font-size: 0.9rem;" onchange="changeFontTheme(this.value)">
+        <option value="Inter">Inter (Modern Sans)</option>
+        <option value="Roboto">Roboto (Clean Sans)</option>
+        <option value="Nunito">Nunito (Rounded Sans)</option>
+        <option value="Lora">Lora (Elegant Serif)</option>
+        <option value="Merriweather">Merriweather (Classic Serif)</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border-color);">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Theme:</label>
+      <button id="toggleThemeBtn" class="action-btn" style="width:100%; color:var(--ink-gray);border-color:var(--ink-light)" onclick="toggleTheme()">🌙 ENABLE DARK MODE</button>
+    </div>
+
+    <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border-color);">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Built-in AI Persona:</label>
+      <select id="aiPersonaSelect" class="custom-input" style="font-family:var(--font-code); font-size: 0.9rem;" onchange="changeAIPersona(this.value)">
+        <option value="sage">Ancient Sage (Themed)</option>
+        <option value="standard">Standard Assistant (Normal)</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border-color);">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Custom Gemini API Key (Optional):</label>
+      <div style="display:flex; gap:10px;">
+        <input id="apiInput" type="password" class="custom-input" placeholder="Leave blank to use default..." style="margin-bottom:0; flex:1; font-family:var(--font-code); font-size: 0.8rem;" />
+        <button id="saveApiBtn" class="action-btn" onclick="saveApiKey()">SAVE</button>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--ink-gray); margin-top: 5px;">Uses default keyless gateway if empty.</div>
+    </div>
+
+    <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border-color);">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Custom Wallpaper:</label>
+      <button id="toggleFullBgBtn" class="action-btn" style="width:100%; color:var(--ink-gray);border-color:var(--ink-light)" onclick="toggleFullBg()">🖼️ UPLOAD WALLPAPER</button>
+    </div>
+
+    <div style="margin-bottom:1rem;">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Map Image:</label>
+      <div class="anim-controls">
+        <button id="useImageBtn" class="action-btn" onclick="document.getElementById('mapImageInput').click()">📸 UPLOAD MAP IMAGE</button>
+        <button id="useDefaultBtn" class="action-btn" style="color:var(--ink-gray); border-color:var(--ink-light)" onclick="useDefaultDragon()">🐲 USE DEFAULT</button>
+      </div>
+    </div>
+    
+    <div style="margin-bottom:0.5rem;">
+      <label style="display:block;font-size:0.9rem;margin-bottom:0.5rem;font-weight:600">Node Animation Style:</label>
+      <select id="animTypeSelect" class="custom-input" style="font-family:var(--font-code); max-width:300px; font-size: 0.9rem;" onchange="changeAnimType(this.value)">
+        <option value="float">Gentle Float (Default)</option>
+        <option value="wave">Wave Motion</option>
+        <option value="orbit">Orbital Path</option>
+        <option value="pulse">Pulsing Nodes</option>
+        <option value="spin">Rotating Spin</option>
+        <option value="static">Static (No Animation)</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="mapContainer">
+    <canvas id="mapCanvas"></canvas>
+    <div id="nodeLayer"></div>
+  </div>
+</div>
+
+<!-- CONTENT VIEW -->
+<div id="view-content" class="view">
+  <div class="content-nav">
+    <button id="backBtn" class="action-btn" style="color:var(--ink-black);border-color:var(--ink-black)" onclick="switchView('view-map'); closePanel();">← RETURN TO MAP</button>
+    <div style="font-family: var(--font-hand); font-size: 2rem; color: var(--seal-red); margin: 0 15px;" id="activeCategoryTitle">Category</div>
+    <div class="sw">
+      <span>▸</span><input id="Q" type="text" placeholder="Search keyword or method..." autocomplete="off" spellcheck="false" oninput="handleSearch()" />
+    </div>
+    <button id="toggleNotesBtn" class="action-btn" onclick="toggleNotes()">➕ ADD NOTE</button>
+    <button id="toggleAISageBtn" class="action-btn" onclick="toggleAISagePanel()">✨ ASK SAGE</button>
+  </div>
+  
+  <div id="TB"></div>
+  
+  <div class="stats">
+    <span>TOTAL <span class="sn" id="sT">0</span></span>
+    <span>VISIBLE <span class="sn" id="sV">0</span></span>
+    <span>CATEGORIES <span class="sn">11</span></span>
+    <span>RUNTIME <span class="sn" id="sP">LOADING…</span></span>
+  </div>
+
+  <div id="aiMeditationBox" style="display:none; max-width: 800px; margin: 2rem auto; padding: 20px; background: var(--paper-bg); border: 1px solid var(--border-color); border-top: 4px solid var(--seal-red);">
+    <div class="pane-label" style="border:none; margin-bottom:10px;" id="aiMeditationTitle">MEDITATE WITH THE AI SAGE</div>
+    <input id="aiGenPrompt" class="custom-input" type="text" placeholder="What code shall I write for you today?" style="width:100%; border:1px solid var(--border-color); padding: 10px;" />
+    <button id="aiGenBtn" class="action-btn" style="margin-top:10px" onclick="aiGenerateSnippet()">✨ CONJURE CODE</button>
+  </div>
+
+  <div id="notesContainer" style="display:none; padding: 0 1.5rem 2rem; max-width: 1000px; margin: 0 auto; animation: fadeIn .4s ease forwards;">
+    <div class="card" style="border-top: 3px solid var(--seal-red); cursor: default;">
+      <div class="pane-label" style="border:none; margin-bottom:10px;">CREATE NEW INK NOTE</div>
+      <input id="noteTitle" class="custom-input" style="font-weight:bold;" type="text" placeholder="TITLE (e.g. My Snippet)" spellcheck="false" />
+      <input id="noteDesc" class="custom-input" type="text" placeholder="SHORT DESCRIPTION..." spellcheck="false" />
+      <div style="display:flex; gap:8px; margin-bottom: 8px;">
+        <input id="noteMedia" class="custom-input" type="text" placeholder="MEDIA URL OR DRAG & DROP FILE HERE... (Max 2.5MB)" spellcheck="false" style="flex:1; margin-bottom:0;" 
+           ondragover="event.preventDefault(); this.style.borderColor='var(--seal-red)'; this.style.background='rgba(211,47,47,0.05)';"
+           ondragleave="event.preventDefault(); this.style.borderColor='var(--border-color)'; this.style.background='var(--paper-bg)';"
+           ondrop="event.preventDefault(); this.style.borderColor='var(--border-color)'; this.style.background='var(--paper-bg)'; if(event.dataTransfer.files && event.dataTransfer.files[0]) processLocalFile(event.dataTransfer.files[0]);"
+        />
+        <button id="browseBtn" class="action-btn" style="color: var(--ink-black); border-color: var(--ink-black);" onclick="document.getElementById('fileInput').click()">📁 BROWSE</button>
+      </div>
+      <textarea id="noteCode" class="custom-input" spellcheck="false" placeholder="# Write your code snippet here..." style="min-height: 140px; margin-bottom:0;" onkeydown="handleCodeTab(event)"></textarea>
+      
+      <div style="margin-top: 15px; display:flex; justify-content:flex-end; align-items:center; gap:1rem;">
+         <span id="noteStatus" style="font-size:0.9rem; color:var(--ink-light); font-style: italic;"></span>
+         <button id="clearNotesBtn" class="action-btn" style="color: var(--ink-gray); border-color: var(--ink-light);" onclick="clearNotesForm()">↺ CLEAR</button>
+         <button id="saveNotesBtn" class="action-btn" onclick="saveNotes()">💾 SAVE CARD</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="MC"></main>
+</div>
+
+<!-- DETAIL PANEL -->
+<div id="panel">
+  <div style="padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+    <h2 id="pMethod" style="font-family: var(--font-code); font-size: 1.8rem; color: var(--ink-black);">Method</h2>
+    <div style="display:flex; gap:10px">
+        <button id="delCustomBtn" class="action-btn" style="display:none; color: var(--seal-red);">🗑 DELETE</button>
+        <button id="closePanelBtn" class="action-btn" style="color: var(--ink-gray); border-color: var(--ink-gray);" onclick="closePanel()">✕ CLOSE</button>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div id="leftPane" class="pane">
+      <div id="leftPaneContent" style="display: flex; flex-direction: column;">
+        <div class="pane-header">
+          <div class="pane-label">EXPLANATION</div>
+          <button id="expandLeftBtn" class="action-btn" style="padding:0.2rem 0.6rem; font-size:0.75rem; border-color:var(--ink-light); color:var(--ink-gray);" onclick="toggleLeftExpand()">⛶ ENLARGE</button>
+        </div>
+        <p id="pDesc" style="margin-bottom: 20px; font-size: 1.1rem; color: var(--ink-gray);"></p>
+        
+        <div id="panelMedia" style="display:none; margin-bottom: 15px; text-align:center;"></div>
+        
+        <div class="pane-label" style="border:none;">EXAMPLE</div>
+        <div id="exCode" style="margin-bottom: 15px; background: var(--code-bg); padding: 10px; font-family: var(--font-code); white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; flex-shrink: 0;"></div>
+        
+        <div style="text-align: right; flex-shrink: 0;">
+            <button id="aiExplainBtn" class="action-btn" style="border-color:var(--ink-black); color:var(--ink-black)" onclick="aiExplainCode()">✨ SAGE EXPLAIN</button>
+        </div>
+      </div>
+      <div id="aiBox"></div>
+    </div>
+    
+    <div id="rightPane" class="pane">
+      <div class="pane-header">
+        <div class="pane-label">TRY IT</div>
+        <button id="expandRightBtn" class="action-btn" style="padding:0.2rem 0.6rem; font-size:0.75rem; border-color:var(--ink-light); color:var(--ink-gray);" onclick="toggleRightExpand()">⛶ ENLARGE</button>
+      </div>
+      <textarea id="codeArea" spellcheck="false" style="margin-bottom: 10px; height: 250px; flex-shrink: 0;" onkeydown="handleCodeTab(event)"></textarea>
+      <div style="display:flex; align-items:center; gap:10px; flex-shrink: 0;">
+          <button id="runBtn" class="action-btn" onclick="runCode()">▶ Run Script</button>
+          <button id="copyBtn" class="action-btn copy-btn" style="color:var(--ink-gray); border-color:var(--ink-light);" onclick="copyCode()">⊕ Copy</button>
+      </div>
+      <div class="pane-label" style="margin-top: 15px; border:none;">OUTPUT</div>
+      <div id="outBox" style="min-height: 80px; white-space: pre-wrap;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// --- GLOBALLY DEFINED VARIABLES & CONFIG ---
+const apiKey = ""; 
+let customApiKey = "";
+let aiPersona = localStorage.getItem('ink_py_ai_persona') || 'sage';
+
+const ORDER = ['kw', 'builtin', 'str', 'list', 'dict', 'set', 'file', 'csv', 'iter', 'exc', 'custom'];
+const CLABEL = {
+  kw: 'Keywords', builtin: 'Built-ins', str: 'Strings', list: 'Lists',
+  dict: 'Dictionaries', set: 'Sets', file: 'File I/O', csv: 'CSV',
+  iter: 'Itertools', exc: 'Exceptions', custom: 'Notes'
+};
+
+const CATS = [
+  {id:'kw', label:'Keywords'}, {id:'builtin', label:'Built-ins'}, {id:'str', label:'String'},
+  {id:'list', label:'List'}, {id:'dict', label:'Dict'}, {id:'set', label:'Set'},
+  {id:'file', label:'File'}, {id:'csv', label:'CSV'}, {id:'iter', label:'Itertools'},
+  {id:'exc', label:'Exceptions'}, {id:'custom', label:'Notes'}, {id:'all', label:'All Scrolls'}
+];
+
+const DATA = [
+  {cat:'kw',code:'if',desc:'Conditional branch — runs block when condition is true',ex:'x = 10\nif x > 5:\n    print("x is greater than 5")\n# Output: x is greater than 5'},
+  {cat:'kw',code:'elif',desc:'Else-if — additional condition after if',ex:'score = 75\nif score >= 90:\n    print("A")\nelif score >= 75:\n    print("B")\nelif score >= 60:\n    print("C")\n# Output: B'},
+  {cat:'kw',code:'else',desc:'Fallback when no if/elif condition matched',ex:'x = -3\nif x > 0:\n    print("positive")\nelse:\n    print("not positive")\n# Output: not positive'},
+  {cat:'kw',code:'for',desc:'Iterate over each item in a sequence',ex:'fruits = ["apple", "mango", "banana"]\nfor i, fruit in enumerate(fruits, 1):\n    print(f"{i}. {fruit}")'},
+  {cat:'kw',code:'while',desc:'Loop as long as a condition stays true',ex:'count = 0\nwhile count < 5:\n    print(count, end=" ")\n    count += 1\n# Output: 0 1 2 3 4'},
+  {cat:'kw',code:'break',desc:'Immediately exit the enclosing loop',ex:'for i in range(10):\n    if i == 4:\n        break\n    print(i, end=" ")\n# Output: 0 1 2 3'},
+  {cat:'kw',code:'continue',desc:'Skip to the next loop iteration',ex:'for i in range(6):\n    if i % 2 == 0:\n        continue\n    print(i, end=" ")\n# Output: 1 3 5'},
+  {cat:'kw',code:'pass',desc:'No-op placeholder — does nothing',ex:'def future_feature():\n    pass   # not implemented yet\n\nclass Skeleton:\n    pass\n\nprint("pass just keeps the syntax valid")'},
+  {cat:'kw',code:'def',desc:'Define a reusable function',ex:'def greet(name, greeting="Hello"):\n    return f"{greeting}, {name}!"\n\nprint(greet("Riya"))\nprint(greet("Aarav", "Namaste"))'},
+  {cat:'kw',code:'return',desc:'Exit a function and send a value back',ex:'def power(base, exp=2):\n    return base ** exp\n\nprint(power(3))     # 9\nprint(power(2, 10)) # 1024'},
+  {cat:'kw',code:'lambda',desc:'Anonymous one-line function',ex:'double = lambda x: x * 2\nadd    = lambda a, b: a + b\nsquare = lambda n: n ** 2\n\nprint(double(5))     # 10\nprint(add(3, 7))     # 10\nprint(square(9))     # 81'},
+  {cat:'kw',code:'class',desc:'Define a blueprint for creating objects',ex:'class Dog:\n    def __init__(self, name, breed):\n        self.name = name\n        self.breed = breed\n    def bark(self):\n        return f"{self.name} says: Woof!"\n\nd = Dog("Bruno", "Labrador")\nprint(d.bark())\nprint(d.breed)'},
+  {cat:'kw',code:'import',desc:'Load an external module',ex:'import math\nimport random\n\nprint(math.pi)\nprint(math.sqrt(144))\nprint(random.randint(1, 100))'},
+  {cat:'kw',code:'from',desc:'Import specific names from a module',ex:'from math import sqrt, pi, factorial\n\nprint(sqrt(25))       # 5.0\nprint(pi)             # 3.14159...\nprint(factorial(5))   # 120'},
+  {cat:'kw',code:'with',desc:'Context manager — auto-handles setup/teardown',ex:'import io\n\n# Simulate file with in-memory buffer\nbuf = io.StringIO()\nwith buf as f:\n    f.write("Hello, context manager!")\n    result = buf.getvalue()\nprint(result)'},
+  {cat:'kw',code:'try',desc:'Wrap code that might raise an exception',ex:'try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Cannot divide by zero!")\nexcept Exception as e:\n    print(f"Unexpected: {e}")\nfinally:\n    print("This always runs")'},
+  {cat:'kw',code:'raise',desc:'Manually throw an exception',ex:'def set_age(age):\n    if age < 0:\n        raise ValueError(f"Age cannot be negative (got {age})")\n    if age > 150:\n        raise ValueError("Age unrealistically large")\n    return age\n\ntry:\n    print(set_age(-5))\nexcept ValueError as e:\n    print(f"Error: {e}")'},
+  {cat:'kw',code:'assert',desc:'Assert a condition — raises AssertionError if false',ex:'def divide(a, b):\n    assert b != 0, "Denominator cannot be zero"\n    assert isinstance(a, (int, float)), "a must be numeric"\n    return a / b\n\nprint(divide(10, 2))   # 5.0\ntry:\n    divide(10, 0)\nexcept AssertionError as e:\n    print(f"AssertionError: {e}")'},
+  {cat:'kw',code:'del',desc:'Delete a variable, list item, or dict entry',ex:'my_list = [10, 20, 30, 40, 50]\ndel my_list[1]\nprint(my_list)   # [10, 30, 40, 50]\ndel my_list[1:3]\nprint(my_list)   # [10, 50]'},
+  {cat:'kw',code:'global',desc:'Declare that a variable refers to global scope',ex:'count = 0\n\ndef increment(n=1):\n    global count\n    count += n\n\nincrement()\nincrement(5)\nprint(count)  # 6'},
+  {cat:'kw',code:'yield',desc:'Pause a generator and emit a value',ex:'def fibonacci(limit):\n    a, b = 0, 1\n    while a <= limit:\n        yield a\n        a, b = b, a + b\n\nfibs = list(fibonacci(100))\nprint(fibs)'},
+  {cat:'kw',code:'in',desc:'Membership test: is item in sequence?',ex:'fruits = ["apple", "mango", "kiwi"]\nprint("apple" in fruits)      # True\nprint("grape" in fruits)      # False\nprint("lo" in "hello")        # True\nprint(3 in range(1, 10))      # True'},
+  {cat:'kw',code:'not',desc:'Logical negation — inverts a boolean',ex:'x = False\nprint(not x)               # True\nprint(not (10 > 5))        # False\nlst = []\nif not lst:\n    print("List is empty")'},
+  {cat:'kw',code:'and',desc:'Logical AND — true only if both sides are true',ex:'age = 20\nhas_id = True\n\nif age >= 18 and has_id:\n    print("Access granted")\n\n# Short-circuit: returns first falsy or last value\nprint(1 and 2)    # 2\nprint(0 and 2)    # 0'},
+  {cat:'kw',code:'or',desc:'Logical OR — true if either side is true',ex:'day = "Saturday"\nif day == "Saturday" or day == "Sunday":\n    print("Weekend!")\n\n# Short-circuit: returns first truthy or last value\nprint(0 or "default")   # default\nprint("hi" or "bye")    # hi'},
+  {cat:'kw',code:'is',desc:'Identity — tests if objects are the same in memory',ex:'x = None\nprint(x is None)      # True\n\na = [1, 2, 3]\nb = a          # same reference\nc = [1, 2, 3]  # new list\n\nprint(a is b)  # True\nprint(a is c)  # False\nprint(a == c)  # True (same value)'},
+  {cat:'kw',code:'True',desc:'Boolean true literal',ex:'print(True)\nprint(int(True))         # 1\nprint(True + True)       # 2\nprint(True and False)    # False\nprint(type(True))        # <class \'bool\'>'},
+  {cat:'kw',code:'False',desc:'Boolean false literal',ex:'print(bool(0))      # False\nprint(bool(""))     # False\nprint(bool([]))     # False\nprint(bool(None))   # False\nprint(False or 42)  # 42'},
+  {cat:'kw',code:'None',desc:'Null — represents absence of a value',ex:'result = None\n\ndef find(lst, target):\n    for i, v in enumerate(lst):\n        if v == target:\n            return i\n    return None   # not found\n\nidx = find([10,20,30], 99)\nprint(idx)              # None\nprint(idx is None)      # True'},
+  {cat:'kw',code:'async / await',desc:'Define and await asynchronous operations',ex:'import asyncio\n\nasync def fetch_data():\n    # Simulate network/IO delay\n    await asyncio.sleep(0.5)\n    return {"status": "success"}\n\n# Note: In Pyodide\'s REPL, you can use top-level await!\nresult = await fetch_data()\nprint(result)'},
+  {cat:'kw',code:'nonlocal',desc:'Access variables in the nearest enclosing scope',ex:'def counter_factory():\n    count = 0\n    def increment():\n        nonlocal count\n        count += 1\n        return count\n    return increment\n\ncounter = counter_factory()\nprint(counter())  # 1\nprint(counter())  # 2'},
+
+/* BUILT-INS */
+  {cat:'builtin',code:'print()',desc:'Output values to the console',ex:'print("Hello, World!")\nprint(1, 2, 3, sep=" | ")\nprint("A", "B", sep="", end="→")\nprint("C")\nprint(f"Pi ≈ {3.14159:.3f}")'},
+  {cat:'builtin',code:'len()',desc:'Number of items in an object',ex:'print(len("hello"))          # 5\nprint(len([1, 2, 3, 4]))    # 4\nprint(len({"a":1,"b":2}))   # 2\nprint(len(range(100)))      # 100\nprint(len(set([1,1,2,3])))  # 3'},
+  {cat:'builtin',code:'range()',desc:'Generate a sequence of integers',ex:'print(list(range(5)))\nprint(list(range(2, 8)))\nprint(list(range(0, 20, 3)))\nprint(list(range(10, 0, -2)))'},
+  {cat:'builtin',code:'type()',desc:'Return the type of an object',ex:'vals = [42, 3.14, "hi", True, [1,2], None]\nfor v in vals:\n    print(f"{repr(v):12} → {type(v).__name__}")'},
+  {cat:'builtin',code:'int()',desc:'Convert a value to an integer',ex:'print(int("42"))       # 42\nprint(int(3.99))       # 3\nprint(int("0xFF", 16)) # 255\nprint(int("0b1010",2)) # 10\nprint(int(True))       # 1'},
+  {cat:'builtin',code:'float()',desc:'Convert to floating-point number',ex:'print(float("3.14"))    # 3.14\nprint(float(5))         # 5.0\nprint(float("1e3"))     # 1000.0\nprint(float("inf"))     # inf'},
+  {cat:'builtin',code:'str()',desc:'Convert to string',ex:'items = [42, 3.14, True, [1,2,3], None]\nfor item in items:\n    s = str(item)\n    print(f"{repr(item):15} → {repr(s)}")'},
+  {cat:'builtin',code:'list()',desc:'Create a list or convert an iterable',ex:'print(list("abc"))\nprint(list(range(5)))\nprint(list({3, 1, 2}))\nprint(list({"a":1,"b":2}.keys()))'},
+  {cat:'builtin',code:'dict()',desc:'Create a dictionary',ex:'d1 = dict(name="Aarav", age=20)\nd2 = dict([("x",1),("y",2)])\nd3 = {k:k**2 for k in range(1,6)}\nprint(d1)\nprint(d2)\nprint(d3)'},
+  {cat:'builtin',code:'set()',desc:'Unique elements, unordered',ex:'s = set([1, 2, 2, 3, 3, 3, 4])\nprint(s)                   # {1,2,3,4}\ns.add(5)\nprint(3 in s)              # True\nprint(len(s))              # 5'},
+  {cat:'builtin',code:'enumerate()',desc:'Yield index-value pairs',ex:'fruits = ["apple", "mango", "kiwi", "guava"]\nfor i, fruit in enumerate(fruits, start=1):\n    print(f"{i:2}. {fruit}")'},
+  {cat:'builtin',code:'zip()',desc:'Pair elements from multiple iterables',ex:'names  = ["Alice", "Bob", "Carol"]\nscores = [95, 87, 92]\ngrades = ["A", "B+", "A-"]\nfor name, score, grade in zip(names, scores, grades):\n    print(f"{name}: {score} ({grade})")'},
+  {cat:'builtin',code:'map()',desc:'Apply a function to every item',ex:'nums = [1, 2, 3, 4, 5]\nprint(list(map(lambda x: x**2, nums)))\nprint(list(map(str, nums)))\nwords = ["hello","world","python"]\nprint(list(map(str.title, words)))'},
+  {cat:'builtin',code:'filter()',desc:'Keep items where function returns True',ex:'nums = range(1, 15)\nevens  = list(filter(lambda x: x%2==0, nums))\nbig    = list(filter(lambda x: x>10, nums))\nprint(evens)\nprint(big)'},
+  {cat:'builtin',code:'sorted()',desc:'Return a new sorted list',ex:'nums = [3, 1, 4, 1, 5, 9, 2, 6]\nprint(sorted(nums))\nprint(sorted(nums, reverse=True))\nwords = ["banana","apple","cherry","date"]\nprint(sorted(words))\nprint(sorted(words, key=len))'},
+  {cat:'builtin',code:'min() / max()',desc:'Smallest or largest item',ex:'nums = [3, 1, 4, 1, 5, 9, 2]\nprint(min(nums), max(nums))       # 1 9\nwords = ["banana","apple","kiwi"]\nprint(min(words), max(words))     # alphabetical\nprint(max(nums, key=lambda x: -x))  # 1 (min by negation)'},
+  {cat:'builtin',code:'sum()',desc:'Total of all numeric items',ex:'print(sum([1,2,3,4,5]))     # 15\nprint(sum(range(1,101)))\nmatrix = [[1,2,3],[4,5,6],[7,8,9]]\nprint(sum(sum(row) for row in matrix))  # 45'},
+  {cat:'builtin',code:'abs()',desc:'Absolute (non-negative) value',ex:'nums = [-5, -3.14, 0, 3.14, 5]\nfor n in nums:\n    print(f"abs({n:6}) = {abs(n)}")'},
+  {cat:'builtin',code:'round()',desc:'Round to N decimal places',ex:'print(round(3.14159, 2))    # 3.14\nprint(round(2.675, 2))      # 2.67 (float precision!)\nprint(round(1234, -2))      # 1200\nprint(round(0.5))            # 0 (banker\'s rounding)'},
+  {cat:'builtin',code:'isinstance()',desc:'Check if object is instance of class',ex:'vals = [42, "hi", 3.14, [], True, None]\nfor v in vals:\n    is_num = isinstance(v, (int,float)) and not isinstance(v, bool)\n    print(f"{repr(v):8} numeric={is_num}")'},
+  {cat:'builtin',code:'any() / all()',desc:'Test truthiness across an iterable',ex:'nums = [2, 4, 6, 7, 8]\nprint(any(n%2!=0 for n in nums))    # True (7 is odd)\nprint(all(n%2==0 for n in nums))    # False (7 is odd)\n\nempty = []\nprint(any(empty))    # False\nprint(all(empty))    # True (vacuously)'},
+  {cat:'builtin',code:'chr() / ord()',desc:'Convert between character and codepoint',ex:'print(chr(65), chr(97), chr(48))   # A a 0\nprint(ord("A"), ord("a"), ord("0")) # 65 97 48\n\n# Print alphabet\nprint("".join(chr(65+i) for i in range(26)))'},
+  {cat:'builtin',code:'open()',desc:'Open a file and return a file object',ex:'import io\n\n# Simulate file operations in browser\nbuf = io.StringIO()\nbuf.write("Line 1\\nLine 2\\nLine 3\\n")\nbuf.seek(0)\nfor line in buf:\n    print(line.rstrip())\nbuf.seek(0)\nprint("\\nAll content:\\n" + buf.read())'},
+  {cat:'builtin',code:'repr()',desc:'Detailed developer-facing string representation',ex:'vals = ["hello", [1,2,3], None, True, 3.14]\nfor v in vals:\n    print(f"str()  → {str(v)}")\n    print(f"repr() → {repr(v)}")\n    print()'},
+  {cat:'builtin',code:'tuple()',desc:'Create an immutable sequence (tuple)',ex:'t = tuple([1, 2, 3])\nprint(t)\n\n# Tuples are immutable! t[0] = 99 would raise TypeError\nsingle = (42,) # comma required for single element\nprint(type(single))'},
+  {cat:'builtin',code:'bool()',desc:'Convert a value to a boolean',ex:'print(bool(1))      # True\nprint(bool(0))      # False\nprint(bool("hi"))   # True\nprint(bool(""))     # False\nprint(bool([]))     # False'},
+  {cat:'builtin',code:'dir()',desc:'List attributes and methods of an object',ex:'text = "hello"\n# Print the first 5 non-magic methods of a string\nmethods = [m for m in dir(text) if not m.startswith(\'_\')]\nprint(methods[:5])'},
+  {cat:'builtin',code:'reversed()',desc:'Return a reverse iterator over a sequence',ex:'nums = [1, 2, 3, 4]\nfor n in reversed(nums):\n    print(n, end=" ")\n\nprint()\n# Also works on strings:\nprint("".join(reversed("Python")))'},
+  {cat:'builtin',code:'eval()',desc:'Evaluate a string as a Python expression',ex:'x = 10\nexpr = "x * 5 + 2"\nresult = eval(expr)\nprint(f"{expr} = {result}")'},
+  {cat:'builtin',code:'hasattr() / getattr()',desc:'Check/get object attributes dynamically',ex:'class Person:\n    def __init__(self, name):\n        self.name = name\n\np = Person("Riya")\nprint(hasattr(p, "name"))    # True\nprint(hasattr(p, "age"))     # False\nprint(getattr(p, "name"))    # Riya\nprint(getattr(p, "age", 25)) # 25 (default fallback)'},
+
+/* STRING METHODS */
+  {cat:'str',code:'.upper() / .lower()',desc:'Change string case',ex:'s = "Hello, World!"\nprint(s.upper())      # HELLO, WORLD!\nprint(s.lower())      # hello, world!\nprint(s.swapcase())   # hELLO, wORLD!\n\n# Case-insensitive comparison\na = "Python"\nb = "PYTHON"\nprint(a.lower() == b.lower())  # True'},
+  {cat:'str',code:'.strip()',desc:'Remove leading/trailing whitespace or chars',ex:'print("  hello  ".strip())\nprint("  hello  ".lstrip())\nprint("  hello  ".rstrip())\nprint("***hi***".strip("*"))\nprint("...done...".strip("."))'},
+  {cat:'str',code:'.split()',desc:'Split string into a list by delimiter',ex:'csv_line = "Alice,30,Mumbai,Engineer"\nparts = csv_line.split(",")\nprint(parts)\nprint(len(parts))\n\nsentence = "one two   three"\nprint(sentence.split())         # splits on any whitespace\nprint(sentence.split(" ", 1))   # max 1 split'},
+  {cat:'str',code:'.join()',desc:'Join an iterable of strings with separator',ex:'words = ["Hello", "World", "Python"]\nprint(" ".join(words))\nprint("-".join(words))\nprint("".join(words))\n\npath = ["home", "user", "documents", "file.txt"]\nprint("/".join(path))'},
+  {cat:'str',code:'.replace()',desc:'Replace occurrences of a substring',ex:'s = "I love Java. Java is great. Java rules!"\nprint(s.replace("Java", "Python"))\nprint(s.replace("Java", "Python", 1))  # replace only first\n\n# Remove punctuation\nprint("hello, world!".replace(",","").replace("!",""))'},
+  {cat:'str',code:'.find() / .index()',desc:'Find the index of a substring',ex:'s = "python is awesome"\nprint(s.find("is"))       # 7\nprint(s.find("xyz"))      # -1 (not found — safe)\nprint(s.find("o", 5))     # search from position 5\n\ntry:\n    print(s.index("xyz")) # raises ValueError\nexcept ValueError as e:\n    print(f"index: {e}")'},
+  {cat:'str',code:'.count()',desc:'Count occurrences of a substring',ex:'s = "banana"\nprint(s.count("a"))        # 3\nprint(s.count("na"))       # 2\nprint(s.count("an"))       # 2\n\ntext = "to be or not to be"\nprint(text.count("be"))    # 2'},
+  {cat:'str',code:'.startswith() / .endswith()',desc:'Check prefix or suffix of a string',ex:'url  = "https://www.example.com/page"\nfile = "report_2024.pdf"\n\nprint(url.startswith("https"))        # True\nprint(url.startswith(("http","ftp"))) # True (tuple)\nprint(file.endswith(".pdf"))          # True\nprint(file.endswith((".pdf",".docx")))# True'},
+  {cat:'str',code:'.format()',desc:'Insert values into a format string',ex:'# Basic\nprint("{} + {} = {}".format(2, 3, 5))\n# Named\nprint("{name} scored {score}/100".format(name="Riya", score=95))\n# Format spec\nprint("{:.2f}".format(3.14159))       # 3.14\nprint("{:>10}".format("right"))       # right-align\nprint("{:0>5}".format(42))            # 00042'},
+  {cat:'str',code:'.title() / .capitalize()',desc:'Change word/sentence capitalisation',ex:'print("the quick brown fox".title())       # The Quick Brown Fox\nprint("the quick brown fox".capitalize()) # The quick brown fox\nprint("HELLO WORLD".title())              # Hello World\n\nnames = ["alice smith","bob jones","carol white"]\nfor n in names:\n    print(n.title())'},
+  {cat:'str',code:'.isdigit() / .isalpha()',desc:'Test character types across the string',ex:'tests = ["123", "12.3", "abc", "abc123", " ", "Python3"]\nfor t in tests:\n    print(f"{t!r:10}  digit={t.isdigit()}  alpha={t.isalpha()}  alnum={t.isalnum()}")'},
+  {cat:'str',code:'.zfill() / .center()',desc:'Pad or center a string',ex:'# Zero-pad numbers\nfor n in [1, 42, 999, 10000]:\n    print(str(n).zfill(6))\n\n# Center text\nfor word in ["hi","hello","python"]:\n    print(word.center(12, "-"))'},
+  {cat:'str',code:'.splitlines()',desc:'Split at line boundaries into a list',ex:'poem = """Roses are red,\nViolets are blue,\nPython is cool,\nAnd so are you!"""\n\nlines = poem.splitlines()\nfor i, line in enumerate(lines, 1):\n    print(f"{i}: {line}")'},
+  {cat:'str',code:'.encode()',desc:'Encode string to bytes',ex:'s = "Hello, World!"\nb = s.encode("utf-8")\nprint(b)\nprint(type(b))\nprint(b.decode("utf-8"))\n\n# Check lengths\nemoji = "Hi 🐍"\nprint(f"chars: {len(emoji)}, bytes: {len(emoji.encode())}")'},
+  {cat:'str',code:'.removeprefix() / .removesuffix()',desc:'Safely remove string affixes (Python 3.9+)',ex:'filename = "report_2024.csv"\nprint(filename.removesuffix(".csv"))\n\nurl = "https://example.com"\nprint(url.removeprefix("https://"))'},
+  {cat:'str',code:'.partition()',desc:'Split string at first occurrence of separator',ex:'email = "user@example.com"\nuser, sep, domain = email.partition("@")\nprint(f"User: {user}")\nprint(f"Domain: {domain}")'},
+
+/* LIST METHODS */
+  {cat:'list',code:'.append()',desc:'Add a single item to the end',ex:'lst = [1, 2, 3]\nlst.append(4)\nlst.append([5, 6])   # adds the list as ONE item\nprint(lst)\nprint(len(lst))'},
+  {cat:'list',code:'.pop()',desc:'Remove and return item by index (default: last)',ex:'lst = [10, 20, 30, 40, 50]\nprint(lst.pop())       # 50\nprint(lst.pop(0))      # 10\nprint(lst.pop(1))      # 30\nprint(lst)             # [20, 40]'},
+  {cat:'list',code:'.insert()',desc:'Insert an item at a specific index',ex:'lst = ["a", "c", "d"]\nlst.insert(1, "b")\nprint(lst)             # [a, b, c, d]\nlst.insert(0, "START")\nlst.insert(len(lst), "END")\nprint(lst)'},
+  {cat:'list',code:'.remove()',desc:'Remove the first occurrence of a value',ex:'lst = [1, 2, 3, 2, 4, 2]\nlst.remove(2)\nprint(lst)    # removes only FIRST 2\n\nwhile 2 in lst:\n    lst.remove(2)\nprint(lst)    # all 2s removed'},
+  {cat:'list',code:'.sort()',desc:'Sort the list in-place',ex:'nums = [3, 1, 4, 1, 5, 9, 2, 6]\nnums.sort()\nprint(nums)\n\nnums.sort(reverse=True)\nprint(nums)\n\nwords = ["banana","apple","cherry","date"]\nwords.sort(key=len)\nprint(words)'},
+  {cat:'list',code:'.extend()',desc:'Add all items from another iterable',ex:'lst = [1, 2, 3]\nlst.extend([4, 5, 6])\nprint(lst)\n\nlst.extend(range(7, 10))\nprint(lst)\n\nlst.extend("abc")\nprint(lst)'},
+  {cat:'list',code:'.index() / .count()',desc:'Find position or count occurrences',ex:'lst = [10, 20, 30, 20, 40, 20, 50]\nprint(lst.index(20))           # 1 (first occurrence)\nprint(lst.index(20, 2))        # 3 (start from index 2)\nprint(lst.count(20))           # 3\nprint(lst.count(99))           # 0'},
+  {cat:'list',code:'.reverse()',desc:'Reverse the list in-place',ex:'lst = [1, 2, 3, 4, 5]\nlst.reverse()\nprint(lst)\n\n# Alternative: slicing (returns new list)\noriginal = [10, 20, 30]\nrev = original[::-1]\nprint(rev, original)  # original unchanged'},
+  {cat:'list',code:'.copy()',desc:'Return a shallow copy of the list',ex:'original = [1, [2, 3], 4]\ncopy = original.copy()\n\ncopy[0] = 99\ncopy[1].append(99)   # nested list IS shared!\n\nprint("original:", original)\nprint("copy:    ", copy)'},
+  {cat:'list',code:'.clear()',desc:'Remove all items from the list',ex:'lst = [1, 2, 3, 4]\nprint(f"Before: {lst}")\nlst.clear()\nprint(f"After: {lst}")'},
+
+/* DICT METHODS */
+  {cat:'dict',code:'.get()',desc:'Get value by key with optional default',ex:'person = {"name":"Riya","age":22,"city":"Delhi"}\nprint(person.get("name"))\nprint(person.get("email"))             # None\nprint(person.get("email","not set"))  # default\nprint(person.get("age", 0) + 1)      # safe arithmetic'},
+  {cat:'dict',code:'.keys() / .values() / .items()',desc:'Views over keys, values, or pairs',ex:'profile = {"name":"Aarav","score":95,"grade":"A"}\nprint(list(profile.keys()))\nprint(list(profile.values()))\nfor key, val in profile.items():\n    print(f"  {key}: {val}")'},
+  {cat:'dict',code:'.update()',desc:'Merge another dict (or kwargs) in',ex:'config = {"host":"localhost","port":8080,"debug":False}\nconfig.update({"port":443,"debug":True})\nconfig.update(ssl=True)\nfor k,v in config.items():\n    print(f"  {k}: {v}")'},
+  {cat:'dict',code:'.pop()',desc:'Remove a key and return its value',ex:'d = {"x":10,"y":20,"z":30}\nval = d.pop("y")\nprint(f"popped: {val}")\nprint(d)\nsafe = d.pop("missing", "N/A")   # no KeyError\nprint(safe)'},
+  {cat:'dict',code:'.setdefault()',desc:'Get value; insert key with default if missing',ex:'visits = {}\npages = ["home","about","home","contact","home"]\nfor page in pages:\n    visits.setdefault(page, 0)\n    visits[page] += 1\nprint(visits)'},
+  {cat:'dict',code:'.fromkeys()',desc:'Create a new dict from a key sequence',ex:'keys = ["red","green","blue"]\nd = dict.fromkeys(keys, 0)\nprint(d)\n\n# Good for initialising counters\nletters = dict.fromkeys("AEIOU", 0)\nfor c in "HELLO WORLD":\n    if c in letters:\n        letters[c] += 1\nprint(letters)'},
+  {cat:'dict',code:'.popitem()',desc:'Remove and return the last key-value pair',ex:'d = {"a": 1, "b": 2, "c": 3}\nkey, val = d.popitem()\nprint(f"Popped: {key}={val}")\nprint(f"Remaining: {d}")'},
+  {cat:'dict',code:'.clear()',desc:'Remove all items from the dictionary',ex:'d = {"x": 10, "y": 20}\nprint(f"Before: {d}")\nd.clear()\nprint(f"After: {d}")'},
+
+/* SET METHODS */
+  {cat:'set',code:'.add() / .discard()',desc:'Add element; remove safely (no error)',ex:'s = {1, 2, 3}\ns.add(4)\ns.add(2)        # duplicate ignored\ns.discard(10)   # no KeyError if missing\ns.discard(1)\nprint(s)'},
+  {cat:'set',code:'.union() / .intersection()',desc:'Elements in either/both sets',ex:'a = {1,2,3,4,5}\nb = {4,5,6,7,8}\nprint("union:       ", a | b)\nprint("intersection:", a & b)\nprint("diff a-b:    ", a - b)\nprint("diff b-a:    ", b - a)\nprint("sym diff:    ", a ^ b)'},
+  {cat:'set',code:'.issubset() / .issuperset()',desc:'Check set containment relationships',ex:'all_nums  = {1,2,3,4,5,6,7,8,9,10}\nevens     = {2,4,6,8,10}\nbig_evens = {6,8,10}\n\nprint(evens.issubset(all_nums))       # True\nprint(all_nums.issuperset(evens))     # True\nprint(big_evens.issubset(evens))      # True\nprint(evens.isdisjoint({1,3,5,7,9})) # True'},
+  {cat:'set',code:'.update()',desc:'Add all elements from another iterable',ex:'s = {1, 2, 3}\ns.update([4, 5])\ns.update({5, 6}, {7})\ns.update("abc")\nprint(sorted(s))'},
+  {cat:'set',code:'.pop()',desc:'Remove and return an arbitrary element',ex:'s = {10, 20, 30, 40}\nval = s.pop()\nprint(f"Popped: {val}")\nprint(f"Remaining: {s}")'},
+  {cat:'set',code:'.clear()',desc:'Remove all elements from the set',ex:'s = {1, 2, 3}\nprint(f"Before: {s}")\ns.clear()\nprint(f"After: {s}")'},
+
+/* FILE METHODS */
+  {cat:'file',code:'.read() / .readline()',desc:'Read entire file or one line at a time',ex:'import io\ncontent = "Line 1\\nLine 2\\nLine 3\\nLine 4"\nf = io.StringIO(content)\nprint("-- readline() loop --")\nwhile True:\n    line = f.readline()\n    if not line: break\n    print(repr(line))\nf.seek(0)\nprint("\\n-- read() all --")\nprint(f.read())'},
+  {cat:'file',code:'.readlines()',desc:'Read all lines into a list',ex:'import io\ndata = "apple\\nmango\\nbanana\\nkiwi\\nguava"\nf = io.StringIO(data)\nlines = f.readlines()\nprint(f"Total lines: {len(lines)}")\nfor i, line in enumerate(lines, 1):\n    print(f"  {i}: {line.rstrip()}")'},
+  {cat:'file',code:'.write() / .writelines()',desc:'Write a string or list of strings',ex:'import io\nbuf = io.StringIO()\nbuf.write("Header\\n")\nbuf.writelines([f"Row {i}\\n" for i in range(1,4)])\nbuf.seek(0)\nprint(buf.read())'},
+  {cat:'file',code:'.seek() / .tell()',desc:'Move or get the file pointer position',ex:'import io\nbuf = io.StringIO("ABCDEFGHIJ")\nprint(f"Start position: {buf.tell()}")\nbuf.read(3)\nprint(f"After read(3): {buf.tell()}")\nbuf.seek(0)\nprint(f"After seek(0): {buf.tell()}")\nbuf.seek(5)\nprint(f"Read from 5: {buf.read()}")'},
+
+/* CSV */
+  {cat:'csv',code:'csv.reader()',desc:'Read CSV rows as lists',ex:'import csv, io\n\ndata = """Name,Age,City\\nAlice,30,Delhi\\nBob,25,Mumbai\\nCarol,28,Pune"""\n\nreader = csv.reader(io.StringIO(data))\nfor row in reader:\n    print(row)'},
+  {cat:'csv',code:'csv.writer() / .writerow()',desc:'Write rows to a CSV file',ex:'import csv, io\n\nbuf = io.StringIO()\nwriter = csv.writer(buf)\nwriter.writerow(["Name","Score","Grade"])\nwriter.writerow(["Alice", 95, "A"])\nwriter.writerow(["Bob",   82, "B"])\nwriter.writerows([["Carol",91,"A-"],["Dev",78,"B+"]])\nprint(buf.getvalue())'},
+  {cat:'csv',code:'DictReader / DictWriter',desc:'Read and write CSV using dictionaries',ex:'import csv, io\n\n# Write\nbuf = io.StringIO()\nfields = ["name","age","city"]\nw = csv.DictWriter(buf, fieldnames=fields)\nw.writeheader()\nw.writerows([\n    {"name":"Alice","age":30,"city":"Delhi"},\n    {"name":"Bob","age":25,"city":"Mumbai"},\n])\nbuf.seek(0)\n# Read back\nr = csv.DictReader(buf)\nfor row in r:\n    print(dict(row))'},
+
+/* ITERTOOLS */
+  {cat:'iter',code:'chain()',desc:'Chain multiple iterables into one sequence',ex:'from itertools import chain\na = [1,2,3]\nb = ("x","y","z")\nc = {10,11}\nresult = list(chain(a, b, c))\nprint(result)\n# Flatten a list of lists:\nmatrix = [[1,2,3],[4,5,6],[7,8,9]]\nflat = list(chain.from_iterable(matrix))\nprint(flat)'},
+  {cat:'iter',code:'product()',desc:'Cartesian product of iterables',ex:'from itertools import product\n# All playing cards\nsuits  = ["♠","♥","♦","♣"]\nvalues = ["A","2","3","K"]\nhand   = list(product(values, suits))\nprint(f"Total cards: {len(hand)}")\nfor card in hand[:8]:\n    print("".join(card), end=" ")'},
+  {cat:'iter',code:'combinations()',desc:'All r-length combos (no repeats)',ex:'from itertools import combinations\nteam = ["Alice","Bob","Carol","Dave","Eve"]\npairs = list(combinations(team, 2))\nprint(f"Possible pairs: {len(pairs)}")\nfor pair in pairs[:6]:\n    print(" & ".join(pair))'},
+  {cat:'iter',code:'permutations()',desc:'All r-length ordered arrangements',ex:'from itertools import permutations\ndigits = [1, 2, 3]\nperms  = list(permutations(digits))\nprint(f"Arrangements: {len(perms)}")\nfor p in perms:\n    print("".join(map(str,p)), end=" ")'},
+  {cat:'iter',code:'groupby()',desc:'Group consecutive items by a key function',ex:'from itertools import groupby\ndata = [\n    ("fruit","apple"),("fruit","mango"),\n    ("veg","carrot"),("veg","pea"),\n    ("fruit","kiwi"),\n]\nfor category, items in groupby(data, key=lambda x: x[0]):\n    names = [item[1] for item in items]\n    print(f"{category}: {names}")'},
+  {cat:'iter',code:'islice()',desc:'Slice an iterator without materialising it',ex:'from itertools import islice\ngen = (x**2 for x in range(1_000_000))\nfirst_10 = list(islice(gen, 10))\nprint(first_10)\n# Chunk a list\ndata = list(range(1, 21))\ndef chunked(iterable, n):\n    it = iter(iterable)\n    while chunk := list(islice(it, n)):\n        print(chunk)\nchunked(data, 5)'},
+
+/* EXCEPTIONS */
+  {cat:'exc',code:'ValueError',desc:'Right type but wrong value',ex:'def parse_age(s):\n    try:\n        age = int(s)\n        if age < 0 or age > 130:\n            raise ValueError(f"Age {age} out of realistic range")\n        return age\n    except ValueError as e:\n        print(f"ValueError: {e}")\n        return None\n\nprint(parse_age("25"))\nprint(parse_age("abc"))\nprint(parse_age("-5"))'},
+  {cat:'exc',code:'TypeError',desc:'Wrong type for the operation',ex:'def safe_add(a, b):\n    try:\n        return a + b\n    except TypeError as e:\n        print(f"TypeError: {e}")\n        return None\n\nprint(safe_add(2, 3))\nprint(safe_add("hello", " world"))\nprint(safe_add(2, " items"))'},
+  {cat:'exc',code:'KeyError',desc:'Dictionary key does not exist',ex:'user = {"name":"Riya","age":22}\nkeys = ["name","email","age","phone"]\nfor key in keys:\n    try:\n        print(f"{key}: {user[key]}")\n    except KeyError:\n        print(f"{key}: (not found — use .get() for safety)")'},
+  {cat:'exc',code:'IndexError',desc:'Sequence index is out of range',ex:'lst = [10, 20, 30]\nindices = [0, 1, 2, 3, -1, -10]\nfor i in indices:\n    try:\n        print(f"lst[{i:3}] = {lst[i]}")\n    except IndexError:\n        print(f"lst[{i:3}] → IndexError: out of range")'},
+  {cat:'exc',code:'ZeroDivisionError',desc:'Division or modulo by zero',ex:'def safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return float("inf") if a > 0 else float("-inf")\n\nprint(safe_divide(10, 2))\nprint(safe_divide(5, 0))\nprint(safe_divide(-5, 0))'},
+  {cat:'exc',code:'RecursionError',desc:'Maximum recursion depth exceeded',ex:'import sys\nsys.setrecursionlimit(50)   # lower limit for demo\n\ndef infinite(n=0):\n    return infinite(n+1)\n\ntry:\n    infinite()\nexcept RecursionError as e:\n    print(f"RecursionError caught at ~50 levels")\n    print("Use iteration or increase limit for deep recursion")'},
+  {cat:'exc',code:'NotImplementedError',desc:'Abstract method not yet implemented',ex:'class Shape:\n    def area(self):\n        raise NotImplementedError("Subclass must implement area()")\n    def describe(self):\n        return f"Area = {self.area():.2f}"\n\nclass Circle(Shape):\n    def __init__(self, r): self.r = r\n    def area(self): return 3.14159 * self.r**2\n\nclass Square(Shape):\n    pass   # forgot to implement area()\n\nprint(Circle(5).describe())\ntry:\n    Square().describe()\nexcept NotImplementedError as e:\n    print(f"NotImplementedError: {e}")'},
+  {cat:'exc',code:'AssertionError',desc:'assert statement evaluated to False',ex:'def make_matrix(rows, cols, fill=0):\n    assert rows > 0 and cols > 0, "Dimensions must be positive"\n    assert isinstance(fill, (int,float)), "Fill must be numeric"\n    return [[fill]*cols for _ in range(rows)]\n\nprint(make_matrix(3, 4, 1))\ntry:\n    make_matrix(-1, 4)\nexcept AssertionError as e:\n    print(f"AssertionError: {e}")'}
+];
+
+let activeCat='all',activeCard=null,pyodide=null,pyReady=false,activeItemData=null;
+let animationState={type:'image',animType:'float',customImage:null};
+let isLeftExpanded = false;
+let isRightExpanded = false;
+let isSageExpanded = false;
+
+/* ============================================================
+   POLYFILLS & UTILS 
+   ============================================================ */
+function escH(s){
+  if(!s) return "";
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function pyHL(code){
+  if(!code) return "";
+  let s = escH(code);
+  s = s.replace(/(&quot;.*?&quot;|'.*?')/g, '<span style="color:seagreen">$1</span>');
+  s = s.replace(/(#.*)/g, '<span style="color:var(--ink-light); font-style:italic;">$1</span>');
+  s = s.replace(/\b(def|class|if|elif|else|while|for|try|except|finally|with|as|return|yield|import|from|pass|break|continue|and|or|not|in|is|lambda|global|nonlocal|True|False|None)\b/g, '<span style="color:var(--seal-red); font-weight:bold;">$1</span>');
+  return s;
+}
+
+function playSlash() {} 
+function animateSlash(el, cb) { if(cb) cb(); } 
+
+/* ============================================================
+   2D CANVAS ANIMATION ENGINE
+   ============================================================ */
+let animCanvas, animCtx, nodeLayer;
+let mapNodes = [];
+let animRequestId;
+let mapImage = new Image();
+let imageLoaded = false;
+
+mapImage.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nine_Dragons_detail_%28Chen_Rong%29.jpg/1200px-Nine_Dragons_detail_%28Chen_Rong%29.jpg';
+mapImage.onload = () => { imageLoaded = true; };
+
+const defaultDragonPositions = [
+    { id: 'kw', x: 0.20, y: 0.40 },
+    { id: 'builtin', x: 0.30, y: 0.60 },
+    { id: 'str', x: 0.40, y: 0.80 },
+    { id: 'list', x: 0.48, y: 0.60 },
+    { id: 'dict', x: 0.55, y: 0.40 },
+    { id: 'set', x: 0.68, y: 0.35 },
+    { id: 'file', x: 0.80, y: 0.25 },
+    { id: 'csv', x: 0.88, y: 0.45 },
+    { id: 'iter', x: 0.75, y: 0.65 },
+    { id: 'exc', x: 0.60, y: 0.75 },
+    { id: 'custom', x: 0.90, y: 0.75 }
+];
+
+function initMapCanvas() {
+    const container = document.getElementById('mapContainer');
+    if(!container) return;
+    animCanvas = document.getElementById('mapCanvas');
+    nodeLayer = document.getElementById('nodeLayer');
+    
+    if(!animCanvas) return;
+    animCanvas.width = container.clientWidth;
+    animCanvas.height = container.clientHeight;
+    animCtx = animCanvas.getContext('2d');
+    
+    generateNodes();
+    if(animRequestId) cancelAnimationFrame(animRequestId);
+    animate2D();
+}
+
+function generateNodes() {
+    if(!nodeLayer) return;
+    nodeLayer.innerHTML = '';
+    mapNodes = [];
+    
+    const isDefault = (animationState.type === 'image' && mapImage.src.includes('image_95bdfc.png'));
+    const mapCats = CATS.filter(c => c.id !== 'all');
+
+    mapCats.forEach((cat, idx) => {
+        let basePathX, basePathY;
+        
+        if (isDefault) {
+            basePathX = defaultDragonPositions[idx].x;
+            basePathY = defaultDragonPositions[idx].y;
+        } else {
+            basePathX = 0.1 + (idx / (mapCats.length - 1)) * 0.8;
+            basePathY = 0.5 + Math.sin((idx / (mapCats.length - 1)) * Math.PI * 2) * 0.3;
+        }
+
+        const el = document.createElement('div');
+        el.className = 'map-node';
+        el.setAttribute('data-cat', cat.id);
+        
+        const dot = document.createElement('div');
+        dot.className = 'node-pearl';
+        const label = document.createElement('div');
+        label.className = 'node-label';
+        label.textContent = cat.label.split(' ')[0];
+        
+        el.appendChild(dot);
+        el.appendChild(label);
+        
+        el.onclick = () => {
+            activeCat = cat.id;
+            updateMapVisuals();
+            renderContent();
+            switchView('view-content');
+        };
+        
+        nodeLayer.appendChild(el);
+        
+        mapNodes.push({
+            catId: cat.id,
+            el: el,
+            baseX: basePathX,
+            baseY: basePathY,
+            timeOffset: idx * 0.5,
+            scale: 1,
+            rotation: 0
+        });
+    });
+    
+    updateMapVisuals();
+}
+
+function animate2D() {
+    animRequestId = requestAnimationFrame(animate2D);
+    if (!animCanvas || !animCtx) return;
+    
+    const width = animCanvas.width;
+    const height = animCanvas.height;
+    
+    animCtx.clearRect(0, 0, width, height);
+
+    if (animationState.type === 'image' && imageLoaded) {
+        const imgRatio = mapImage.width / mapImage.height;
+        const canvasRatio = width / height;
+        let drawW = width, drawH = height;
+        let drawX = 0, drawY = 0;
+
+        if (imgRatio > canvasRatio) {
+            drawH = width / imgRatio;
+            drawY = (height - drawH) / 2;
+        } else {
+            drawW = height * imgRatio;
+            drawX = (width - drawW) / 2;
+        }
+
+        animCtx.globalCompositeOperation = 'multiply';
+        animCtx.drawImage(mapImage, drawX, drawY, drawW, drawH);
+        animCtx.globalCompositeOperation = 'source-over';
+    }
+
+    animCtx.beginPath();
+    animCtx.strokeStyle = document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)';
+    animCtx.lineWidth = 1;
+    animCtx.setLineDash([5, 5]);
+
+    const time = Date.now() * 0.001;
+
+    mapNodes.forEach((node, idx) => {
+        let offsetX = 0;
+        let offsetY = 0;
+        node.scale = 1;
+        node.rotation = 0;
+
+        switch(animationState.animType) {
+            case 'float':
+                offsetY = Math.sin(time * 2 + node.timeOffset) * 10;
+                break;
+            case 'wave':
+                offsetX = Math.cos(time * 2 + idx) * 15;
+                offsetY = Math.sin(time * 2 + idx) * 15;
+                break;
+            case 'pulse':
+                node.scale = 1 + Math.sin(time * 3 + node.timeOffset) * 0.2;
+                break;
+            case 'orbit':
+                offsetX = Math.cos(time + node.timeOffset) * 20;
+                offsetY = Math.sin(time + node.timeOffset) * 20;
+                break;
+            case 'spin':
+                node.rotation = (time * 50) % 360;
+                break;
+            case 'static':
+            default:
+                break;
+        }
+
+        const finalX = (node.baseX * width) + offsetX;
+        const finalY = (node.baseY * height) + offsetY;
+
+        if (idx === 0) animCtx.moveTo(finalX, finalY);
+        else animCtx.lineTo(finalX, finalY);
+
+        node.el.style.left = `${finalX}px`;
+        node.el.style.top = `${finalY}px`;
+        
+        const dot = node.el.querySelector('.node-pearl');
+        if (dot) {
+            if(!node.el.classList.contains('active')) {
+                 dot.style.transform = `scale(${node.scale}) rotate(${node.rotation}deg)`;
+            } else {
+                 dot.style.transform = `scale(2.2)`; 
+            }
+        }
+    });
+
+    animCtx.stroke();
+    animCtx.setLineDash([]);
+}
+
+function updateMapVisuals() {
+  document.querySelectorAll('.map-node').forEach(node => {
+    if (node.getAttribute('data-cat') === activeCat) node.classList.add('active');
+    else node.classList.remove('active');
+  });
+}
+
+/* ============================================================
+   SETTINGS, THEME, & API INTEGRATION
+   ============================================================ */
+
+function changeAIPersona(val) {
+    aiPersona = val;
+    localStorage.setItem('ink_py_ai_persona', val);
+    updateAILabels();
+}
+
+function updateAILabels() {
+    const isSage = aiPersona === 'sage';
+    const toggleBtn = document.getElementById('toggleAISageBtn');
+    const medTitle = document.getElementById('aiMeditationTitle');
+    const expBtn = document.getElementById('aiExplainBtn');
+    
+    if(toggleBtn) toggleBtn.innerHTML = isSage ? "✨ ASK SAGE" : "✨ ASK AI";
+    if(medTitle) medTitle.textContent = isSage ? "MEDITATE WITH THE AI SAGE" : "ASK THE AI ASSISTANT";
+    if(expBtn) expBtn.innerHTML = isSage ? "✨ SAGE EXPLAIN" : "✨ AI EXPLAIN";
+}
+
+function changeFontTheme(fontName) {
+    let fontStack = "'Inter', system-ui, -apple-system, sans-serif";
+    if (fontName === 'Roboto') fontStack = "'Roboto', sans-serif";
+    else if (fontName === 'Nunito') fontStack = "'Nunito', sans-serif";
+    else if (fontName === 'Lora') fontStack = "'Lora', serif";
+    else if (fontName === 'Merriweather') fontStack = "'Merriweather', serif";
+    
+    document.documentElement.style.setProperty('--font-read', fontStack);
+    localStorage.setItem('ink_py_font', fontName);
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('ink_py_theme', isDark ? 'dark' : 'light');
+    const btn = document.getElementById('toggleThemeBtn');
+    if (btn) {
+        btn.innerHTML = isDark ? '☀️ ENABLE LIGHT MODE' : '🌙 ENABLE DARK MODE';
+    }
+}
+
+function saveApiKey() {
+  const inputEl = document.getElementById('apiInput');
+  if(!inputEl) return;
+  const val = inputEl.value.trim();
+  customApiKey = val;
+  localStorage.setItem('ink_gemini_api_key', val);
+  const btn = document.getElementById('saveApiBtn');
+  if (btn) {
+      btn.innerText = "✓ SAVED";
+      setTimeout(() => btn.innerText = "SAVE", 2000);
+  }
+}
+
+async function callGeminiAPI(prompt, isJson = false) {
+  const keyToUse = customApiKey || apiKey;
+  const delays = [1000, 2000, 4000, 8000, 16000];
+  
+  const isSage = aiPersona === 'sage';
+  const sysPrompt = isSage 
+      ? "You are a wise Python AI sage living in an ancient ink-wash scroll. Provide clear, concise, and elegantly formatted advice. Always wrap code blocks in triple backticks."
+      : "You are an expert Python programming assistant. Provide clear, concise, and highly accurate advice. Always wrap code blocks in triple backticks.";
+
+  // LOCAL DEVICE FALLBACK: Free AI gateway when API key is missing
+  if (!keyToUse) {
+    const fallbackUrl = 'https://text.pollinations.ai/';
+    const fallbackMessage = isJson 
+        ? sysPrompt + "\n\nUser Request: Write a Python snippet for: " + prompt + "\n\nCRITICAL: Return ONLY a raw, valid JSON object with exact keys: title, desc, code. Do NOT wrap it in markdown backticks. Do not add any conversational text."
+        : sysPrompt + "\n\nUser Request: " + prompt;
+
+    for (let i = 0; i < 5; i++) {
+      try {
+        const res = await fetch(fallbackUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              { role: 'system', content: sysPrompt },
+              { role: 'user', content: fallbackMessage }
+            ]
+          })
+        });
+        if (!res.ok) throw new Error("Fallback Failed");
+        
+        let text = await res.text();
+        
+        // Failsafe extraction if API unexpectedly returns OpenAI JSON wrapper
+        try {
+            const parsed = JSON.parse(text);
+            if (parsed.choices?.[0]?.message?.content) {
+                text = parsed.choices[0].message.content;
+            }
+        } catch(e) {} // Not JSON wrapper, use raw text
+        
+        // REMOVE INJECTED ADS: Snip off common free-API promotional footers
+        text = text.split(/\n\n(?:\**Advertisement\**|\**Sponsored\**|Check out|Support us|Powered by|Generated by|\[ad\])/i)[0];
+        
+        return text.trim();
+      } catch (e) {
+        if (i === 4) throw e;
+        await new Promise(r => setTimeout(r, delays[i]));
+      }
+    }
+  }
+
+  // NATIVE GEMINI LOGIC
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=' + keyToUse;
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    systemInstruction: { parts: [{ text: sysPrompt }] }
+  };
+  
+  if (isJson) {
+    payload.generationConfig = {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          title: { type: "STRING" },
+          desc: { type: "STRING" },
+          code: { type: "STRING" }
+        },
+        required: ["title", "desc", "code"]
+      }
+    };
+  }
+
+  for (let i = 0; i < 5; i++) {
+    try {
+      const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      if (!res.ok) throw new Error("API Request Failed");
+      const data = await res.json();
+      return data.candidates[0].content.parts[0].text;
+    } catch (e) {
+      if (i === 4) throw e;
+      await new Promise(r => setTimeout(r, delays[i]));
+    }
+  }
+}
+
+function formatAIMarkdown(text) {
+  let processed = text || "";
+  let blocks = [];
+  
+  // Clean up any stray JSON wrappings just in case
+  try {
+      const parsed = JSON.parse(processed);
+      if (parsed.choices?.[0]?.message?.content) {
+          processed = parsed.choices[0].message.content;
+      }
+  } catch(e) {}
+
+  // Fix literal double-escaped newlines injected by some APIs
+  processed = processed.replace(/\\n/g, '\n').replace(/\\"/g, '"');
+  
+  // Safely define backticks so the system parser doesn't break the script block!
+  const tick = String.fromCharCode(96);
+  const tripleTick = tick + tick + tick;
+  
+  const pyRegex = new RegExp(tripleTick + '(?:python|py)?\\s*\\n([\\s\\S]*?)' + tripleTick, 'gi');
+  processed = processed.replace(pyRegex, (m, c) => {
+    blocks.push('<div style="background:var(--code-bg); padding:10px; border-left:3px solid var(--seal-red); margin:10px 0; overflow-x:auto; font-family:var(--font-code);"><code>' + pyHL(c.trim()) + '</code></div>');
+    return '__BLOCK_' + (blocks.length - 1) + '__';
+  });
+  
+  const stdRegex = new RegExp(tripleTick + '([\\s\\S]*?)' + tripleTick, 'g');
+  processed = processed.replace(stdRegex, (m, c) => {
+    blocks.push('<div style="background:var(--code-bg); padding:10px; border-left:3px solid var(--seal-red); margin:10px 0; overflow-x:auto; font-family:var(--font-code);"><code>' + escH(c.trim()) + '</code></div>');
+    return '__BLOCK_' + (blocks.length - 1) + '__';
+  });
+
+  processed = escH(processed);
+
+  const inlineRegex = new RegExp(tick + '([^' + tick + ']+)' + tick, 'g');
+  processed = processed.replace(inlineRegex, '<code style="background:var(--code-bg); padding:2px 4px; border-radius:3px; font-family:var(--font-code); color:var(--seal-red);">$1</code>');
+  processed = processed.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  processed = processed.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  
+  blocks.forEach((block, i) => {
+    processed = processed.replace('__BLOCK_' + i + '__', block);
+  });
+
+  processed = processed.replace(/\n/g, '<br>');
+  return processed;
+}
+
+async function aiGenerateSnippet() {
+  const promptInput = document.getElementById('aiGenPrompt');
+  if(!promptInput) return;
+  const promptText = promptInput.value;
+  if (!promptText) return;
+  
+  const btn = document.getElementById('aiGenBtn');
+  if(btn) { btn.disabled = true; btn.innerText = "THINKING..."; }
+  
+  try {
+    let response = await callGeminiAPI(promptText, true);
+    
+    // Fallback extraction: Some APIs wrap JSON in markdown despite instructions
+    const tick = String.fromCharCode(96);
+    const triple = tick + tick + tick;
+    const rx1 = new RegExp(triple + '(?:json)?\\s*\\n?', 'gi');
+    const rx2 = new RegExp(triple, 'g');
+    response = response.replace(rx1, '').replace(rx2, '').trim();
+    
+    const start = response.indexOf('{');
+    const end = response.lastIndexOf('}');
+    if (start !== -1 && end !== -1) {
+        response = response.substring(start, end + 1);
+    }
+    
+    const result = JSON.parse(response);
+    
+    DATA.push({ cat: 'custom', code: result.title, desc: result.desc, ex: result.code });
+    renderContent();
+    
+    const box = document.getElementById('aiMeditationBox');
+    if (box) box.style.display = 'none';
+    promptInput.value = "";
+    
+  } catch (e) {
+    const errorMsg = aiPersona === 'sage' ? "The Sage is silent. Please wait a moment or check your API key." : "The AI is unresponsive. Please wait a moment or check your API key.";
+    alert(errorMsg);
+  } finally {
+    if(btn) { btn.disabled = false; btn.innerText = "✨ CONJURE CODE"; }
+  }
+}
+
+async function aiExplainCode() {
+  if (isSageExpanded) toggleSageExpand();
+  const codeArea = document.getElementById('codeArea');
+  const code = codeArea ? codeArea.value : "";
+  const box = document.getElementById('aiBox');
+  const btn = document.getElementById('aiExplainBtn');
+  
+  if(box) {
+      box.style.display = 'block';
+      box.style.flex = 'none';
+      box.style.maxHeight = isLeftExpanded ? '60vh' : 'none';
+      box.innerHTML = aiPersona === 'sage' ? "<em>Sage is meditating on your ink...</em>" : "<em>Analyzing code...</em>";
+  }
+  if(btn) btn.disabled = true;
+
+  try {
+    const prompt = aiPersona === 'sage' 
+        ? `Explain this Python code like an ancient scroll master:\n\n${code}`
+        : `Explain this Python code clearly and professionally:\n\n${code}`;
+        
+    const explanation = await callGeminiAPI(prompt, false);
+    
+    if(box) {
+        const insightTitle = aiPersona === 'sage' ? "Sage's Insight:" : "AI Assistant's Insight:";
+        box.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px dashed var(--border-color); padding-bottom:5px;">
+            <strong style="color:var(--seal-red);">${insightTitle}</strong>
+            <button id="expandSageBtn" class="action-btn" style="padding:0.2rem 0.6rem; font-size:0.75rem; border-color:var(--seal-red); color:var(--seal-red);" onclick="toggleSageExpand()">⛶ ENLARGE</button>
+          </div>
+          <div id="aiBoxContent" style="flex:1; overflow-y:auto; padding-right:5px;">${formatAIMarkdown(explanation)}</div>
+        `;
+    }
+  } catch (e) {
+    if(box) box.innerHTML = aiPersona === 'sage' ? "The ink has blurred. I cannot read this. (API Error)" : "An error occurred while analyzing the code. (API Error)";
+  } finally {
+    if(btn) btn.disabled = false;
+  }
+}
+
+function toggleAISagePanel() {
+  closePanel();
+  const box = document.getElementById('aiMeditationBox');
+  if(box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleLeftExpand() {
+    const leftPane = document.getElementById('leftPane');
+    const rightPane = document.getElementById('rightPane');
+    const btn = document.getElementById('expandLeftBtn');
+    const panel = document.getElementById('panel');
+    
+    isLeftExpanded = !isLeftExpanded;
+    
+    if(isLeftExpanded) {
+        if(rightPane) rightPane.style.display = 'none';
+        if(panel) panel.style.height = '100vh';
+        if(btn) btn.innerHTML = '🗕 REDUCE';
+        const aiBox = document.getElementById('aiBox');
+        if(aiBox && !isSageExpanded) {
+            aiBox.style.maxHeight = '60vh';
+            aiBox.style.overflowY = 'auto';
+        }
+    } else {
+        if(rightPane && !isSageExpanded) rightPane.style.display = 'flex';
+        if(panel && !isSageExpanded) panel.style.height = '75vh';
+        if(btn) btn.innerHTML = '⛶ ENLARGE';
+        const aiBox = document.getElementById('aiBox');
+        if(aiBox && !isSageExpanded) {
+            aiBox.style.maxHeight = 'none';
+            aiBox.style.overflowY = 'visible';
+        }
+    }
+}
+
+function toggleRightExpand() {
+    const leftPane = document.getElementById('leftPane');
+    const rightPane = document.getElementById('rightPane');
+    const btn = document.getElementById('expandRightBtn');
+    const panel = document.getElementById('panel');
+    const codeArea = document.getElementById('codeArea');
+    
+    isRightExpanded = !isRightExpanded;
+    
+    if(isRightExpanded) {
+        if(leftPane) leftPane.style.display = 'none';
+        if(panel) panel.style.height = '100vh';
+        if(btn) btn.innerHTML = '🗕 REDUCE';
+        if(codeArea) codeArea.style.height = '60vh';
+    } else {
+        if(leftPane) leftPane.style.display = 'flex';
+        if(panel) panel.style.height = '75vh';
+        if(btn) btn.innerHTML = '⛶ ENLARGE';
+        if(codeArea) codeArea.style.height = '250px';
+    }
+}
+
+function toggleSageExpand() {
+    const rightPane = document.getElementById('rightPane');
+    const panel = document.getElementById('panel');
+    const leftPaneContent = document.getElementById('leftPaneContent');
+    const btn = document.getElementById('expandSageBtn');
+    const aiBox = document.getElementById('aiBox');
+    
+    isSageExpanded = !isSageExpanded;
+    
+    if(isSageExpanded) {
+        if(rightPane) rightPane.style.display = 'none';
+        if(leftPaneContent) leftPaneContent.style.display = 'none';
+        if(panel) panel.style.height = '100vh';
+        if(btn) btn.innerHTML = '🗕 REDUCE';
+        if(aiBox) {
+            aiBox.style.maxHeight = 'none';
+            aiBox.style.flex = '1';
+            aiBox.style.display = 'flex';
+            aiBox.style.flexDirection = 'column';
+        }
+    } else {
+        if(rightPane && !isLeftExpanded) rightPane.style.display = 'flex';
+        if(leftPaneContent) leftPaneContent.style.display = 'flex';
+        if(panel) panel.style.height = (isLeftExpanded || isRightExpanded) ? '100vh' : '75vh';
+        if(btn) btn.innerHTML = '⛶ ENLARGE';
+        if(aiBox) {
+            aiBox.style.maxHeight = isLeftExpanded ? '60vh' : 'none';
+            aiBox.style.flex = 'none';
+            aiBox.style.display = 'block';
+        }
+    }
+}
+
+/* ============================================================
+   CORE APP LOGIC & UI FUNCTIONS (GLOBAL SCOPE)
+   ============================================================ */
+function switchView(id) {
+  closePanel();
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  if(id === 'view-map') {
+      setTimeout(() => {
+          if(!animCanvas) return;
+          const container = document.getElementById('mapContainer');
+          if (container) {
+              animCanvas.width = container.clientWidth;
+              animCanvas.height = container.clientHeight;
+              generateNodes();
+          }
+      }, 50);
+  }
+}
+
+function handleSearch() {
+    closePanel();
+    const qInput = document.getElementById('Q');
+    if(qInput && qInput.value.trim() !== '') {
+        activeCat = 'all';
+        updateMapVisuals();
+    }
+    renderContent();
+    switchView('view-content');
+}
+
+function handleCodeTab(e) {
+    if(e.key==='Tab'){
+      e.preventDefault();
+      const t=e.target,s=t.selectionStart,en=t.selectionEnd;
+      t.value=t.value.substring(0,s)+'    '+t.value.substring(en);
+      t.selectionStart=t.selectionEnd=s+4;
+    }
+}
+
+function renderContent() {
+  const tb = document.getElementById('TB');
+  if (tb) {
+      tb.innerHTML = '';
+      CATS.forEach(c => {
+          const t = document.createElement('button');
+          t.className = `tab ${c.id === activeCat ? 'active' : ''}`;
+          t.textContent = c.label;
+          t.onclick = () => { activeCat = c.id; updateMapVisuals(); renderContent(); };
+          tb.appendChild(t);
+      });
+  }
+
+  const qInput = document.getElementById('Q');
+  const q = qInput ? qInput.value.toLowerCase() : '';
+  const mc = document.getElementById('MC');
+  
+  const titleEl = document.getElementById('activeCategoryTitle');
+  if (titleEl) titleEl.innerText = (activeCat === 'all' ? 'All Scrolls' : CATS.find(c=>c.id===activeCat)?.label || 'Results');
+  
+  const filtered = DATA.filter(d => (activeCat === 'all' || d.cat === activeCat) && (d.code.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q)));
+  
+  const st_el = document.getElementById('sT');
+  const sv_el = document.getElementById('sV');
+  if (st_el) st_el.textContent = DATA.length;
+  if (sv_el) sv_el.textContent = filtered.length;
+
+  if (!mc) return;
+
+  if (filtered.length === 0) { 
+      mc.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--ink-gray);"><b>∅</b> The scroll is blank.</div>'; 
+      return; 
+  }
+  
+  const groups = {};
+  filtered.forEach(item => {
+      if(!groups[item.cat]) groups[item.cat] = [];
+      groups[item.cat].push(item);
+  });
+
+  let html = '';
+  ORDER.forEach(cat => {
+      if(groups[cat]) {
+          html += `
+          <div class="section" style="margin-bottom: 2rem;">
+            <div class="sec-hdr" style="display:flex; align-items:center; margin-bottom:1rem; color:${getColor(cat)}; font-weight:bold; font-size:1.3rem;">
+              <span>${CLABEL[cat]}</span>
+              <span style="flex:1; height:1px; background:currentColor; margin:0 15px; opacity:0.3;"></span>
+              <span style="font-size:1rem; opacity:0.8;">[${groups[cat].length}]</span>
+            </div>
+            <div class="grid">
+              ${groups[cat].map((item, i) => {
+                const safeCode = item.code.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+                return `<div class="card" style="border-top-color:${getColor(item.cat)}; animation-delay:${i*0.03}s" onclick="openPanel('${safeCode}')">
+                           <div class="card-title">${item.code}</div>
+                           <div class="card-desc">${item.desc}</div>
+                         </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }
+  });
+
+  mc.innerHTML = html;
+}
+
+function getColor(cat){
+  return {
+    kw: 'var(--seal-red)', builtin: '#2e8b57', str: '#d97706',
+    list: '#0284c7', dict: '#9333ea', set: '#7c3aed',
+    file: '#059669', csv: '#4b5563', iter: 'var(--seal-red)',
+    exc: 'var(--ink-gray)', custom: 'var(--seal-red)'
+  }[cat] || 'var(--ink-black)';
+}
+
+function openPanel(code) {
+  if (isSageExpanded) toggleSageExpand();
+  if (isLeftExpanded) toggleLeftExpand();
+  if (isRightExpanded) toggleRightExpand();
+
+  const item = DATA.find(d => d.code === code);
+  if (!item) return;
+  
+  const pMethod = document.getElementById('pMethod');
+  if(pMethod) {
+      pMethod.innerText = item.code;
+      pMethod.style.color = getColor(item.cat);
+  }
+  
+  const pDesc = document.getElementById('pDesc');
+  if(pDesc) pDesc.innerText = item.desc;
+  
+  const exCode = document.getElementById('exCode');
+  if(exCode) exCode.innerHTML = pyHL(item.ex);
+  
+  const codeArea = document.getElementById('codeArea');
+  if(codeArea) codeArea.value = item.ex;
+  
+  const pm = document.getElementById('panelMedia');
+  if (pm) {
+      if(item.media) {
+        pm.style.display = 'block';
+        let mUrl = item.media;
+        if (mUrl.includes('youtube.com/watch?v=')) mUrl = mUrl.replace('watch?v=', 'embed/').split('&')[0];
+        else if (mUrl.includes('youtu.be/')) mUrl = mUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0];
+        const isVideo = mUrl.match(/\.(mp4|webm|ogg)$/i) || mUrl.startsWith('data:video/');
+        if(isVideo) pm.innerHTML = `<video controls style="max-width:100%; max-height:250px;"><source src="${mUrl}"></video>`;
+        else if (mUrl.includes('/embed/')) pm.innerHTML = `<iframe width="100%" height="220" src="${mUrl}" frameborder="0" allowfullscreen></iframe>`;
+        else pm.innerHTML = `<img src="${mUrl}" style="max-width:100%; max-height:250px; object-fit:contain;" />`;
+      } else {
+        pm.style.display = 'none'; pm.innerHTML = '';
+      }
+  }
+
+  const delBtn = document.getElementById('delCustomBtn');
+  if (delBtn) {
+      if(item.cat === 'custom') {
+        delBtn.style.display = 'inline-block';
+        delBtn.onclick = () => deleteCustomCard(item, delBtn);
+      } else delBtn.style.display = 'none';
+  }
+
+  const aiBox = document.getElementById('aiBox');
+  if (aiBox) {
+      aiBox.style.display = 'none';
+      aiBox.innerHTML = '';
+      aiBox.style.flex = 'none';
+      aiBox.style.maxHeight = 'none';
+  }
+  
+  const out = document.getElementById('outBox');
+  if (out) { out.innerText = ''; out.className = ''; }
+
+  const panel = document.getElementById('panel');
+  if (panel) panel.classList.add('open');
+}
+
+function closePanel() { 
+    const panel = document.getElementById('panel');
+    if (panel) panel.classList.remove('open'); 
+    if (isSageExpanded) toggleSageExpand();
+    if (isLeftExpanded) toggleLeftExpand();
+    if (isRightExpanded) toggleRightExpand();
+}
+
+async function runCode() {
+  const out = document.getElementById('outBox');
+  const btn = document.getElementById('runBtn');
+
+  if (!pyReady) {
+      if(out) {
+          out.innerText = 'Python runtime is still loading... Please wait a moment before running code.'; 
+          out.className = 'err';
+      }
+      return;
+  }
+  
+  if(btn) btn.innerText = 'Running...';
+  try {
+    // Reset output buffers via python correctly.
+    await pyodide.runPythonAsync(`
+import sys, io
+sys.stdout = io.StringIO()
+sys.stderr = io.StringIO()
+    `);
+
+    const codeArea = document.getElementById('codeArea');
+    if (codeArea) {
+        await pyodide.runPythonAsync(codeArea.value);
+    }
+    
+    // Capture stdout and stderr
+    const stdout = await pyodide.runPythonAsync(`sys.stdout.getvalue()`);
+    const stderr = await pyodide.runPythonAsync(`sys.stderr.getvalue()`);
+    const output = (stdout + stderr).trim();
+
+    if (out) {
+        out.innerText = output || '(Success - No output)';
+        out.className = 'ok';
+    }
+  } catch (e) { 
+      if(out) {
+          out.innerText = e.message; 
+          out.className = 'err'; 
+      }
+  }
+  if(btn) btn.innerText = '▶ Run Script';
+}
+
+function copyCode(){
+  const codeArea = document.getElementById('codeArea');
+  if(!codeArea) return;
+  
+  const copyAction = () => {
+    const btn = document.getElementById('copyBtn');
+    if (btn) {
+        const orig=btn.textContent; 
+        btn.textContent='✓ COPIED';
+        setTimeout(()=>{btn.textContent=orig;},1500);
+    }
+  };
+  
+  if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(codeArea.value).then(copyAction).catch(() => {});
+  } else {
+      codeArea.select();
+      try { document.execCommand('copy'); copyAction(); } catch(e) {}
+  }
+}
+
+/* ============================================================
+   CUSTOM NOTES 
+   ============================================================ */
+function toggleNotes() {
+  closePanel();
+  const nc = document.getElementById('notesContainer');
+  if (nc) {
+      nc.style.display = nc.style.display === 'none' ? 'block' : 'none';
+      if(nc.style.display === 'block') nc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function clearNotesForm() {
+  ['noteTitle','noteDesc','noteMedia','noteCode'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.value='';
+  });
+}
+
+function saveNotes() {
+  const titleEl = document.getElementById('noteTitle');
+  const descEl = document.getElementById('noteDesc');
+  const mediaEl = document.getElementById('noteMedia');
+  const codeEl = document.getElementById('noteCode');
+  
+  if (!titleEl || !codeEl) return;
+
+  const title = titleEl.value.trim();
+  const desc = descEl ? descEl.value.trim() : '';
+  const media = mediaEl ? mediaEl.value.trim() : '';
+  const code = codeEl.value;
+
+  if(!title) {
+    const status = document.getElementById('noteStatus');
+    if(status) {
+        status.textContent = '✗ TITLE REQUIRED';
+        status.style.color = 'var(--seal-red)';
+        setTimeout(() => status.textContent = '', 2000);
+    }
+    return;
+  }
+
+  const newCard = { cat: 'custom', code: title, desc: desc || "Custom user note", ex: code || "# No code provided", media: media };
+  DATA.push(newCard);
+
+  let customCards = [];
+  try {
+      customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  } catch(e) {}
+  customCards.push(newCard);
+  localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+
+  clearNotesForm();
+  toggleNotes();
+  activeCat = 'custom';
+  updateMapVisuals();
+  renderContent();
+}
+
+function deleteCustomCard(itemToRemove, btnEl) {
+  if (btnEl.textContent !== '🗑 SURE?') {
+    btnEl.textContent = '🗑 SURE?';
+    setTimeout(() => { btnEl.textContent = '🗑 DELETE'; }, 3000);
+    return;
+  }
+  const dataIdx = DATA.indexOf(itemToRemove);
+  if(dataIdx > -1) DATA.splice(dataIdx, 1);
+
+  let customCards = [];
+  try {
+      customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  } catch (e) {}
+  customCards = customCards.filter(c => c.code !== itemToRemove.code || c.desc !== itemToRemove.desc);
+  localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+
+  closePanel();
+  renderContent();
+}
+
+function toggleAnimationPanel() {
+    const panel = document.getElementById('animationPanel');
+    if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function changeAnimType(val) {
+    animationState.animType = val;
+}
+
+function useDefaultDragon() {
+    mapImage.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Nine_Dragons_detail_%28Chen_Rong%29.jpg/1200px-Nine_Dragons_detail_%28Chen_Rong%29.jpg';
+    const panel = document.getElementById('animationPanel');
+    if (panel) panel.style.display = 'none';
+    generateNodes();
+}
+
+function handleMapImage(e) {
+    if(e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = f => {
+            mapImage.src = f.target.result;
+            const panel = document.getElementById('animationPanel');
+            if (panel) panel.style.display = 'none';
+            generateNodes();
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    }
+}
+
+function toggleFullBg() {
+    if (localStorage.getItem('ink_py_bg')) {
+        localStorage.removeItem('ink_py_bg');
+        applyCustomBackground(null);
+    } else {
+        const bgFileInput = document.getElementById('bgFileInput');
+        if (bgFileInput) bgFileInput.click();
+    }
+}
+
+function handleBgFile(e) {
+    if(e.target.files && e.target.files[0]) {
+        const reader = new FileReader();
+        reader.onload = f => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let w = img.width, h = img.height;
+                if(w > 1920) { h *= 1920/w; w = 1920; }
+                canvas.width = w; canvas.height = h;
+                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                try {
+                    localStorage.setItem('ink_py_bg', dataUrl);
+                    applyCustomBackground(dataUrl);
+                } catch(err) { console.warn("Image too large"); }
+            };
+            img.src = f.target.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    }
+}
+
+function applyCustomBackground(dataUrl) {
+  const customBg = document.getElementById('customBgContainer');
+  if (!customBg) return;
+  
+  if (dataUrl) {
+    customBg.style.backgroundImage = `url(${dataUrl})`;
+    customBg.style.display = 'block';
+    const btn = document.getElementById('toggleFullBgBtn');
+    if (btn) btn.innerHTML = '🖼️ CLEAR WALLPAPER';
+  } else {
+    customBg.style.backgroundImage = 'none';
+    customBg.style.display = 'none';
+    const btn = document.getElementById('toggleFullBgBtn');
+    if (btn) btn.innerHTML = '🖼️ SET WALLPAPER';
+  }
+}
+
+function processLocalFile(file) {
+  const status = document.getElementById('noteStatus');
+  if (file.size > 2.5 * 1024 * 1024) {
+    if(status) {
+        status.textContent = '✗ FILE TOO LARGE (MAX 2.5MB)';
+        status.style.color = 'var(--seal-red)';
+        setTimeout(() => status.textContent = '', 3000);
+    }
+    return;
+  }
+  if(status) {
+      status.textContent = '⏳ PROCESSING FILE...';
+      status.style.color = 'var(--ink-gray)';
+  }
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const input = document.getElementById('noteMedia');
+    if(input) {
+        input.value = e.target.result;
+        input.style.background = 'var(--code-bg)';
+        setTimeout(() => input.style.background = 'var(--paper-bg)', 1000);
+    }
+    
+    if(status) {
+        status.textContent = '✓ FILE LOADED (' + Math.round(file.size/1024) + 'KB)';
+        status.style.color = '#1A4314';
+    }
+  };
+  reader.onerror = () => {
+    if(status) {
+        status.textContent = '✗ FILE ERROR';
+        status.style.color = 'var(--seal-red)';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // Load Saved Theme
+  const savedTheme = localStorage.getItem('ink_py_theme');
+  if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      const themeBtn = document.getElementById('toggleThemeBtn');
+      if (themeBtn) themeBtn.innerHTML = '☀️ ENABLE LIGHT MODE';
+  }
+
+  // Load Saved Font
+  const savedFont = localStorage.getItem('ink_py_font');
+  if (savedFont) {
+      const fontSelect = document.getElementById('fontSelect');
+      if (fontSelect) fontSelect.value = savedFont;
+      changeFontTheme(savedFont);
+  }
+
+  // Load Saved AI Persona
+  const savedPersona = localStorage.getItem('ink_py_ai_persona');
+  if (savedPersona) {
+      const personaSelect = document.getElementById('aiPersonaSelect');
+      if (personaSelect) personaSelect.value = savedPersona;
+      aiPersona = savedPersona;
+  }
+  updateAILabels();
+
+  // Load saved custom API key
+  customApiKey = localStorage.getItem('ink_gemini_api_key') || "";
+  const apiInput = document.getElementById('apiInput');
+  if (apiInput) apiInput.value = customApiKey;
+
+  // Initialization
+  initMapCanvas();
+  renderContent();
+
+  window.addEventListener('resize', () => {
+      if(!animCanvas) return;
+      const container = document.getElementById('mapContainer');
+      if (container) {
+          animCanvas.width = container.clientWidth;
+          animCanvas.height = container.clientHeight;
+          generateNodes(); // Recalculate positions
+      }
+  });
+
+  // Safely Bind File Drag & Drop (HTML DOM elements might not trigger purely via attributes)
+  const mediaInput = document.getElementById('noteMedia');
+  if (mediaInput) {
+      mediaInput.addEventListener('dragover', e => {
+        e.preventDefault();
+        mediaInput.style.borderColor = 'var(--seal-red)';
+        mediaInput.style.background = 'var(--code-bg)';
+      });
+      mediaInput.addEventListener('dragleave', e => {
+        e.preventDefault();
+        mediaInput.style.borderColor = 'var(--border-color)';
+        mediaInput.style.background = 'var(--paper-bg)';
+      });
+      mediaInput.addEventListener('drop', e => {
+        e.preventDefault();
+        mediaInput.style.borderColor = 'var(--border-color)';
+        mediaInput.style.background = 'var(--paper-bg)';
+        if(e.dataTransfer.files && e.dataTransfer.files[0]) {
+          processLocalFile(e.dataTransfer.files[0]);
+        }
+      });
+  }
+
+  const bgFileInput = document.getElementById('bgFileInput');
+  if (bgFileInput) {
+      bgFileInput.addEventListener('change', e => {
+          if(e.target.files && e.target.files[0]) {
+              handleBgFile(e);
+          }
+      });
+  }
+
+  const mapImageInput = document.getElementById('mapImageInput');
+  if (mapImageInput) {
+      mapImageInput.addEventListener('change', e => {
+          if(e.target.files && e.target.files[0]) {
+              handleMapImage(e);
+          }
+      });
+  }
+
+  const fileInput = document.getElementById('fileInput');
+  if (fileInput) {
+      fileInput.addEventListener('change', e => {
+          if(e.target.files && e.target.files[0]) {
+              handleNoteMedia(e);
+          }
+      });
+  }
+
+  let customCards = [];
+  try {
+      customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  } catch(e) {}
+  
+  // Migrate old scratchpad data if it exists
+  const oldNotes = localStorage.getItem('neon_py_notes');
+  if (oldNotes) {
+    const recoveredCard = {cat:'custom', code:'Recovered Note', desc:'Legacy scratchpad content', ex:oldNotes};
+    customCards.push(recoveredCard);
+    localStorage.removeItem('neon_py_notes');
+    localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+  }
+  customCards.forEach(c => DATA.push(c));
+  
+  const savedBg = localStorage.getItem('ink_py_bg');
+  if(savedBg) applyCustomBackground(savedBg);
+
+  try {
+    pyodide = await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/'});
+    pyReady = true;
+    const rb = document.getElementById('runBtn');
+    if (rb) rb.disabled = false;
+    const sp = document.getElementById('sP');
+    if (sp) sp.textContent = 'READY';
+  } catch(e) {
+    console.error("Failed to load Pyodide.", e);
+  }
+});
+</script>
+</body>
+</html>

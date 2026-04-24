@@ -1,0 +1,1984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PYTHON.EXE — Neon Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --nc:#00fff5;--np:#ff00c8;--ny:#ffe600;--ng:#00ff88;
+  --no:#ff6600;--npu:#bf00ff;--nb:#0066ff;--nr:#ff3333;
+  --bg:#060612;--bg2:#0a0a1a;--gc:rgba(0,255,245,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#cce6f4;font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;cursor:crosshair}
+
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.13) 2px,rgba(0,0,0,.13) 4px),repeating-linear-gradient(90deg,var(--gc) 0,var(--gc) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(0deg,var(--gc) 0,var(--gc) 1px,transparent 1px,transparent 60px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,245,.06) 0%,transparent 70%),radial-gradient(ellipse at 0% 100%,rgba(255,0,200,.05) 0%,transparent 60%),radial-gradient(ellipse at 100% 50%,rgba(0,100,255,.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* HEADER */
+header{position:relative;z-index:10;text-align:center;padding:2.5rem 1rem 1.5rem;border-bottom:1px solid rgba(0,255,245,.12)}
+.logo{font-family:'Orbitron',monospace;font-size:clamp(2rem,6vw,4rem);font-weight:900;letter-spacing:.15em;color:var(--nc);text-shadow:0 0 10px var(--nc),0 0 30px var(--nc),0 0 60px rgba(0,255,245,.4);animation:flicker 7s infinite}
+.logo-sub{font-family:'Share Tech Mono',monospace;font-size:.85rem;color:var(--np);text-shadow:0 0 10px var(--np);letter-spacing:.4em;margin-top:.4rem}
+.logo-tip{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:rgba(0,255,245,.35);letter-spacing:.15em;margin-top:.8rem}
+@keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.6}96%{opacity:1}97%{opacity:.4}98%{opacity:.9}}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:rgba(0,255,245,.4);position:relative;z-index:10;border-bottom:1px solid rgba(0,255,245,.07)}
+.sn{color:var(--ny);text-shadow:0 0 8px var(--ny)}
+
+/* CONTROLS */
+.controls{position:sticky;top:0;z-index:90;background:rgba(6,6,18,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,255,245,.14);padding:.9rem 1.5rem;display:flex;flex-direction:column;gap:.65rem}
+.sw{position:relative;max-width:680px;margin:0 auto;width:100%}
+.sw span{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--nc);font-family:'Share Tech Mono',monospace;pointer-events:none}
+#Q{width:100%;background:rgba(0,255,245,.04);border:1px solid rgba(0,255,245,.22);border-radius:3px;color:var(--nc);font-family:'Share Tech Mono',monospace;font-size:.95rem;padding:.65rem 1rem .65rem 2.4rem;outline:none;letter-spacing:.04em;transition:all 0.2s;}
+#Q::placeholder{color:rgba(0,255,245,.22)}
+#Q:focus{border-color:var(--nc);box-shadow:0 0 15px rgba(0,255,245,.15);background:rgba(0,255,245,.08);}
+
+.tabs{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}
+.tab{font-family:'Orbitron',monospace;font-size:.58rem;font-weight:700;letter-spacing:.1em;padding:.32rem .75rem;border-radius:2px;border:1px solid currentColor;cursor:pointer;opacity:.38;background:transparent;transition:all 0.2s;}
+.tab:hover { opacity: 0.8; background: rgba(255,255,255,0.05); }
+.tab.active{opacity:1}
+.tkw{color:var(--nc)}.tbuiltin{color:var(--ng)}.tstr{color:var(--ny)}.tlist{color:var(--no)}.tdict{color:var(--nb)}.tset{color:var(--np)}.tfile{color:#00e5a0}.tcsv{color:#aaa}.titer{color:var(--npu)}.texc{color:var(--nr)}.tall{color:var(--nc)}.tcustom{color:var(--np)}
+.tab.active.tkw{background:rgba(0,255,245,.08);box-shadow:0 0 10px rgba(0,255,245,.25)}.tab.active.tbuiltin{background:rgba(0,255,136,.08);box-shadow:0 0 10px rgba(0,255,136,.25)}.tab.active.tstr{background:rgba(255,230,0,.08);box-shadow:0 0 10px rgba(255,230,0,.25)}.tab.active.tlist{background:rgba(255,102,0,.08);box-shadow:0 0 10px rgba(255,102,0,.25)}.tab.active.tdict{background:rgba(0,102,255,.08);box-shadow:0 0 10px rgba(0,102,255,.25)}.tab.active.tset{background:rgba(255,0,200,.08);box-shadow:0 0 10px rgba(255,0,200,.25)}.tab.active.tfile{background:rgba(0,229,160,.08);box-shadow:0 0 10px rgba(0,229,160,.25)}.tab.active.tcsv{background:rgba(170,170,170,.08)}.tab.active.titer{background:rgba(191,0,255,.08);box-shadow:0 0 10px rgba(191,0,255,.25)}.tab.active.texc{background:rgba(255,51,51,.08);box-shadow:0 0 10px rgba(255,51,51,.25)}.tab.active.tall{background:rgba(0,255,245,.08);box-shadow:0 0 10px rgba(0,255,245,.25)}.tab.active.tcustom{background:rgba(255,0,200,.08);box-shadow:0 0 10px rgba(255,0,200,.25)}
+
+/* MAIN */
+main{position:relative;z-index:10;padding:2rem 1.5rem 12rem;max-width:1600px;margin:0 auto}
+.section{margin-bottom:2.5rem}
+.sec-hdr{display:flex;align-items:center;gap:1rem;margin-bottom:1.1rem;padding-bottom:.45rem}
+.sec-label{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:900;letter-spacing:.25em}
+.sec-line{flex:1;height:1px;background:currentColor;opacity:.18}
+.sec-cnt{font-family:'Share Tech Mono',monospace;font-size:.65rem;opacity:.35}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:9px}
+
+/* CARDS */
+.card{background:rgba(0,255,245,.025);border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:13px 15px;cursor:crosshair;position:relative;overflow:hidden;animation:fadeUp .3s ease both;user-select:none;backdrop-filter:blur(4px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* UPDATED SEAMLESS EXPAND ANIMATION */
+.card.active-card {
+    z-index: 999 !important;
+    animation: seamlessExpand 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes seamlessExpand {
+    0% { 
+        transform: scale(1) translateY(0); 
+        opacity: 1;
+        filter: blur(0px);
+    }
+    20% { 
+        transform: scale(1.08) translateY(-5px); 
+        box-shadow: 0 10px 40px rgba(0, 255, 245, 0.4); 
+        opacity: 1;
+    }
+    100% { 
+        transform: scale(2.5) translateY(60px); 
+        opacity: 0; 
+        filter: blur(2px);
+    }
+}
+
+/* Per-category card colors */
+.ckw{color:var(--nc);border-color:rgba(0,255,245,.15)}.ckw:hover,.ckw.active-card{border-color:rgba(0,255,245,.55);box-shadow:0 0 20px rgba(0,255,245,.15)}
+.cbuiltin{color:var(--ng);border-color:rgba(0,255,136,.15)}.cbuiltin:hover,.cbuiltin.active-card{border-color:rgba(0,255,136,.55);box-shadow:0 0 20px rgba(0,255,136,.15)}
+.cstr{color:var(--ny);border-color:rgba(255,230,0,.15)}.cstr:hover,.cstr.active-card{border-color:rgba(255,230,0,.55);box-shadow:0 0 20px rgba(255,230,0,.15)}
+.clist{color:var(--no);border-color:rgba(255,102,0,.15)}.clist:hover,.clist.active-card{border-color:rgba(255,102,0,.55);box-shadow:0 0 20px rgba(255,102,0,.15)}
+.cdict{color:var(--nb);border-color:rgba(0,102,255,.15)}.cdict:hover,.cdict.active-card{border-color:rgba(0,102,255,.55);box-shadow:0 0 20px rgba(0,102,255,.15)}
+.cset{color:var(--np);border-color:rgba(255,0,200,.15)}.cset:hover,.cset.active-card{border-color:rgba(255,0,200,.55);box-shadow:0 0 20px rgba(255,0,200,.15)}
+.cfile{color:#00e5a0;border-color:rgba(0,229,160,.15)}.cfile:hover,.cfile.active-card{border-color:rgba(0,229,160,.55);box-shadow:0 0 20px rgba(0,229,160,.15)}
+.ccsv{color:#aaa;border-color:rgba(170,170,170,.15)}.ccsv:hover,.ccsv.active-card{border-color:rgba(170,170,170,.45)}
+.citer{color:var(--npu);border-color:rgba(191,0,255,.15)}.citer:hover,.citer.active-card{border-color:rgba(191,0,255,.55);box-shadow:0 0 20px rgba(191,0,255,.15)}
+.cexc{color:var(--nr);border-color:rgba(255,51,51,.15)}.cexc:hover,.cexc.active-card{border-color:rgba(255,51,51,.55);box-shadow:0 0 20px rgba(255,51,51,.15)}
+.ccustom{color:var(--np);border-color:rgba(255,0,200,.15)}.ccustom:hover,.ccustom.active-card{border-color:rgba(255,0,200,.55);box-shadow:0 0 20px rgba(255,0,200,.15)}
+
+.card-code{font-family:'Share Tech Mono',monospace;font-size:.9rem;font-weight:700;margin-bottom:4px}
+.card-desc{font-size:.82rem;color:rgba(204,230,244,.55);line-height:1.35}
+.card-hint{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.2);margin-top:7px;letter-spacing:.05em}
+.card:hover .card-hint{color:rgba(255,255,255,.45)}
+
+/* SLASH CANVAS */
+.slash-canvas{position:absolute;inset:0;pointer-events:none;z-index:100;border-radius:4px}
+
+/* SCREEN FLASH */
+#flash{position:fixed;inset:0;background:rgba(0,255,245,.18);pointer-events:none;z-index:9999;opacity:0;transition:opacity .05s}
+#flash.lit{opacity:1}
+
+/* BOTTOM PANEL */
+#panel{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(6,6,20,.97);border-top:2px solid var(--nc);box-shadow:0 -4px 60px rgba(0,255,245,.2),0 -1px 0 rgba(0,255,245,.1);max-height:75vh;display:none;flex-direction:column;backdrop-filter:blur(15px);}
+#panel.open{display:flex}
+.panel-hdr{display:flex;align-items:center;gap:1rem;padding:.8rem 1.4rem;border-bottom:1px solid rgba(0,255,245,.1);flex-shrink:0;flex-wrap:wrap;gap:.6rem}
+.panel-method{font-family:'Share Tech Mono',monospace;font-size:1.1rem;font-weight:700}
+.panel-desc{font-family:'Rajdhani',sans-serif;font-size:.9rem;color:rgba(204,230,244,.55);flex:1}
+.panel-close{font-family:'Orbitron',monospace;font-size:.6rem;letter-spacing:.15em;padding:.35rem .9rem;border:1px solid rgba(255,255,255,.2);border-radius:2px;cursor:pointer;background:transparent;color:rgba(255,255,255,.45);margin-left:auto;transition:all 0.2s;}
+.panel-close:hover{background:rgba(255,255,255,0.1);color:#fff;}
+
+.panel-body{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;min-height:0}
+@media(max-width:680px){.panel-body{grid-template-columns:1fr;grid-template-rows:auto auto}.panel-hdr{padding:.6rem 1rem}.panel-body{overflow-y:auto}}
+
+/* EXAMPLE PANE */
+.ex-pane{padding:1rem 1.2rem;border-right:1px solid rgba(0,255,245,.08);overflow-y:auto;display:flex;flex-direction:column;gap:.6rem}
+.pane-label{font-family:'Orbitron',monospace;font-size:.55rem;letter-spacing:.2em;opacity:.4;margin-bottom:.3rem}
+.ex-code{font-family:'Share Tech Mono',monospace;font-size:.8rem;line-height:1.7;background:rgba(0,0,0,.5);padding:12px 14px;border-radius:3px;overflow-x:auto;white-space:pre;flex:1}
+
+/* TRY PANE */
+.try-pane{padding:1rem 1.2rem;display:flex;flex-direction:column;gap:.65rem;overflow-y:auto}
+#codeArea{font-family:'Share Tech Mono',monospace;font-size:.8rem;line-height:1.6;background:rgba(0,0,0,.6);color:#e0e0e0;border:1px solid rgba(0,255,245,.15);border-radius:3px;padding:10px 12px;resize:vertical;min-height:200px;outline:none;width:100%;transition:all .2s;tab-size:4;flex:1}
+#codeArea:focus{border-color:rgba(0,255,245,.4);box-shadow:0 0 12px rgba(0,255,245,.08);background:rgba(0,0,0,.8);}
+.run-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+#runBtn{font-family:'Orbitron',monospace;font-size:.65rem;font-weight:700;letter-spacing:.15em;padding:.45rem 1.4rem;border:1px solid var(--ng);border-radius:2px;cursor:pointer;background:rgba(0,255,136,.07);color:var(--ng);white-space:nowrap;transition:all 0.2s;}
+#runBtn:hover:not(:disabled){background:rgba(0,255,136,.2);box-shadow:0 0 12px rgba(0,255,136,.3);}
+#runBtn:disabled{opacity:.4;cursor:not-allowed}
+#pyStatus{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:rgba(0,255,245,.35)}
+#outBox{font-family:'Share Tech Mono',monospace;font-size:.78rem;line-height:1.65;background:rgba(0,0,0,.7);padding:10px 12px;border-radius:3px;min-height:80px;overflow-x:auto;white-space:pre-wrap;word-break:break-all;border-left:2px solid rgba(0,255,136,.3)}
+#outBox.err{border-left-color:rgba(255,51,51,.5);color:#ff6b6b}
+#outBox.ok{color:#a8ffc8}
+.copy-btn{font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.3rem .7rem;border:1px solid rgba(255,255,255,.15);border-radius:2px;cursor:pointer;background:transparent;color:rgba(255,255,255,.35);margin-left:auto;transition:all 0.2s;}
+.copy-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
+
+/* EMPTY */
+.empty{text-align:center;padding:5rem 2rem;font-family:'Orbitron',monospace;font-size:.8rem;letter-spacing:.2em;color:rgba(0,255,245,.18)}
+.empty b{display:block;font-size:3rem;margin-bottom:1rem;animation:flicker 2.5s infinite}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:rgba(0,0,0,0.3);border-radius:3px;}
+::-webkit-scrollbar-thumb{background:rgba(0,255,245,.25);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,255,245,.5)}
+
+/* SYNTAX HIGHLIGHT */
+.sk{color:#ff79c6}.sf{color:var(--ng)}.ss{color:var(--ny)}.sc{color:rgba(180,180,180,.5);font-style:italic}.sn{color:#bd93f9}.sm{color:#ffb86c}
+
+/* PANEL ACCENT COLORS */
+.accent-kw{color:var(--nc);border-top-color:var(--nc);box-shadow:0 -4px 50px rgba(0,255,245,.18)}
+.accent-builtin{color:var(--ng);border-top-color:var(--ng);box-shadow:0 -4px 50px rgba(0,255,136,.18)}
+.accent-str{color:var(--ny);border-top-color:var(--ny);box-shadow:0 -4px 50px rgba(255,230,0,.18)}
+.accent-list{color:var(--no);border-top-color:var(--no);box-shadow:0 -4px 50px rgba(255,102,0,.18)}
+.accent-dict{color:var(--nb);border-top-color:var(--nb);box-shadow:0 -4px 50px rgba(0,102,255,.18)}
+.accent-set{color:var(--np);border-top-color:var(--np);box-shadow:0 -4px 50px rgba(255,0,200,.18)}
+.accent-file{color:#00e5a0;border-top-color:#00e5a0;box-shadow:0 -4px 50px rgba(0,229,160,.18)}
+.accent-csv{color:#aaa;border-top-color:#aaa}
+.accent-iter{color:var(--npu);border-top-color:var(--npu);box-shadow:0 -4px 50px rgba(191,0,255,.18)}
+.accent-exc{color:var(--nr);border-top-color:var(--nr);box-shadow:0 -4px 50px rgba(255,51,51,.18)}
+.accent-custom{color:var(--np);border-top-color:var(--np);box-shadow:0 -4px 50px rgba(255,0,200,.18)}
+
+/* TAB key in textarea */
+textarea{tab-size:4}
+
+/* CUSTOM NOTES HIGHLIGHT */
+#noteTitle:focus, #noteDesc:focus, #noteMedia:focus, #noteCode:focus, #aiGenInput:focus { border-color: rgba(255,0,200,0.6) !important; box-shadow: 0 0 12px rgba(255,0,200,0.15); background: rgba(0,0,0,0.8) !important; }
+
+/* AI INTEGRATION */
+.ai-btn {
+  font-family: 'Orbitron', monospace; font-size: .65rem; font-weight: 700; letter-spacing: .15em;
+  padding: .45rem 1.4rem; border: 1px solid var(--npu); border-radius: 2px; cursor: pointer;
+  background: rgba(191,0,255,0.07); color: var(--npu); white-space: nowrap; transition: all 0.2s;
+}
+.ai-btn:hover:not(:disabled) { background: rgba(191,0,255,0.2); box-shadow: 0 0 12px rgba(191,0,255,0.3); }
+.ai-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.pulsate { animation: pulse 1.5s infinite ease-in-out; }
+@keyframes pulse { 0% { box-shadow: 0 0 0px rgba(191,0,255,0); background: rgba(191,0,255,0.07); } 50% { box-shadow: 0 0 15px rgba(191,0,255,0.6); background: rgba(191,0,255,0.25); } 100% { box-shadow: 0 0 0px rgba(191,0,255,0); background: rgba(191,0,255,0.07); } }
+
+#aiBox {
+  font-family: 'Rajdhani', sans-serif; font-size: .95rem; line-height: 1.6;
+  background: rgba(20,0,30,0.8); padding: 12px 15px; border-radius: 3px; min-height: 60px;
+  border-left: 2px solid var(--npu); margin-top: 10px; color: #e0e0e0; display: none;
+  word-break: break-word; animation: fadeUp .3s ease both;
+}
+#aiBox strong { color: var(--npu); font-weight: 600; letter-spacing: .05em; }
+#aiBox code.inline-code { font-family: 'Share Tech Mono', monospace; font-size: .8rem; background: rgba(191,0,255,0.15); padding: 2px 5px; border-radius: 2px; color: #fff; }
+#aiBox .ai-code-block { font-family: 'Share Tech Mono', monospace; font-size: .8rem; background: rgba(0,0,0,0.7); padding: 10px 12px; border-radius: 3px; border: 1px solid rgba(191,0,255,0.2); margin: 10px 0; overflow-x: auto; white-space: pre; }
+
+.search-tip { font-family: 'Share Tech Mono', monospace; font-size: .65rem; color: rgba(0,255,245,0.3); text-align: center; margin-top: -6px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div id="flash"></div>
+
+<header>
+  <div class="logo">PYTHON.EXE</div>
+  <div class="logo-sub">▸ NEON REFERENCE SYSTEM ◂</div>
+  <div class="logo-tip">// SLASH ANY CARD TO REVEAL + TRY ITS EXAMPLE //</div>
+</header>
+
+<div class="stats">
+  <span>TOTAL <span class="sn" id="sT">0</span></span>
+  <span>VISIBLE <span class="sn" id="sV">0</span></span>
+  <span>CATEGORIES <span class="sn">10</span></span>
+  <span>PYTHON RUNTIME <span class="sn" id="sP">LOADING…</span></span>
+</div>
+
+<div class="controls">
+  <div class="sw"><span>▸</span><input id="Q" type="text" placeholder="SEARCH KEYWORD OR METHOD…" autocomplete="off" spellcheck="false"/></div>
+  <div class="search-tip">▸ PRO-TIP: Try searching '[]', '{}', or '""' to quick-filter types</div>
+  <div class="tabs" id="TB"></div>
+</div>
+
+<div id="notesContainer" style="display:none; padding: 1.5rem 1.5rem 0; max-width: 1600px; margin: 0 auto; animation: fadeUp .3s ease both;">
+  <div class="card" style="border-color: var(--np); background: rgba(255,0,200,0.02); padding: 15px; cursor: default;">
+    <div style="font-family:'Orbitron', monospace; font-size:.8rem; font-weight:700; color:var(--np); margin-bottom:10px; letter-spacing:.15em;">// CREATE NEW CARD</div>
+    
+    <div style="display:flex; gap:8px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(191,0,255,0.2); align-items:center;">
+      <input id="aiGenInput" type="text" placeholder="✨ Ask AI to write a snippet (e.g. 'How to reverse a list' or 'Regex for email')..." spellcheck="false" style="flex:1; background: rgba(191,0,255,0.05); color:var(--npu); border: 1px solid rgba(191,0,255,0.3); border-radius:3px; padding: 10px 12px; font-family:'Share Tech Mono', monospace; font-size:.85rem; outline:none; transition:all 0.2s;"/>
+      <button id="aiGenBtn" onclick="aiGenerateSnippet()" class="ai-btn">✨ AI GENERATE</button>
+    </div>
+
+    <input id="noteTitle" type="text" placeholder="TITLE (e.g. My Snippet)" spellcheck="false" style="width:100%; background: rgba(0,0,0,0.6); color:var(--np); border: 1px solid rgba(255,0,200,0.2); border-radius:3px; padding: 10px 12px; font-family:'Share Tech Mono', monospace; font-size:.9rem; font-weight:700; margin-bottom: 8px; outline:none; transition:all 0.2s;"/>
+    <input id="noteDesc" type="text" placeholder="SHORT DESCRIPTION..." spellcheck="false" style="width:100%; background: rgba(0,0,0,0.6); color:rgba(204,230,244,0.8); border: 1px solid rgba(255,0,200,0.2); border-radius:3px; padding: 10px 12px; font-family:'Rajdhani', sans-serif; font-size:.85rem; margin-bottom: 8px; outline:none; transition:all 0.2s;"/>
+    <div style="display:flex; gap:8px; margin-bottom: 8px;">
+      <input id="noteMedia" type="text" placeholder="MEDIA URL OR DRAG & DROP FILE HERE... (Max 2.5MB)" spellcheck="false" style="flex:1; background: rgba(0,0,0,0.6); color:rgba(204,230,244,0.8); border: 1px solid rgba(255,0,200,0.2); border-radius:3px; padding: 10px 12px; font-family:'Share Tech Mono', monospace; font-size:.85rem; outline:none; transition:all 0.2s;"/>
+      <button onclick="document.getElementById('fileInput').click()" style="font-family:'Orbitron', monospace; font-size:.7rem; font-weight:700; letter-spacing:.1em; padding:0 1rem; border:1px solid rgba(255,0,200,0.4); border-radius:3px; cursor:pointer; background:rgba(255,0,200,0.05); color:var(--np); white-space:nowrap; transition:all 0.2s;" onmouseover="this.style.background='rgba(255,0,200,0.15)'" onmouseout="this.style.background='rgba(255,0,200,0.05)'">📁 BROWSE</button>
+      <input type="file" id="fileInput" accept="image/*,video/mp4,video/webm" style="display:none;" />
+    </div>
+    <textarea id="noteCode" spellcheck="false" placeholder="# Write your code snippet here..." style="width:100%; min-height: 120px; background: rgba(0,0,0,0.6); color:#e0e0e0; border: 1px solid rgba(255,0,200,0.2); border-radius:3px; padding: 10px 12px; font-family:'Share Tech Mono', monospace; font-size:.85rem; line-height:1.6; resize:vertical; outline:none; transition:all 0.2s;"></textarea>
+    <div style="margin-top: 10px; display:flex; justify-content:flex-end; align-items:center; gap:1rem;">
+       <span id="noteStatus" style="font-family:'Share Tech Mono', monospace; font-size:.7rem; color:rgba(255,255,255,0.4);"></span>
+       <button onclick="clearNotesForm()" style="font-family:'Orbitron', monospace; font-size:.65rem; font-weight:700; letter-spacing:.15em; padding:.45rem 1rem; border:1px solid rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; background:transparent; color:rgba(255,255,255,0.4); transition:all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'; this.style.borderColor='rgba(255,255,255,0.2)'">↺ CLEAR</button>
+       <button onclick="saveNotes()" style="font-family:'Orbitron', monospace; font-size:.65rem; font-weight:700; letter-spacing:.15em; padding:.45rem 1.4rem; border:1px solid var(--np); border-radius:2px; cursor:pointer; background:rgba(255,0,200,0.07); color:var(--np); transition:all 0.2s;" onmouseover="this.style.background='rgba(255,0,200,0.2)'" onmouseout="this.style.background='rgba(255,0,200,0.07)'">💾 SAVE CARD</button>
+    </div>
+  </div>
+</div>
+
+<main id="MC"></main>
+
+<div id="panel">
+  <div class="panel-hdr">
+    <span class="panel-method" id="pMethod"></span>
+    <span class="panel-desc" id="pDesc"></span>
+    <button id="delCustomBtn" style="display:none; font-family:'Orbitron', monospace; font-size:.6rem; letter-spacing:.15em; padding:.35rem .9rem; border:1px solid rgba(255,51,51,0.5); border-radius:2px; cursor:pointer; background:rgba(255,51,51,0.1); color:#ff3333; margin-left:auto; margin-right:10px; transition:all 0.2s;">🗑 DELETE</button>
+    <button class="panel-close" onclick="closePanel()">✕ CLOSE</button>
+  </div>
+  <div class="panel-body">
+    <div class="ex-pane">
+      <div class="pane-label">// EXAMPLE</div>
+      <div id="panelMedia" style="display:none; margin-bottom: 12px; text-align:center;"></div>
+      <pre class="ex-code" id="exCode"></pre>
+    </div>
+    <div class="try-pane">
+      <div class="pane-label">// TRY IT</div>
+      <textarea id="codeArea" spellcheck="false" placeholder="# Edit the code here and click RUN…"></textarea>
+      <div class="run-row">
+        <button id="runBtn" onclick="runCode()" disabled>⏳ LOADING PYTHON…</button>
+        <button id="aiExplainBtn" onclick="aiExplainCode()" class="ai-btn">✨ AI EXPLAIN/DEBUG</button>
+        <button class="copy-btn" onclick="copyCode()">⊕ COPY</button>
+        <span id="pyStatus">initialising pyodide…</span>
+      </div>
+      <div class="pane-label">// OUTPUT</div>
+      <div id="outBox">// run the code to see output here</div>
+      <div id="aiBox"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const DATA=[
+/* KEYWORDS */
+{cat:'kw',code:'if',desc:'Conditional branch — runs block when condition is true',ex:`x = 10
+if x > 5:
+    print("x is greater than 5")
+# Output: x is greater than 5`},
+{cat:'kw',code:'elif',desc:'Else-if — additional condition after if',ex:`score = 75
+if score >= 90:
+    print("A")
+elif score >= 75:
+    print("B")
+elif score >= 60:
+    print("C")
+# Output: B`},
+{cat:'kw',code:'else',desc:'Fallback when no if/elif condition matched',ex:`x = -3
+if x > 0:
+    print("positive")
+else:
+    print("not positive")
+# Output: not positive`},
+{cat:'kw',code:'for',desc:'Iterate over each item in a sequence',ex:`fruits = ["apple", "mango", "banana"]
+for i, fruit in enumerate(fruits, 1):
+    print(f"{i}. {fruit}")`},
+{cat:'kw',code:'while',desc:'Loop as long as a condition stays true',ex:`count = 0
+while count < 5:
+    print(count, end=" ")
+    count += 1
+# Output: 0 1 2 3 4`},
+{cat:'kw',code:'break',desc:'Immediately exit the enclosing loop',ex:`for i in range(10):
+    if i == 4:
+        break
+    print(i, end=" ")
+# Output: 0 1 2 3`},
+{cat:'kw',code:'continue',desc:'Skip to the next loop iteration',ex:`for i in range(6):
+    if i % 2 == 0:
+        continue
+    print(i, end=" ")
+# Output: 1 3 5`},
+{cat:'kw',code:'pass',desc:'No-op placeholder — does nothing',ex:`def future_feature():
+    pass   # not implemented yet
+
+class Skeleton:
+    pass
+
+print("pass just keeps the syntax valid")`},
+{cat:'kw',code:'def',desc:'Define a reusable function',ex:`def greet(name, greeting="Hello"):
+    return f"{greeting}, {name}!"
+
+print(greet("Riya"))
+print(greet("Aarav", "Namaste"))`},
+{cat:'kw',code:'return',desc:'Exit a function and send a value back',ex:`def power(base, exp=2):
+    return base ** exp
+
+print(power(3))     # 9
+print(power(2, 10)) # 1024`},
+{cat:'kw',code:'lambda',desc:'Anonymous one-line function',ex:`double = lambda x: x * 2
+add    = lambda a, b: a + b
+square = lambda n: n ** 2
+
+print(double(5))     # 10
+print(add(3, 7))     # 10
+print(square(9))     # 81`},
+{cat:'kw',code:'class',desc:'Define a blueprint for creating objects',ex:`class Dog:
+    def __init__(self, name, breed):
+        self.name = name
+        self.breed = breed
+    def bark(self):
+        return f"{self.name} says: Woof!"
+
+d = Dog("Bruno", "Labrador")
+print(d.bark())
+print(d.breed)`},
+{cat:'kw',code:'import',desc:'Load an external module',ex:`import math
+import random
+
+print(math.pi)
+print(math.sqrt(144))
+print(random.randint(1, 100))`},
+{cat:'kw',code:'from',desc:'Import specific names from a module',ex:`from math import sqrt, pi, factorial
+
+print(sqrt(25))       # 5.0
+print(pi)             # 3.14159...
+print(factorial(5))   # 120`},
+{cat:'kw',code:'with',desc:'Context manager — auto-handles setup/teardown',ex:`import io
+
+# Simulate file with in-memory buffer
+buf = io.StringIO()
+with buf as f:
+    f.write("Hello, context manager!")
+    result = buf.getvalue()
+print(result)`},
+{cat:'kw',code:'try',desc:'Wrap code that might raise an exception',ex:`try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+except Exception as e:
+    print(f"Unexpected: {e}")
+finally:
+    print("This always runs")`},
+{cat:'kw',code:'raise',desc:'Manually throw an exception',ex:`def set_age(age):
+    if age < 0:
+        raise ValueError(f"Age cannot be negative (got {age})")
+    if age > 150:
+        raise ValueError("Age unrealistically large")
+    return age
+
+try:
+    print(set_age(-5))
+except ValueError as e:
+    print(f"Error: {e}")`},
+{cat:'kw',code:'assert',desc:'Assert a condition — raises AssertionError if false',ex:`def divide(a, b):
+    assert b != 0, "Denominator cannot be zero"
+    assert isinstance(a, (int, float)), "a must be numeric"
+    return a / b
+
+print(divide(10, 2))   # 5.0
+try:
+    divide(10, 0)
+except AssertionError as e:
+    print(f"AssertionError: {e}")`},
+{cat:'kw',code:'del',desc:'Delete a variable, list item, or dict entry',ex:`my_list = [10, 20, 30, 40, 50]
+del my_list[1]
+print(my_list)   # [10, 30, 40, 50]
+del my_list[1:3]
+print(my_list)   # [10, 50]`},
+{cat:'kw',code:'global',desc:'Declare that a variable refers to global scope',ex:`count = 0
+
+def increment(n=1):
+    global count
+    count += n
+
+increment()
+increment(5)
+print(count)  # 6`},
+{cat:'kw',code:'yield',desc:'Pause a generator and emit a value',ex:`def fibonacci(limit):
+    a, b = 0, 1
+    while a <= limit:
+        yield a
+        a, b = b, a + b
+
+fibs = list(fibonacci(100))
+print(fibs)`},
+{cat:'kw',code:'in',desc:'Membership test: is item in sequence?',ex:`fruits = ["apple", "mango", "kiwi"]
+print("apple" in fruits)      # True
+print("grape" in fruits)      # False
+print("lo" in "hello")        # True
+print(3 in range(1, 10))      # True`},
+{cat:'kw',code:'not',desc:'Logical negation — inverts a boolean',ex:`x = False
+print(not x)               # True
+print(not (10 > 5))        # False
+lst = []
+if not lst:
+    print("List is empty")`},
+{cat:'kw',code:'and',desc:'Logical AND — true only if both sides are true',ex:`age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("Access granted")
+
+# Short-circuit: returns first falsy or last value
+print(1 and 2)    # 2
+print(0 and 2)    # 0`},
+{cat:'kw',code:'or',desc:'Logical OR — true if either side is true',ex:`day = "Saturday"
+if day == "Saturday" or day == "Sunday":
+    print("Weekend!")
+
+# Short-circuit: returns first truthy or last value
+print(0 or "default")   # default
+print("hi" or "bye")    # hi`},
+{cat:'kw',code:'is',desc:'Identity — tests if objects are the same in memory',ex:`x = None
+print(x is None)      # True
+
+a = [1, 2, 3]
+b = a          # same reference
+c = [1, 2, 3]  # new list
+
+print(a is b)  # True
+print(a is c)  # False
+print(a == c)  # True (same value)`},
+{cat:'kw',code:'True',desc:'Boolean true literal',ex:`print(True)
+print(int(True))         # 1
+print(True + True)       # 2
+print(True and False)    # False
+print(type(True))        # <class 'bool'>`},
+{cat:'kw',code:'False',desc:'Boolean false literal',ex:`print(bool(0))      # False
+print(bool(""))     # False
+print(bool([]))     # False
+print(bool(None))   # False
+print(False or 42)  # 42`},
+{cat:'kw',code:'None',desc:'Null — represents absence of a value',ex:`result = None
+
+def find(lst, target):
+    for i, v in enumerate(lst):
+        if v == target:
+            return i
+    return None   # not found
+
+idx = find([10,20,30], 99)
+print(idx)              # None
+print(idx is None)      # True`},
+{cat:'kw',code:'async / await',desc:'Define and await asynchronous operations',ex:`import asyncio
+
+async def fetch_data():
+    # Simulate network/IO delay
+    await asyncio.sleep(0.5)
+    return {"status": "success"}
+
+# Note: In Pyodide's REPL, you can use top-level await!
+result = await fetch_data()
+print(result)`},
+{cat:'kw',code:'nonlocal',desc:'Access variables in the nearest enclosing scope',ex:`def counter_factory():
+    count = 0
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
+
+counter = counter_factory()
+print(counter())  # 1
+print(counter())  # 2`},
+
+/* BUILT-INS */
+{cat:'builtin',code:'print()',desc:'Output values to the console',ex:`print("Hello, World!")
+print(1, 2, 3, sep=" | ")
+print("A", "B", sep="", end="→")
+print("C")
+print(f"Pi ≈ {3.14159:.3f}")`},
+{cat:'builtin',code:'len()',desc:'Number of items in an object',ex:`print(len("hello"))          # 5
+print(len([1, 2, 3, 4]))    # 4
+print(len({"a":1,"b":2}))   # 2
+print(len(range(100)))      # 100
+print(len(set([1,1,2,3])))  # 3`},
+{cat:'builtin',code:'range()',desc:'Generate a sequence of integers',ex:`print(list(range(5)))
+print(list(range(2, 8)))
+print(list(range(0, 20, 3)))
+print(list(range(10, 0, -2)))`},
+{cat:'builtin',code:'type()',desc:'Return the type of an object',ex:`vals = [42, 3.14, "hi", True, [1,2], None]
+for v in vals:
+    print(f"{repr(v):12} → {type(v).__name__}")`},
+{cat:'builtin',code:'int()',desc:'Convert a value to an integer',ex:`print(int("42"))       # 42
+print(int(3.99))       # 3
+print(int("0xFF", 16)) # 255
+print(int("0b1010",2)) # 10
+print(int(True))       # 1`},
+{cat:'builtin',code:'float()',desc:'Convert to floating-point number',ex:`print(float("3.14"))    # 3.14
+print(float(5))         # 5.0
+print(float("1e3"))     # 1000.0
+print(float("inf"))     # inf`},
+{cat:'builtin',code:'str()',desc:'Convert to string',ex:`items = [42, 3.14, True, [1,2,3], None]
+for item in items:
+    s = str(item)
+    print(f"{repr(item):15} → {repr(s)}")`},
+{cat:'builtin',code:'list()',desc:'Create a list or convert an iterable',ex:`print(list("abc"))
+print(list(range(5)))
+print(list({3, 1, 2}))
+print(list({"a":1,"b":2}.keys()))`},
+{cat:'builtin',code:'dict()',desc:'Create a dictionary',ex:`d1 = dict(name="Aarav", age=20)
+d2 = dict([("x",1),("y",2)])
+d3 = {k:k**2 for k in range(1,6)}
+print(d1)
+print(d2)
+print(d3)`},
+{cat:'builtin',code:'set()',desc:'Unique elements, unordered',ex:`s = set([1, 2, 2, 3, 3, 3, 4])
+print(s)                   # {1,2,3,4}
+s.add(5)
+print(3 in s)              # True
+print(len(s))              # 5`},
+{cat:'builtin',code:'enumerate()',desc:'Yield index-value pairs',ex:`fruits = ["apple", "mango", "kiwi", "guava"]
+for i, fruit in enumerate(fruits, start=1):
+    print(f"{i:2}. {fruit}")`},
+{cat:'builtin',code:'zip()',desc:'Pair elements from multiple iterables',ex:`names  = ["Alice", "Bob", "Carol"]
+scores = [95, 87, 92]
+grades = ["A", "B+", "A-"]
+for name, score, grade in zip(names, scores, grades):
+    print(f"{name}: {score} ({grade})")`},
+{cat:'builtin',code:'map()',desc:'Apply a function to every item',ex:`nums = [1, 2, 3, 4, 5]
+print(list(map(lambda x: x**2, nums)))
+print(list(map(str, nums)))
+words = ["hello","world","python"]
+print(list(map(str.title, words)))`},
+{cat:'builtin',code:'filter()',desc:'Keep items where function returns True',ex:`nums = range(1, 15)
+evens  = list(filter(lambda x: x%2==0, nums))
+big    = list(filter(lambda x: x>10, nums))
+print(evens)
+print(big)`},
+{cat:'builtin',code:'sorted()',desc:'Return a new sorted list',ex:`nums = [3, 1, 4, 1, 5, 9, 2, 6]
+print(sorted(nums))
+print(sorted(nums, reverse=True))
+words = ["banana","apple","cherry","date"]
+print(sorted(words))
+print(sorted(words, key=len))`},
+{cat:'builtin',code:'min() / max()',desc:'Smallest or largest item',ex:`nums = [3, 1, 4, 1, 5, 9, 2]
+print(min(nums), max(nums))       # 1 9
+words = ["banana","apple","kiwi"]
+print(min(words), max(words))     # alphabetical
+print(max(nums, key=lambda x: -x))  # 1 (min by negation)`},
+{cat:'builtin',code:'sum()',desc:'Total of all numeric items',ex:`print(sum([1,2,3,4,5]))     # 15
+print(sum(range(1,101)))    # 5050
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+print(sum(sum(row) for row in matrix))  # 45`},
+{cat:'builtin',code:'abs()',desc:'Absolute (non-negative) value',ex:`nums = [-5, -3.14, 0, 3.14, 5]
+for n in nums:
+    print(f"abs({n:6}) = {abs(n)}")`},
+{cat:'builtin',code:'round()',desc:'Round to N decimal places',ex:`print(round(3.14159, 2))    # 3.14
+print(round(2.675, 2))      # 2.67 (float precision!)
+print(round(1234, -2))      # 1200
+print(round(0.5))            # 0 (banker's rounding)`},
+{cat:'builtin',code:'isinstance()',desc:'Check if object is instance of class',ex:`vals = [42, "hi", 3.14, [], True, None]
+for v in vals:
+    is_num = isinstance(v, (int,float)) and not isinstance(v, bool)
+    print(f"{repr(v):8} numeric={is_num}")`},
+{cat:'builtin',code:'any() / all()',desc:'Test truthiness across an iterable',ex:`nums = [2, 4, 6, 7, 8]
+print(any(n%2!=0 for n in nums))    # True (7 is odd)
+print(all(n%2==0 for n in nums))    # False (7 is odd)
+
+empty = []
+print(any(empty))    # False
+print(all(empty))    # True (vacuously)`},
+{cat:'builtin',code:'chr() / ord()',desc:'Convert between character and codepoint',ex:`print(chr(65), chr(97), chr(48))   # A a 0
+print(ord("A"), ord("a"), ord("0")) # 65 97 48
+
+# Print alphabet
+print("".join(chr(65+i) for i in range(26)))`},
+{cat:'builtin',code:'open()',desc:'Open a file and return a file object',ex:`import io
+
+# Simulate file operations in browser
+buf = io.StringIO()
+buf.write("Line 1\nLine 2\nLine 3\n")
+buf.seek(0)
+for line in buf:
+    print(line.rstrip())
+buf.seek(0)
+print("\nAll content:\n" + buf.read())`},
+{cat:'builtin',code:'repr()',desc:'Detailed developer-facing string representation',ex:`vals = ["hello", [1,2,3], None, True, 3.14]
+for v in vals:
+    print(f"str()  → {str(v)}")
+    print(f"repr() → {repr(v)}")
+    print()`},
+{cat:'builtin',code:'tuple()',desc:'Create an immutable sequence (tuple)',ex:`t = tuple([1, 2, 3])
+print(t)
+
+# Tuples are immutable! t[0] = 99 would raise TypeError
+single = (42,) # comma required for single element
+print(type(single))`},
+{cat:'builtin',code:'bool()',desc:'Convert a value to a boolean',ex:`print(bool(1))      # True
+print(bool(0))      # False
+print(bool("hi"))   # True
+print(bool(""))     # False
+print(bool([]))     # False`},
+{cat:'builtin',code:'dir()',desc:'List attributes and methods of an object',ex:`text = "hello"
+# Print the first 5 non-magic methods of a string
+methods = [m for m in dir(text) if not m.startswith('_')]
+print(methods[:5])`},
+{cat:'builtin',code:'reversed()',desc:'Return a reverse iterator over a sequence',ex:`nums = [1, 2, 3, 4]
+for n in reversed(nums):
+    print(n, end=" ")
+
+print()
+# Also works on strings:
+print("".join(reversed("Python")))`},
+{cat:'builtin',code:'eval()',desc:'Evaluate a string as a Python expression',ex:`x = 10
+expr = "x * 5 + 2"
+result = eval(expr)
+print(f"{expr} = {result}")`},
+{cat:'builtin',code:'hasattr() / getattr()',desc:'Check/get object attributes dynamically',ex:`class Person:
+    def __init__(self, name):
+        self.name = name
+
+p = Person("Riya")
+print(hasattr(p, "name"))    # True
+print(hasattr(p, "age"))     # False
+print(getattr(p, "name"))    # Riya
+print(getattr(p, "age", 25)) # 25 (default fallback)`},
+
+/* STRING METHODS */
+{cat:'str',code:'.upper() / .lower()',desc:'Change string case',ex:`s = "Hello, World!"
+print(s.upper())      # HELLO, WORLD!
+print(s.lower())      # hello, world!
+print(s.swapcase())   # hELLO, wORLD!
+
+# Case-insensitive comparison
+a = "Python"
+b = "PYTHON"
+print(a.lower() == b.lower())  # True`},
+{cat:'str',code:'.strip()',desc:'Remove leading/trailing whitespace or chars',ex:`print("  hello  ".strip())
+print("  hello  ".lstrip())
+print("  hello  ".rstrip())
+print("***hi***".strip("*"))
+print("...done...".strip("."))`},
+{cat:'str',code:'.split()',desc:'Split string into a list by delimiter',ex:`csv_line = "Alice,30,Mumbai,Engineer"
+parts = csv_line.split(",")
+print(parts)
+print(len(parts))
+
+sentence = "one two   three"
+print(sentence.split())         # splits on any whitespace
+print(sentence.split(" ", 1))   # max 1 split`},
+{cat:'str',code:'.join()',desc:'Join an iterable of strings with separator',ex:`words = ["Hello", "World", "Python"]
+print(" ".join(words))
+print("-".join(words))
+print("".join(words))
+
+path = ["home", "user", "documents", "file.txt"]
+print("/".join(path))`},
+{cat:'str',code:'.replace()',desc:'Replace occurrences of a substring',ex:`s = "I love Java. Java is great. Java rules!"
+print(s.replace("Java", "Python"))
+print(s.replace("Java", "Python", 1))  # replace only first
+
+# Remove punctuation
+print("hello, world!".replace(",","").replace("!",""))`},
+{cat:'str',code:'.find() / .index()',desc:'Find the index of a substring',ex:`s = "python is awesome"
+print(s.find("is"))       # 7
+print(s.find("xyz"))      # -1 (not found — safe)
+print(s.find("o", 5))     # search from position 5
+
+try:
+    print(s.index("xyz")) # raises ValueError
+except ValueError as e:
+    print(f"index: {e}")`},
+{cat:'str',code:'.count()',desc:'Count occurrences of a substring',ex:`s = "banana"
+print(s.count("a"))        # 3
+print(s.count("na"))       # 2
+print(s.count("an"))       # 2
+
+text = "to be or not to be"
+print(text.count("be"))    # 2`},
+{cat:'str',code:'.startswith() / .endswith()',desc:'Check prefix or suffix of a string',ex:`url  = "https://www.example.com/page"
+file = "report_2024.pdf"
+
+print(url.startswith("https"))        # True
+print(url.startswith(("http","ftp"))) # True (tuple)
+print(file.endswith(".pdf"))          # True
+print(file.endswith((".pdf",".docx")))# True`},
+{cat:'str',code:'.format()',desc:'Insert values into a format string',ex:`# Basic
+print("{} + {} = {}".format(2, 3, 5))
+# Named
+print("{name} scored {score}/100".format(name="Riya", score=95))
+# Format spec
+print("{:.2f}".format(3.14159))       # 3.14
+print("{:>10}".format("right"))       # right-align
+print("{:0>5}".format(42))            # 00042`},
+{cat:'str',code:'.title() / .capitalize()',desc:'Change word/sentence capitalisation',ex:`print("the quick brown fox".title())       # The Quick Brown Fox
+print("the quick brown fox".capitalize()) # The quick brown fox
+print("HELLO WORLD".title())              # Hello World
+
+names = ["alice smith","bob jones","carol white"]
+for n in names:
+    print(n.title())`},
+{cat:'str',code:'.isdigit() / .isalpha()',desc:'Test character types across the string',ex:`tests = ["123", "12.3", "abc", "abc123", " ", "Python3"]
+for t in tests:
+    print(f"{t!r:10}  digit={t.isdigit()}  alpha={t.isalpha()}  alnum={t.isalnum()}")`},
+{cat:'str',code:'.zfill() / .center()',desc:'Pad or center a string',ex:`# Zero-pad numbers
+for n in [1, 42, 999, 10000]:
+    print(str(n).zfill(6))
+
+# Center text
+for word in ["hi","hello","python"]:
+    print(word.center(12, "-"))`},
+{cat:'str',code:'.splitlines()',desc:'Split at line boundaries into a list',ex:`poem = """Roses are red,
+Violets are blue,
+Python is cool,
+And so are you!"""
+
+lines = poem.splitlines()
+for i, line in enumerate(lines, 1):
+    print(f"{i}: {line}")`},
+{cat:'str',code:'.encode()',desc:'Encode string to bytes',ex:`s = "Hello, World!"
+b = s.encode("utf-8")
+print(b)
+print(type(b))
+print(b.decode("utf-8"))
+
+# Check lengths
+emoji = "Hi 🐍"
+print(f"chars: {len(emoji)}, bytes: {len(emoji.encode())}")`},
+{cat:'str',code:'.removeprefix() / .removesuffix()',desc:'Safely remove string affixes (Python 3.9+)',ex:`filename = "report_2024.csv"
+print(filename.removesuffix(".csv"))
+
+url = "https://example.com"
+print(url.removeprefix("https://"))`},
+{cat:'str',code:'.partition()',desc:'Split string at first occurrence of separator',ex:`email = "user@example.com"
+user, sep, domain = email.partition("@")
+print(f"User: {user}")
+print(f"Domain: {domain}")`},
+
+/* LIST METHODS */
+{cat:'list',code:'.append()',desc:'Add a single item to the end',ex:`lst = [1, 2, 3]
+lst.append(4)
+lst.append([5, 6])   # adds the list as ONE item
+print(lst)
+print(len(lst))`},
+{cat:'list',code:'.pop()',desc:'Remove and return item by index (default: last)',ex:`lst = [10, 20, 30, 40, 50]
+print(lst.pop())       # 50
+print(lst.pop(0))      # 10
+print(lst.pop(1))      # 30
+print(lst)             # [20, 40]`},
+{cat:'list',code:'.insert()',desc:'Insert an item at a specific index',ex:`lst = ["a", "c", "d"]
+lst.insert(1, "b")
+print(lst)             # [a, b, c, d]
+lst.insert(0, "START")
+lst.insert(len(lst), "END")
+print(lst)`},
+{cat:'list',code:'.remove()',desc:'Remove the first occurrence of a value',ex:`lst = [1, 2, 3, 2, 4, 2]
+lst.remove(2)
+print(lst)    # removes only FIRST 2
+
+while 2 in lst:
+    lst.remove(2)
+print(lst)    # all 2s removed`},
+{cat:'list',code:'.sort()',desc:'Sort the list in-place',ex:`nums = [3, 1, 4, 1, 5, 9, 2, 6]
+nums.sort()
+print(nums)
+
+nums.sort(reverse=True)
+print(nums)
+
+words = ["banana","apple","cherry","date"]
+words.sort(key=len)
+print(words)`},
+{cat:'list',code:'.extend()',desc:'Add all items from another iterable',ex:`lst = [1, 2, 3]
+lst.extend([4, 5, 6])
+print(lst)
+
+lst.extend(range(7, 10))
+print(lst)
+
+lst.extend("abc")
+print(lst)`},
+{cat:'list',code:'.index() / .count()',desc:'Find position or count occurrences',ex:`lst = [10, 20, 30, 20, 40, 20, 50]
+print(lst.index(20))           # 1 (first occurrence)
+print(lst.index(20, 2))        # 3 (start from index 2)
+print(lst.count(20))           # 3
+print(lst.count(99))           # 0`},
+{cat:'list',code:'.reverse()',desc:'Reverse the list in-place',ex:`lst = [1, 2, 3, 4, 5]
+lst.reverse()
+print(lst)
+
+# Alternative: slicing (returns new list)
+original = [10, 20, 30]
+rev = original[::-1]
+print(rev, original)  # original unchanged`},
+{cat:'list',code:'.copy()',desc:'Return a shallow copy of the list',ex:`original = [1, [2, 3], 4]
+copy = original.copy()
+
+copy[0] = 99
+copy[1].append(99)   # nested list IS shared!
+
+print("original:", original)
+print("copy:    ", copy)`},
+{cat:'list',code:'.clear()',desc:'Remove all items from the list',ex:`lst = [1, 2, 3, 4]
+print(f"Before: {lst}")
+lst.clear()
+print(f"After: {lst}")`},
+
+/* DICT METHODS */
+{cat:'dict',code:'.get()',desc:'Get value by key with optional default',ex:`person = {"name":"Riya","age":22,"city":"Delhi"}
+print(person.get("name"))
+print(person.get("email"))             # None
+print(person.get("email","not set"))  # default
+print(person.get("age", 0) + 1)      # safe arithmetic`},
+{cat:'dict',code:'.keys() / .values() / .items()',desc:'Views over keys, values, or pairs',ex:`profile = {"name":"Aarav","score":95,"grade":"A"}
+print(list(profile.keys()))
+print(list(profile.values()))
+for key, val in profile.items():
+    print(f"  {key}: {val}")`},
+{cat:'dict',code:'.update()',desc:'Merge another dict (or kwargs) in',ex:`config = {"host":"localhost","port":8080,"debug":False}
+config.update({"port":443,"debug":True})
+config.update(ssl=True)
+for k,v in config.items():
+    print(f"  {k}: {v}")`},
+{cat:'dict',code:'.pop()',desc:'Remove a key and return its value',ex:`d = {"x":10,"y":20,"z":30}
+val = d.pop("y")
+print(f"popped: {val}")
+print(d)
+safe = d.pop("missing", "N/A")   # no KeyError
+print(safe)`},
+{cat:'dict',code:'.setdefault()',desc:'Get value; insert key with default if missing',ex:`visits = {}
+pages = ["home","about","home","contact","home"]
+for page in pages:
+    visits.setdefault(page, 0)
+    visits[page] += 1
+print(visits)`},
+{cat:'dict',code:'.fromkeys()',desc:'Create a new dict from a key sequence',ex:`keys = ["red","green","blue"]
+d = dict.fromkeys(keys, 0)
+print(d)
+
+# Good for initialising counters
+letters = dict.fromkeys("AEIOU", 0)
+for c in "HELLO WORLD":
+    if c in letters:
+        letters[c] += 1
+print(letters)`},
+{cat:'dict',code:'.popitem()',desc:'Remove and return the last key-value pair',ex:`d = {"a": 1, "b": 2, "c": 3}
+key, val = d.popitem()
+print(f"Popped: {key}={val}")
+print(f"Remaining: {d}")`},
+{cat:'dict',code:'.clear()',desc:'Remove all items from the dictionary',ex:`d = {"x": 10, "y": 20}
+print(f"Before: {d}")
+d.clear()
+print(f"After: {d}")`},
+
+/* SET METHODS */
+{cat:'set',code:'.add() / .discard()',desc:'Add element; remove safely (no error)',ex:`s = {1, 2, 3}
+s.add(4)
+s.add(2)        # duplicate ignored
+s.discard(10)   # no KeyError if missing
+s.discard(1)
+print(s)`},
+{cat:'set',code:'.union() / .intersection()',desc:'Elements in either/both sets',ex:`a = {1,2,3,4,5}
+b = {4,5,6,7,8}
+print("union:       ", a | b)
+print("intersection:", a & b)
+print("diff a-b:    ", a - b)
+print("diff b-a:    ", b - a)
+print("sym diff:    ", a ^ b)`},
+{cat:'set',code:'.issubset() / .issuperset()',desc:'Check set containment relationships',ex:`all_nums  = {1,2,3,4,5,6,7,8,9,10}
+evens     = {2,4,6,8,10}
+big_evens = {6,8,10}
+
+print(evens.issubset(all_nums))       # True
+print(all_nums.issuperset(evens))     # True
+print(big_evens.issubset(evens))      # True
+print(evens.isdisjoint({1,3,5,7,9})) # True`},
+{cat:'set',code:'.update()',desc:'Add all elements from another iterable',ex:`s = {1, 2, 3}
+s.update([4, 5])
+s.update({5, 6}, {7})
+s.update("abc")
+print(sorted(s))`},
+{cat:'set',code:'.pop()',desc:'Remove and return an arbitrary element',ex:`s = {10, 20, 30, 40}
+val = s.pop()
+print(f"Popped: {val}")
+print(f"Remaining: {s}")`},
+{cat:'set',code:'.clear()',desc:'Remove all elements from the set',ex:`s = {1, 2, 3}
+print(f"Before: {s}")
+s.clear()
+print(f"After: {s}")`},
+
+/* FILE METHODS */
+{cat:'file',code:'.read() / .readline()',desc:'Read entire file or one line at a time',ex:`import io
+content = "Line 1\nLine 2\nLine 3\nLine 4"
+f = io.StringIO(content)
+print("-- readline() loop --")
+while True:
+    line = f.readline()
+    if not line: break
+    print(repr(line))
+f.seek(0)
+print("\n-- read() all --")
+print(f.read())`},
+{cat:'file',code:'.readlines()',desc:'Read all lines into a list',ex:`import io
+data = "apple\nmango\nbanana\nkiwi\nguava"
+f = io.StringIO(data)
+lines = f.readlines()
+print(f"Total lines: {len(lines)}")
+for i, line in enumerate(lines, 1):
+    print(f"  {i}: {line.rstrip()}")`},
+{cat:'file',code:'.write() / .writelines()',desc:'Write a string or list of strings',ex:`import io
+buf = io.StringIO()
+buf.write("Header\n")
+buf.writelines([f"Row {i}\n" for i in range(1,4)])
+buf.seek(0)
+print(buf.read())`},
+{cat:'file',code:'.seek() / .tell()',desc:'Move or get the file pointer position',ex:`import io
+buf = io.StringIO("ABCDEFGHIJ")
+print(f"Start position: {buf.tell()}")
+buf.read(3)
+print(f"After read(3): {buf.tell()}")
+buf.seek(0)
+print(f"After seek(0): {buf.tell()}")
+buf.seek(5)
+print(f"Read from 5: {buf.read()}")`},
+
+/* CSV */
+{cat:'csv',code:'csv.reader()',desc:'Read CSV rows as lists',ex:`import csv, io
+
+data = """Name,Age,City
+Alice,30,Delhi
+Bob,25,Mumbai
+Carol,28,Pune"""
+
+reader = csv.reader(io.StringIO(data))
+for row in reader:
+    print(row)`},
+{cat:'csv',code:'csv.writer() / .writerow()',desc:'Write rows to a CSV file',ex:`import csv, io
+
+buf = io.StringIO()
+writer = csv.writer(buf)
+writer.writerow(["Name","Score","Grade"])
+writer.writerow(["Alice", 95, "A"])
+writer.writerow(["Bob",   82, "B"])
+writer.writerows([["Carol",91,"A-"],["Dev",78,"B+"]])
+print(buf.getvalue())`},
+{cat:'csv',code:'DictReader / DictWriter',desc:'Read and write CSV using dictionaries',ex:`import csv, io
+
+# Write
+buf = io.StringIO()
+fields = ["name","age","city"]
+w = csv.DictWriter(buf, fieldnames=fields)
+w.writeheader()
+w.writerows([
+    {"name":"Alice","age":30,"city":"Delhi"},
+    {"name":"Bob","age":25,"city":"Mumbai"},
+])
+buf.seek(0)
+# Read back
+r = csv.DictReader(buf)
+for row in r:
+    print(dict(row))`},
+
+/* ITERTOOLS */
+{cat:'iter',code:'chain()',desc:'Chain multiple iterables into one sequence',ex:`from itertools import chain
+a = [1,2,3]
+b = ("x","y","z")
+c = {10,11}
+result = list(chain(a, b, c))
+print(result)
+# Flatten a list of lists:
+matrix = [[1,2,3],[4,5,6],[7,8,9]]
+flat = list(chain.from_iterable(matrix))
+print(flat)`},
+{cat:'iter',code:'product()',desc:'Cartesian product of iterables',ex:`from itertools import product
+# All playing cards
+suits  = ["♠","♥","♦","♣"]
+values = ["A","2","3","K"]
+hand   = list(product(values, suits))
+print(f"Total cards: {len(hand)}")
+for card in hand[:8]:
+    print("".join(card), end=" ")`},
+{cat:'iter',code:'combinations()',desc:'All r-length combos (no repeats)',ex:`from itertools import combinations
+team = ["Alice","Bob","Carol","Dave","Eve"]
+pairs = list(combinations(team, 2))
+print(f"Possible pairs: {len(pairs)}")
+for pair in pairs[:6]:
+    print(" & ".join(pair))`},
+{cat:'iter',code:'permutations()',desc:'All r-length ordered arrangements',ex:`from itertools import permutations
+digits = [1, 2, 3]
+perms  = list(permutations(digits))
+print(f"Arrangements: {len(perms)}")
+for p in perms:
+    print("".join(map(str,p)), end=" ")`},
+{cat:'iter',code:'groupby()',desc:'Group consecutive items by a key function',ex:`from itertools import groupby
+data = [
+    ("fruit","apple"),("fruit","mango"),
+    ("veg","carrot"),("veg","pea"),
+    ("fruit","kiwi"),
+]
+for category, items in groupby(data, key=lambda x: x[0]):
+    names = [item[1] for item in items]
+    print(f"{category}: {names}")`},
+{cat:'iter',code:'islice()',desc:'Slice an iterator without materialising it',ex:`from itertools import islice
+gen = (x**2 for x in range(1_000_000))
+first_10 = list(islice(gen, 10))
+print(first_10)
+# Chunk a list
+data = list(range(1, 21))
+def chunked(iterable, n):
+    it = iter(iterable)
+    while chunk := list(islice(it, n)):
+        print(chunk)
+chunked(data, 5)`},
+
+/* EXCEPTIONS */
+{cat:'exc',code:'ValueError',desc:'Right type but wrong value',ex:`def parse_age(s):
+    try:
+        age = int(s)
+        if age < 0 or age > 130:
+            raise ValueError(f"Age {age} out of realistic range")
+        return age
+    except ValueError as e:
+        print(f"ValueError: {e}")
+        return None
+
+print(parse_age("25"))
+print(parse_age("abc"))
+print(parse_age("-5"))`},
+{cat:'exc',code:'TypeError',desc:'Wrong type for the operation',ex:`def safe_add(a, b):
+    try:
+        return a + b
+    except TypeError as e:
+        print(f"TypeError: {e}")
+        return None
+
+print(safe_add(2, 3))
+print(safe_add("hello", " world"))
+print(safe_add(2, " items"))`},
+{cat:'exc',code:'KeyError',desc:'Dictionary key does not exist',ex:`user = {"name":"Riya","age":22}
+keys = ["name","email","age","phone"]
+for key in keys:
+    try:
+        print(f"{key}: {user[key]}")
+    except KeyError:
+        print(f"{key}: (not found — use .get() for safety)")`},
+{cat:'exc',code:'IndexError',desc:'Sequence index is out of range',ex:`lst = [10, 20, 30]
+indices = [0, 1, 2, 3, -1, -10]
+for i in indices:
+    try:
+        print(f"lst[{i:3}] = {lst[i]}")
+    except IndexError:
+        print(f"lst[{i:3}] → IndexError: out of range")`},
+{cat:'exc',code:'ZeroDivisionError',desc:'Division or modulo by zero',ex:`def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return float("inf") if a > 0 else float("-inf")
+
+print(safe_divide(10, 2))
+print(safe_divide(5, 0))
+print(safe_divide(-5, 0))`},
+{cat:'exc',code:'RecursionError',desc:'Maximum recursion depth exceeded',ex:`import sys
+sys.setrecursionlimit(50)   # lower limit for demo
+
+def infinite(n=0):
+    return infinite(n+1)
+
+try:
+    infinite()
+except RecursionError as e:
+    print(f"RecursionError caught at ~50 levels")
+    print("Use iteration or increase limit for deep recursion")`},
+{cat:'exc',code:'NotImplementedError',desc:'Abstract method not yet implemented',ex:`class Shape:
+    def area(self):
+        raise NotImplementedError("Subclass must implement area()")
+    def describe(self):
+        return f"Area = {self.area():.2f}"
+
+class Circle(Shape):
+    def __init__(self, r): self.r = r
+    def area(self): return 3.14159 * self.r**2
+
+class Square(Shape):
+    pass   # forgot to implement area()
+
+print(Circle(5).describe())
+try:
+    Square().describe()
+except NotImplementedError as e:
+    print(f"NotImplementedError: {e}")`},
+{cat:'exc',code:'AssertionError',desc:'assert statement evaluated to False',ex:`def make_matrix(rows, cols, fill=0):
+    assert rows > 0 and cols > 0, "Dimensions must be positive"
+    assert isinstance(fill, (int,float)), "Fill must be numeric"
+    return [[fill]*cols for _ in range(rows)]
+
+print(make_matrix(3, 4, 1))
+try:
+    make_matrix(-1, 4)
+except AssertionError as e:
+    print(f"AssertionError: {e}")`},
+];
+
+/* ============================================================
+   CATEGORY CONFIG
+   ============================================================ */
+const CATS=[
+  {id:'all',label:'ALL'},
+  {id:'kw',label:'KEYWORDS'},
+  {id:'builtin',label:'BUILT-INS'},
+  {id:'str',label:'STRING'},
+  {id:'list',label:'LIST'},
+  {id:'dict',label:'DICT'},
+  {id:'set',label:'SET'},
+  {id:'file',label:'FILE'},
+  {id:'csv',label:'CSV'},
+  {id:'iter',label:'ITERTOOLS'},
+  {id:'exc',label:'EXCEPTIONS'},
+  {id:'custom',label:'MY NOTES'},
+];
+const CLABEL={kw:'KEYWORDS',builtin:'BUILT-IN FUNCTIONS',str:'STRING METHODS',list:'LIST METHODS',dict:'DICT METHODS',set:'SET METHODS',file:'FILE METHODS',csv:'CSV MODULE',iter:'ITERTOOLS',exc:'EXCEPTIONS',custom:'CUSTOM NOTES'};
+const ORDER=['kw','builtin','str','list','dict','set','file','csv','iter','exc','custom'];
+
+let activeCat='all';
+let activeCard=null;
+let pyodide=null;
+let pyReady=false;
+let activeItemData=null;
+
+/* ============================================================
+   PYODIDE
+   ============================================================ */
+(async()=>{
+  try{
+    pyodide=await loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/'});
+    pyReady=true;
+    document.getElementById('runBtn').disabled=false;
+    document.getElementById('runBtn').textContent='▶ RUN CODE';
+    document.getElementById('pyStatus').textContent='python 3.11 ready';
+    document.getElementById('sP').textContent='READY';
+  }catch(e){
+    document.getElementById('pyStatus').textContent='pyodide failed — check network';
+    document.getElementById('sP').textContent='OFFLINE';
+  }
+})();
+
+/* ============================================================
+   SOUND
+   ============================================================ */
+function playSlash(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const master=ctx.createGain();master.gain.value=0.18;master.connect(ctx.destination);
+    // Main slice tone
+    const osc=ctx.createOscillator();
+    const g=ctx.createGain();
+    osc.type='sawtooth';
+    osc.frequency.setValueAtTime(1800,ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(120,ctx.currentTime+0.18);
+    g.gain.setValueAtTime(0.8,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.22);
+    osc.connect(g);g.connect(master);
+    // High shimmer
+    const osc2=ctx.createOscillator();
+    const g2=ctx.createGain();
+    osc2.type='sine';
+    osc2.frequency.setValueAtTime(4000,ctx.currentTime);
+    osc2.frequency.exponentialRampToValueAtTime(800,ctx.currentTime+0.1);
+    g2.gain.setValueAtTime(0.4,ctx.currentTime);
+    g2.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.12);
+    osc2.connect(g2);g2.connect(master);
+    osc.start();osc.stop(ctx.currentTime+0.25);
+    osc2.start();osc2.stop(ctx.currentTime+0.15);
+  }catch(e){}
+}
+
+/* ============================================================
+   SLASH ANIMATION
+   ============================================================ */
+function animateSlash(cardEl, cb){
+  const r=cardEl.getBoundingClientRect();
+  const cvs=document.createElement('canvas');
+  cvs.width=r.width;cvs.height=r.height;
+  cvs.className='slash-canvas';
+  cardEl.appendChild(cvs);
+  const ctx=cvs.getContext('2d');
+  const sx=r.width*0.05, sy=r.height*0.1;
+  const ex=r.width*0.95, ey=r.height*0.9;
+  const dur=100;
+  let t0=null;
+  function frame(ts){
+    if(!t0)t0=ts;
+    const p=Math.min((ts-t0)/dur,1);
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+    const cx=sx+(ex-sx)*p, cy=sy+(ey-sy)*p;
+    // Trail glow
+    for(let w=12;w>=1;w--){
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);ctx.lineTo(cx,cy);
+      ctx.strokeStyle=`rgba(0,255,245,${(14-w)*0.015})`;
+      ctx.lineWidth=w*1.5;ctx.lineCap='round';
+      ctx.stroke();
+    }
+    // Core blade
+    ctx.beginPath();
+    ctx.moveTo(sx,sy);ctx.lineTo(cx,cy);
+    ctx.strokeStyle='rgba(255,255,255,0.95)';
+    ctx.lineWidth=1.5;
+    ctx.shadowColor='#00fff5';ctx.shadowBlur=20;
+    ctx.stroke();
+    // Sparkles at tip
+    if(p>0.1){
+      for(let i=0;i<4;i++){
+        const ang=Math.random()*Math.PI*2;
+        const dist=5+Math.random()*12*p;
+        ctx.beginPath();
+        ctx.arc(cx+Math.cos(ang)*dist,cy+Math.sin(ang)*dist,Math.random()*2,0,Math.PI*2);
+        ctx.fillStyle=`rgba(0,255,245,${0.8-p*0.5})`;
+        ctx.fill();
+      }
+    }
+    if(p<1){requestAnimationFrame(frame);}
+    else{
+      // Final flash
+      ctx.fillStyle='rgba(0,255,245,0.12)';
+      ctx.fillRect(0,0,cvs.width,cvs.height);
+      // Screen flash
+      const fl=document.getElementById('flash');
+      fl.classList.add('lit');
+      setTimeout(()=>{fl.classList.remove('lit');cvs.remove();cb();},80);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ============================================================
+   SYNTAX HIGHLIGHT & MARKDOWN
+   ============================================================ */
+function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function pyHL(code){
+  const KW=['False','None','True','and','as','assert','async','await','break','class','continue','def','del','elif','else','except','finally','for','from','global','if','import','in','is','lambda','nonlocal','not','or','pass','raise','return','try','while','with','yield'];
+  const BT=['abs','all','any','bin','bool','breakpoint','bytearray','bytes','callable','chr','classmethod','compile','complex','delattr','dict','dir','divmod','enumerate','eval','exec','filter','float','format','frozenset','getattr','globals','hasattr','hash','help','hex','id','input','int','isinstance','issubclass','iter','len','list','locals','map','max','memoryview','min','next','object','oct','open','ord','pow','print','property','range','repr','reversed','round','set','setattr','slice','sorted','staticmethod','str','sum','super','tuple','type','vars','zip'];
+  
+  const tokens=[];
+  const src=code;
+  let i=0;
+  while(i<src.length){
+    // Comment
+    if(src[i]==='#'){
+      let j=i;while(j<src.length&&src[j]!=='\n')j++;
+      tokens.push({type:'comment',val:src.slice(i,j)});i=j;continue;
+    }
+    // String triple
+    if((src.slice(i,i+3)==='"""')||(src.slice(i,i+3)==="'''")){
+      const q=src.slice(i,i+3);let j=i+3;
+      while(j<src.length&&src.slice(j,j+3)!==q)j++;
+      j+=3;tokens.push({type:'str',val:src.slice(i,j)});i=j;continue;
+    }
+    // String single
+    if(src[i]==='"'||src[i]==="'"){
+      const q=src[i];let j=i+1;
+      while(j<src.length&&src[j]!==q&&src[j]!=='\n'){if(src[j]==='\\')j++;j++;}
+      j++;tokens.push({type:'str',val:src.slice(i,j)});i=j;continue;
+    }
+    // Number
+    if(/[0-9]/.test(src[i])){
+      let j=i;while(j<src.length&&/[\d._xXbBoOeEa-fA-F]/.test(src[j]))j++;
+      tokens.push({type:'num',val:src.slice(i,j)});i=j;continue;
+    }
+    // Word
+    if(/[a-zA-Z_]/.test(src[i])){
+      let j=i;while(j<src.length&&/[\w]/.test(src[j]))j++;
+      const w=src.slice(i,j);
+      if(KW.includes(w))tokens.push({type:'kw',val:w});
+      else if(BT.includes(w))tokens.push({type:'bt',val:w});
+      else tokens.push({type:'id',val:w});
+      i=j;continue;
+    }
+    tokens.push({type:'other',val:src[i]});i++;
+  }
+  return tokens.map(t=>{
+    const v=escH(t.val);
+    if(t.type==='comment')return`<span class="sc">${v}</span>`;
+    if(t.type==='str')return`<span class="ss">${v}</span>`;
+    if(t.type==='num')return`<span class="sn">${v}</span>`;
+    if(t.type==='kw')return`<span class="sk">${v}</span>`;
+    if(t.type==='bt')return`<span class="sf">${v}</span>`;
+    return v;
+  }).join('');
+}
+
+function formatAIMarkdown(text) {
+  const blocks = [];
+  const fence = '`' + '`' + '`';
+  
+  // 1. Extract and format Python code blocks
+  const pyRegex = new RegExp(fence + '(?:python|py)\\n([\\s\\S]*?)' + fence, 'gi');
+  let processed = text.replace(pyRegex, (m, c) => {
+    blocks.push(`<div class="ai-code-block"><code>${pyHL(c.trim())}</code></div>`);
+    return `__BLOCK_${blocks.length - 1}__`;
+  });
+  
+  // 2. Extract standard code blocks
+  const stdRegex = new RegExp(fence + '([\\s\\S]*?)' + fence, 'g');
+  processed = processed.replace(stdRegex, (m, c) => {
+    blocks.push(`<div class="ai-code-block"><code>${escH(c.trim())}</code></div>`);
+    return `__BLOCK_${blocks.length - 1}__`;
+  });
+
+  // 3. Escape remaining HTML to prevent injection
+  processed = escH(processed);
+
+  // 4. Inline formatting
+  processed = processed.replace(/`([^`]+)`/g, `<code class="inline-code">$1</code>`);
+  processed = processed.replace(/\*\*([^*]+)\*\*/g, `<strong>$1</strong>`);
+  
+  // 5. Restore code blocks
+  blocks.forEach((block, i) => {
+    processed = processed.replace(`__BLOCK_${i}__`, block);
+  });
+
+  return processed;
+}
+
+/* ============================================================
+   PANEL
+   ============================================================ */
+function openPanel(item,cardEl){
+  activeItemData = item;
+  const p=document.getElementById('panel');
+  // Accent color
+  p.className='open accent-'+item.cat;
+  document.getElementById('pMethod').textContent=item.code;
+  document.getElementById('pMethod').style.color=getColor(item.cat);
+  document.getElementById('pDesc').textContent=item.desc;
+  
+  const pm = document.getElementById('panelMedia');
+  if(item.media) {
+    pm.style.display = 'block';
+    let mUrl = item.media;
+    if (mUrl.includes('youtube.com/watch?v=')) mUrl = mUrl.replace('watch?v=', 'embed/').split('&')[0];
+    else if (mUrl.includes('youtu.be/')) mUrl = mUrl.replace('youtu.be/', 'www.youtube.com/embed/').split('?')[0];
+    
+    const isVideo = mUrl.match(/\.(mp4|webm|ogg)$/i) || mUrl.startsWith('data:video/');
+
+    if(isVideo) {
+      pm.innerHTML = `<video controls style="max-width:100%; max-height:250px; border:1px solid var(--np); border-radius:3px;"><source src="${mUrl}"></video>`;
+    } else if (mUrl.includes('/embed/')) {
+      pm.innerHTML = `<iframe width="100%" height="220" src="${mUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border:1px solid var(--np); border-radius:3px;"></iframe>`;
+    } else {
+      pm.innerHTML = `<img src="${mUrl}" style="max-width:100%; max-height:250px; border:1px solid var(--np); border-radius:3px; object-fit:contain;" alt="Media" onerror="this.style.display='none'"/>`;
+    }
+  } else {
+    pm.style.display = 'none';
+    pm.innerHTML = '';
+  }
+
+  document.getElementById('exCode').innerHTML=pyHL(item.ex);
+  document.getElementById('codeArea').value=item.ex;
+  document.getElementById('outBox').textContent='// run the code to see output here';
+  document.getElementById('outBox').className='';
+  document.getElementById('aiBox').style.display='none';
+  document.getElementById('aiBox').innerHTML='';
+  
+  // Show delete button only for custom cards
+  const delBtn = document.getElementById('delCustomBtn');
+  if(item.cat === 'custom') {
+    delBtn.style.display = 'inline-block';
+    delBtn.textContent = '🗑 DELETE';
+    delBtn.style.background = 'rgba(255,51,51,0.1)';
+    delBtn.onclick = () => deleteCustomCard(item, delBtn);
+  } else {
+    delBtn.style.display = 'none';
+  }
+}
+
+function closePanel(){
+  document.getElementById('panel').classList.remove('open');
+  if(activeCard){activeCard.classList.remove('active-card');activeCard=null;}
+  activeItemData=null;
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel();});
+
+function getColor(cat){
+  return{kw:'var(--nc)',builtin:'var(--ng)',str:'var(--ny)',list:'var(--no)',dict:'var(--nb)',set:'var(--np)',file:'#00e5a0',csv:'#aaa',iter:'var(--npu)',exc:'var(--nr)',custom:'var(--np)'}[cat]||'var(--nc)';
+}
+
+/* ============================================================
+   CARD CLICK
+   ============================================================ */
+function cardClick(cardEl, item){
+  if(activeCard===cardEl){closePanel();return;}
+  if(activeCard)activeCard.classList.remove('active-card');
+  activeCard=cardEl;
+  cardEl.classList.add('active-card');
+  
+  playSlash();
+  animateSlash(cardEl, () => {});
+  
+  // Adjusted timing: Open panel at 350ms so it slides up right as the card fades out
+  setTimeout(() => {
+    openPanel(item,cardEl);
+    cardEl.scrollIntoView({behavior:'smooth',block:'center'});
+  }, 350);
+}
+
+/* ============================================================
+   GEMINI API INTEGRATION
+   ============================================================ */
+const apiKey = "";
+
+async function callGeminiAPI(prompt, isJson = false) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  const payload = {
+    contents: [{ parts: [{ text: prompt }] }],
+    systemInstruction: { parts: [{ text: "You are an expert Python AI assistant embedded within a cyberpunk/neon hacker terminal interface. Provide concise, accurate, and helpful responses." }] }
+  };
+
+  if (isJson) {
+    payload.generationConfig = {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: "OBJECT",
+        properties: {
+          title: { type: "STRING", description: "A very short, punchy title for the Python snippet (e.g. 'Binary Search', 'Read JSON')" },
+          desc: { type: "STRING", description: "A 1-sentence explanation of what the snippet does." },
+          code: { type: "STRING", description: "The valid, well-formatted Python code snippet." }
+        },
+        required: ["title", "desc", "code"]
+      }
+    };
+  }
+
+  const delays = [1000, 2000, 4000, 8000, 16000];
+  for (let i = 0; i < 6; i++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      const data = await res.json();
+      return data.candidates[0].content.parts[0].text;
+    } catch (e) {
+      if (i === 5) throw e;
+      console.warn(`Gemini API retry ${i+1}...`);
+      await new Promise(r => setTimeout(r, delays[i]));
+    }
+  }
+}
+
+async function aiGenerateSnippet() {
+  const inputEl = document.getElementById('aiGenInput');
+  const btnEl = document.getElementById('aiGenBtn');
+  const promptText = inputEl.value.trim();
+  
+  if(!promptText) {
+    inputEl.placeholder = "⚠️ Type a prompt here first! (e.g. 'How to format dates')";
+    setTimeout(() => inputEl.placeholder = "✨ Ask AI to write a snippet (e.g. 'How to reverse a list' or 'Regex for email')...", 3000);
+    return;
+  }
+
+  btnEl.disabled = true;
+  btnEl.textContent = 'GENERATING...';
+  btnEl.classList.add('pulsate');
+  
+  try {
+    const prompt = `Write a Python snippet for the following request: "${promptText}". Return a JSON object with title, desc, and code.`;
+    const responseText = await callGeminiAPI(prompt, true);
+    const result = JSON.parse(responseText);
+    
+    document.getElementById('noteTitle').value = result.title || '';
+    document.getElementById('noteDesc').value = result.desc || '';
+    document.getElementById('noteCode').value = result.code || '';
+    
+    // Clear input to indicate success
+    inputEl.value = '';
+    inputEl.placeholder = "✨ Snippet generated successfully! Create another?";
+  } catch (err) {
+    console.error("AI Generation Error:", err);
+    inputEl.value = "⚠️ Error generating snippet. Try again.";
+  }
+  
+  btnEl.disabled = false;
+  btnEl.textContent = '✨ AI GENERATE';
+  btnEl.classList.remove('pulsate');
+}
+
+async function aiExplainCode() {
+  const code = document.getElementById('codeArea').value;
+  const output = document.getElementById('outBox').textContent;
+  const btnEl = document.getElementById('aiExplainBtn');
+  const aiBox = document.getElementById('aiBox');
+  
+  if (!code.trim()) return;
+
+  aiBox.style.display = 'block';
+  aiBox.innerHTML = '⏳ <i>Analyzing code and output...</i>';
+  aiBox.style.borderColor = 'var(--ny)';
+  btnEl.disabled = true;
+  btnEl.classList.add('pulsate');
+
+  const fence = '`' + '`' + '`';
+
+  try {
+    let prompt = `Analyze this Python code:\n${fence}python\n${code}\n${fence}\n`;
+    if (output && output !== '// run the code to see output here') {
+      prompt += `The console output/error is:\n${fence}\n${output}\n${fence}\n`;
+    }
+    prompt += `Briefly explain what the code is doing. If there's an error in the output, explain why it failed and how to fix it. Keep your response short, clear, and formatting in plain text or simple markdown. Use ${fence}python wrappers for any code blocks you provide.`;
+
+    const explanation = await callGeminiAPI(prompt, false);
+    aiBox.innerHTML = formatAIMarkdown(explanation);
+    aiBox.style.borderColor = 'var(--npu)';
+  } catch (err) {
+    console.error("AI Explain Error:", err);
+    aiBox.innerHTML = "⚠️ <strong>Failed to get AI explanation.</strong> Please check your network or try again.";
+    aiBox.style.borderColor = 'var(--nr)';
+  }
+  
+  btnEl.disabled = false;
+  btnEl.classList.remove('pulsate');
+}
+
+/* ============================================================
+   RUN CODE
+   ============================================================ */
+async function runCode(){
+  const out=document.getElementById('outBox');
+  if(!pyReady){
+      out.textContent='Python runtime still loading… Please wait.';
+      out.className='err';
+      return;
+  }
+  const code=document.getElementById('codeArea').value;
+  const btn=document.getElementById('runBtn');
+  
+  btn.disabled=true;btn.textContent='⟳ RUNNING…';
+  out.textContent='';out.className='';
+  let output='';
+  try{
+    pyodide.setStdout({batched:s=>{output+=s+'\n';}});
+    pyodide.setStderr({batched:s=>{output+='[stderr] '+s+'\n';}});
+    await pyodide.runPythonAsync(code);
+    out.textContent=output.trim()||'(no output)';
+    out.className='ok';
+  }catch(e){
+    out.textContent=e.message;
+    out.className='err';
+  }
+  btn.disabled=false;btn.textContent='▶ RUN CODE';
+}
+
+function copyCode(){
+  const code=document.getElementById('codeArea').value;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    const orig=btn.textContent;btn.textContent='✓ COPIED';
+    setTimeout(()=>{btn.textContent=orig;},1500);
+  }).catch(() => {
+    // Fallback for isolated environments where clipboard might not be available
+    const textArea = document.createElement("textarea");
+    textArea.value = code;
+    document.body.appendChild(textArea);
+    textArea.select();
+    try {
+        document.execCommand('copy');
+        const btn=document.querySelector('.copy-btn');
+        const orig=btn.textContent;btn.textContent='✓ COPIED';
+        setTimeout(()=>{btn.textContent=orig;},1500);
+    } catch (err) {}
+    document.body.removeChild(textArea);
+  });
+}
+
+// Tab key in textarea
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('codeArea').addEventListener('keydown',e=>{
+    if(e.key==='Tab'){
+      e.preventDefault();
+      const t=e.target,s=t.selectionStart,en=t.selectionEnd;
+      t.value=t.value.substring(0,s)+'    '+t.value.substring(en);
+      t.selectionStart=t.selectionEnd=s+4;
+    }
+  });
+});
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+  const q=document.getElementById('Q').value.toLowerCase().trim();
+  const mc=document.getElementById('MC');
+  const groups={};
+  let total=0;
+  
+  // Smart symbol mapping
+  let symbolCats = [];
+  if (q === '[]' || q === '[') symbolCats = ['list'];
+  else if (q === '{}' || q === '{') symbolCats = ['dict', 'set'];
+  else if (q === '""' || q === "''" || q === '"' || q === "'") symbolCats = ['str'];
+
+  DATA.forEach(item=>{
+    if(activeCat!=='all'&&item.cat!==activeCat)return;
+    
+    let matches = false;
+    if(!q) {
+      matches = true;
+    } else if (
+      item.code.toLowerCase().includes(q) || 
+      item.desc.toLowerCase().includes(q) || 
+      item.ex.toLowerCase().includes(q) ||
+      symbolCats.includes(item.cat)
+    ) {
+      matches = true;
+    }
+    
+    if(!matches) return;
+
+    if(!groups[item.cat])groups[item.cat]=[];
+    groups[item.cat].push(item);
+    total++;
+  });
+  
+  document.getElementById('sT').textContent=DATA.length;
+  document.getElementById('sV').textContent=total;
+  const shown=ORDER.filter(c=>groups[c]);
+  if(!shown.length){
+    mc.innerHTML='<div class="empty"><b>?</b>NO RESULTS — TRY ANOTHER QUERY</div>';
+    return;
+  }
+  mc.innerHTML=shown.map(cat=>`
+<div class="section">
+  <div class="sec-hdr" style="color:${getColor(cat)}">
+    <span class="sec-label">${CLABEL[cat]}</span>
+    <span class="sec-line"></span>
+    <span class="sec-cnt">[${groups[cat].length}]</span>
+  </div>
+  <div class="grid">
+    ${groups[cat].map((item,i)=>{
+      const idx=DATA.indexOf(item);
+      return`<div class="card c${item.cat}" data-idx="${idx}" style="animation-delay:${i*.025}s">
+        <div class="card-code">${escH(item.code)}</div>
+        <div class="card-desc">${escH(item.desc)}</div>
+        <div class="card-hint">⚔ slash to explore</div>
+      </div>`;
+    }).join('')}
+  </div>
+</div>`).join('');
+
+  // Attach click listeners
+  mc.querySelectorAll('.card').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const item=DATA[+el.dataset.idx];
+      cardClick(el,item);
+    });
+  });
+}
+
+/* TABS */
+const TB=document.getElementById('TB');
+CATS.forEach(c=>{
+  const t=document.createElement('button');
+  t.className=`tab t${c.id}${c.id==='all'?' active':''}`;
+  t.textContent=c.label;
+  t.addEventListener('click',()=>{
+    activeCat=c.id;
+    TB.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    closePanel();
+    render();
+  });
+  TB.appendChild(t);
+});
+
+// Add Create Note button to tabs
+const scratchBtn = document.createElement('button');
+scratchBtn.id = 'toggleNotesBtn';
+scratchBtn.className = 'tab';
+scratchBtn.style.color = 'var(--np)';
+scratchBtn.style.borderColor = 'var(--np)';
+scratchBtn.style.marginLeft = '1rem';
+scratchBtn.textContent = '➕ ADD NOTE';
+scratchBtn.addEventListener('click', toggleNotes);
+TB.appendChild(scratchBtn);
+
+document.getElementById('Q').addEventListener('input',()=>{closePanel();render();});
+
+/* CHINESE DRAGON CRAWLING ANIMATION */
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initDragon);
+}else{
+  initDragon();
+}
+
+function initDragon(){
+  const dragonSvg=document.createElement('svg');
+  dragonSvg.setAttribute('viewBox','0 0 100 60');
+  dragonSvg.setAttribute('id','dragon-svg');
+  dragonSvg.style.position='fixed';
+  dragonSvg.style.width='220px';
+  dragonSvg.style.height='120px';
+  dragonSvg.style.left='50px';
+  dragonSvg.style.top='50px';
+  dragonSvg.style.pointerEvents='none';
+  dragonSvg.style.zIndex='10005';
+  dragonSvg.style.filter='drop-shadow(0 0 16px #00ffff)';
+  dragonSvg.style.transformOrigin='center center';
+  dragonSvg.style.opacity='0.98';
+  dragonSvg.innerHTML=`<defs><filter id="dglow"><feGaussianBlur stdDeviation="1.2" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<path d="M 5,30 C 15,10 35,10 45,30 S 75,50 85,30 S 105,10 115,30" fill="none" stroke="#00ffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#dglow)"/>
+<ellipse cx="20" cy="30" rx="10" ry="12" fill="#00ffff"/>
+<circle cx="16" cy="28" r="2.2" fill="#000"/>
+<circle cx="24" cy="28" r="2.2" fill="#000"/>
+<path d="M 14,20 C 12,14 8,14 6,18" fill="none" stroke="#00ffff" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M 26,20 C 28,14 32,14 34,18" fill="none" stroke="#00ffff" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="18" cy="40" r="3" fill="#ffff00"/>
+<path d="M 45,30 C 55,24 65,20 75,30 S 95,40 105,30" fill="none" stroke="#ffcc00" stroke-width="3" stroke-linecap="round"/>
+<circle cx="60" cy="30" r="1.8" fill="#00ffff" opacity="0.85"/>
+<path d="M 95,30 C 100,26 105,22 110,30" fill="none" stroke="#00ffff" stroke-width="3" stroke-linecap="round"/>
+<path d="M 105,30 C 110,34 115,38 118,36" fill="none" stroke="#00ffff" stroke-width="2" stroke-linecap="round"/>`;
+  document.body.appendChild(dragonSvg);
+
+  let pos=0;
+  const speed=1.1;
+  const pad=30;
+  const halfWidth=110;
+  const halfHeight=60;
+  
+  function animate(){
+    const dragon=document.getElementById('dragon-svg');
+    if(!dragon)return;
+    
+    const w=window.innerWidth;
+    const h=window.innerHeight;
+    const minX=pad+halfWidth;
+    const maxX=w-pad-halfWidth;
+    const minY=pad+halfHeight;
+    const maxY=h-pad-halfHeight;
+    const horizontal=maxX-minX;
+    const vertical=maxY-minY;
+    const perimeter=2*horizontal+2*vertical;
+    const cycle=pos%perimeter;
+    
+    let x=minX;
+    let y=minY;
+    let angle=0;
+    
+    if(cycle<horizontal){
+      x=minX+cycle;
+      y=minY;
+      angle=0;
+    }else if(cycle<horizontal+vertical){
+      x=maxX;
+      y=minY+(cycle-horizontal);
+      angle=90;
+    }else if(cycle<2*horizontal+vertical){
+      x=maxX-(cycle-(horizontal+vertical));
+      y=maxY;
+      angle=180;
+    }else{
+      x=minX;
+      y=maxY-(cycle-(2*horizontal+vertical));
+      angle=270;
+    }
+    
+    dragon.style.left=x+'px';
+    dragon.style.top=y+'px';
+    dragon.style.transform='translate(-50%, -50%) rotate('+angle+'deg)';
+    pos+=speed;
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+/* ============================================================
+   SCRATCHPAD (CUSTOM NOTES)
+   ============================================================ */
+function toggleNotes() {
+  const nc = document.getElementById('notesContainer');
+  const btn = document.getElementById('toggleNotesBtn');
+  if (nc.style.display === 'none') {
+    nc.style.display = 'block';
+    btn.style.background = 'rgba(255,0,200,0.15)';
+    btn.style.boxShadow = '0 0 10px rgba(255,0,200,0.25)';
+    btn.style.opacity = '1';
+    // Scroll smoothly into view
+    setTimeout(() => nc.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  } else {
+    nc.style.display = 'none';
+    btn.style.background = 'transparent';
+    btn.style.boxShadow = 'none';
+    btn.style.opacity = '0.8';
+  }
+}
+
+function clearNotesForm() {
+  document.getElementById('noteTitle').value = '';
+  document.getElementById('noteDesc').value = '';
+  document.getElementById('noteMedia').value = '';
+  document.getElementById('noteCode').value = '';
+  document.getElementById('noteTitle').focus();
+}
+
+function saveNotes() {
+  const title = document.getElementById('noteTitle').value.trim();
+  const desc = document.getElementById('noteDesc').value.trim();
+  const media = document.getElementById('noteMedia').value.trim();
+  const code = document.getElementById('noteCode').value;
+  
+  if(!title) {
+    const status = document.getElementById('noteStatus');
+    status.textContent = '✗ TITLE REQUIRED';
+    status.style.color = 'var(--nr)';
+    setTimeout(() => status.textContent = '', 2000);
+    return;
+  }
+
+  const newCard = { cat: 'custom', code: title, desc: desc || "Custom user note", ex: code || "# No code provided", media: media };
+  
+  // Save to DATA
+  DATA.push(newCard);
+  
+  // Save to LocalStorage
+  let customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  customCards.push(newCard);
+  localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+
+  // Visual confirmation
+  const status = document.getElementById('noteStatus');
+  status.textContent = '✓ CARD CREATED';
+  status.style.color = '#a8ffc8';
+  
+  setTimeout(() => {
+    status.textContent = '';
+    clearNotesForm();
+    toggleNotes(); // close the form
+    
+    // Switch to Custom tab to view the new card
+    document.querySelector('.tab.tcustom').click();
+  }, 800);
+}
+
+let deleteTimer = null;
+function deleteCustomCard(itemToRemove, btnEl) {
+  if (btnEl.textContent !== '🗑 SURE?') {
+    btnEl.textContent = '🗑 SURE?';
+    btnEl.style.background = 'rgba(255,51,51,0.3)';
+    clearTimeout(deleteTimer);
+    deleteTimer = setTimeout(() => {
+      btnEl.textContent = '🗑 DELETE';
+      btnEl.style.background = 'rgba(255,51,51,0.1)';
+    }, 3000);
+    return;
+  }
+  clearTimeout(deleteTimer);
+  
+  // Remove from DATA
+  const dataIdx = DATA.indexOf(itemToRemove);
+  if(dataIdx > -1) DATA.splice(dataIdx, 1);
+  
+  // Remove from localStorage
+  let customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  customCards = customCards.filter(c => c.code !== itemToRemove.code || c.desc !== itemToRemove.desc);
+  localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+  
+  closePanel();
+  render();
+}
+
+function processLocalFile(file) {
+  const status = document.getElementById('noteStatus');
+  if (file.size > 2.5 * 1024 * 1024) {
+    status.textContent = '✗ FILE TOO LARGE (MAX 2.5MB)';
+    status.style.color = 'var(--nr)';
+    setTimeout(() => status.textContent = '', 3000);
+    return;
+  }
+  status.textContent = '⏳ PROCESSING FILE...';
+  status.style.color = 'var(--ny)';
+  
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const input = document.getElementById('noteMedia');
+    input.value = e.target.result;
+    input.style.background = 'rgba(0,255,136,0.1)';
+    setTimeout(() => input.style.background = 'rgba(0,0,0,0.6)', 1000);
+    
+    status.textContent = '✓ FILE LOADED (' + Math.round(file.size/1024) + 'KB)';
+    status.style.color = '#a8ffc8';
+  };
+  reader.onerror = () => {
+    status.textContent = '✗ FILE ERROR';
+    status.style.color = 'var(--nr)';
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // File drag & drop setup
+  const mediaInput = document.getElementById('noteMedia');
+  mediaInput.addEventListener('dragover', e => {
+    e.preventDefault();
+    mediaInput.style.borderColor = 'var(--np)';
+    mediaInput.style.background = 'rgba(255,0,200,0.1)';
+  });
+  mediaInput.addEventListener('dragleave', e => {
+    e.preventDefault();
+    mediaInput.style.borderColor = 'rgba(255,0,200,0.2)';
+    mediaInput.style.background = 'rgba(0,0,0,0.6)';
+  });
+  mediaInput.addEventListener('drop', e => {
+    e.preventDefault();
+    mediaInput.style.borderColor = 'rgba(255,0,200,0.2)';
+    mediaInput.style.background = 'rgba(0,0,0,0.6)';
+    if(e.dataTransfer.files && e.dataTransfer.files[0]) {
+      processLocalFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  document.getElementById('fileInput').addEventListener('change', e => {
+    if(e.target.files && e.target.files[0]) {
+      processLocalFile(e.target.files[0]);
+    }
+  });
+
+  // Load saved custom cards on startup
+  let customCards = JSON.parse(localStorage.getItem('neon_py_custom_cards') || '[]');
+  
+  // Migrate old scratchpad data if it exists
+  const oldNotes = localStorage.getItem('neon_py_notes');
+  if (oldNotes) {
+    const recoveredCard = {cat:'custom', code:'Recovered Note', desc:'Legacy scratchpad content', ex:oldNotes};
+    customCards.push(recoveredCard);
+    localStorage.removeItem('neon_py_notes');
+    localStorage.setItem('neon_py_custom_cards', JSON.stringify(customCards));
+  }
+  
+  // Push custom cards into the main DATA array
+  customCards.forEach(c => DATA.push(c));
+  
+  // Initial render (already called, but we do it again so custom cards show in ALL)
+  render();
+
+  document.getElementById('noteCode').addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const t = e.target, s = t.selectionStart, en = t.selectionEnd;
+      t.value = t.value.substring(0, s) + '    ' + t.value.substring(en);
+      t.selectionStart = t.selectionEnd = s + 4;
+    }
+  });
+});
+</script>
+</body>
+</html>
