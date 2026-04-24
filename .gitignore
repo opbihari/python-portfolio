@@ -18,3 +18,8 @@ venv.bak/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+.vscode/
+*.zip
+
+3dweb1/
