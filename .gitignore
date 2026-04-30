@@ -24,3 +24,10 @@ Thumbs.db
 
 3dweb1/
 Python_Function_Practice_With_AI/
+
+# Google Drive temp folders
+.tmp*/
+
+# Local-only HTML files (served by FastAPI, not needed in repo root)
+neon.html
+index.html
