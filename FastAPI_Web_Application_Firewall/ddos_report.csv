@@ -1,0 +1,4 @@
+IP_Address,Request_Count,Action_Required
+10.0.0.5,3,BLOCK
+192.168.1.99,5,BLOCK
+172.16.0.2,1,ALLOW

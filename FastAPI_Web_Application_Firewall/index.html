@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Firewall Threat Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --nc:#00fff5;--np:#ff00c8;--ny:#ffe600;--ng:#00ff88;
+  --nr:#ff3333;
+  --bg:#060612;--bg2:#0a0a1a;--gc:rgba(0,255,245,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#cce6f4;font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;cursor:crosshair}
+
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.13) 2px,rgba(0,0,0,.13) 4px),repeating-linear-gradient(90deg,var(--gc) 0,var(--gc) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(0deg,var(--gc) 0,var(--gc) 1px,transparent 1px,transparent 60px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,255,245,.06) 0%,transparent 70%),radial-gradient(ellipse at 0% 100%,rgba(255,0,200,.05) 0%,transparent 60%),radial-gradient(ellipse at 100% 50%,rgba(0,100,255,.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+header{position:relative;z-index:10;text-align:center;padding:2.5rem 1rem 1.5rem;border-bottom:1px solid rgba(0,255,245,.12)}
+.logo{font-family:'Orbitron',monospace;font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:.15em;color:var(--nr);text-shadow:0 0 10px var(--nr),0 0 30px var(--nr),0 0 60px rgba(255,51,51,.4);animation:flicker 7s infinite}
+.logo-sub{font-family:'Share Tech Mono',monospace;font-size:1rem;color:var(--nc);text-shadow:0 0 10px var(--nc);letter-spacing:.4em;margin-top:.4rem}
+@keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.6}96%{opacity:1}97%{opacity:.4}98%{opacity:.9}}
+
+main{position:relative;z-index:10;padding:2rem 1.5rem 12rem;max-width:900px;margin:0 auto}
+
+.dashboard-card {
+    background:rgba(0,255,245,.025);
+    border:1px solid rgba(255,51,51,.25);
+    border-radius:4px;
+    padding:20px;
+    backdrop-filter:blur(4px);
+    box-shadow: 0 0 15px rgba(255,51,51,0.1);
+}
+
+.table-title {
+    font-family:'Orbitron',monospace;
+    font-size:1.2rem;
+    color:var(--nr);
+    text-shadow:0 0 8px var(--nr);
+    margin-bottom:15px;
+    border-bottom:1px solid rgba(255,51,51,0.3);
+    padding-bottom:10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family:'Share Tech Mono',monospace;
+}
+
+th {
+    text-align: left;
+    color: var(--nc);
+    padding: 10px;
+    border-bottom: 1px solid rgba(0,255,245,.2);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+}
+
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    color: #fff;
+    font-size: 1rem;
+}
+
+tr:hover td {
+    background: rgba(255,51,51,.05);
+}
+
+.ip-col {
+    color: var(--ny);
+    font-weight: bold;
+}
+
+.count-col {
+    color: var(--nr);
+    font-weight: bold;
+}
+
+.badge {
+    background: rgba(255,51,51,0.15);
+    color: var(--nr);
+    border: 1px solid var(--nr);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    box-shadow: 0 0 8px rgba(255,51,51,0.3);
+}
+
+.loader {
+    text-align: center;
+    color: var(--nc);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.3; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">RAJ'S FIRE WALL SYSTEM</div>
+  <div class="logo-sub">▸ THREAT DETECTION DASHBOARD ◂</div>
+</header>
+
+<main>
+    <div class="dashboard-card">
+        <div class="table-title">
+            <span>// BLOCKED IP THREATS</span>
+            <span id="threat-count">COUNT: 0</span>
+        </div>
+        <div id="loader" class="loader">INITIALIZING SENSORS...</div>
+        <table id="threatTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>IP Address</th>
+                    <th>Request Count</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="threatsBody">
+                <!-- Threats will be injected here -->
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+async function loadThreats() {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/threats');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const threats = await response.json();
+        
+        const loader = document.getElementById('loader');
+        const table = document.getElementById('threatTable');
+        const tbody = document.getElementById('threatsBody');
+        const countSpan = document.getElementById('threat-count');
+        
+        loader.style.display = 'none';
+        table.style.display = 'table';
+        countSpan.textContent = `COUNT: ${threats.length}`;
+        
+        tbody.innerHTML = '';
+        
+        if (threats.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--ng);">NO THREATS DETECTED. SYSTEM SECURE.</td></tr>';
+            return;
+        }
+
+        threats.forEach(threat => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="ip-col">${threat.ip}</td>
+                <td class="count-col">${threat.count}</td>
+                <td><span class="badge">BLOCKED</span></td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+    } catch (error) {
+        console.error("Failed to load threats:", error);
+        document.getElementById('loader').textContent = "ERROR: CONNECTION TO FIREWALL FAILED.";
+        document.getElementById('loader').style.color = "var(--nr)";
+    }
+}
+
+// Load threats when page loads
+window.addEventListener('DOMContentLoaded', loadThreats);
+// Refresh data every 5 seconds
+setInterval(loadThreats, 5000);
+</script>
+
+</body>
+</html>
