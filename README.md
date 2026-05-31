@@ -1,6 +1,6 @@
 # Python Web Application Firewall (WAF) & Backend Portfolio
 
-Welcome to my Python backend portfolio! I specialize in building APIs, parsing data, and creating full-stack security tools. I am currently pursuing my BCA in Cybersecurity at Galgotias University.
+Welcome to my Python backend portfolio! I specialize in building APIs, parsing data, and creating full-stack security tools. I am currently pursuing my BCA in Cybersecurity 
 
 ## 🚀 Featured Project: Python Web Application Firewall
 
