@@ -1,0 +1,6 @@
+
+#1
+names = ['Alice', 'Bob', 'Catherine', 'David']
+filtered_names = list(filter(lambda names: len(names),names))
+print(filtered_names)
+
