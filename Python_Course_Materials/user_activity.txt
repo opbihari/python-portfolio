@@ -1,0 +1,4 @@
+User logged in at 09:00 AM 
+User viewed product details at 09:15 AM 
+ User logged out at 10:00 AM 
+User added item to wishlist at 10:30 AM 

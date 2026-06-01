@@ -1,0 +1,4 @@
+Hello, this is new file!
+ Hello, User! We're glad to have you here.
+Reminder: Don't forget to check your notifications.
+Thank you for using our service! Have a great day.

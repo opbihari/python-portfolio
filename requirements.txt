@@ -4,3 +4,4 @@ fastapi
 uvicorn
 flask
 flask-cors
+pytest
