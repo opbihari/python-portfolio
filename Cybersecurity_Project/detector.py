@@ -6,6 +6,7 @@ from typing import Dict
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+
 def analyze_logs(log_file_path: Path, report_file_path: Path) -> None:
     """Analyzes a server log file to detect potential DDoS attacks.
 
@@ -21,7 +22,9 @@ def analyze_logs(log_file_path: Path, report_file_path: Path) -> None:
     logging.info(f"Reading {log_file_path.name}...")
 
     if not log_file_path.exists():
-        logging.error(f"Could not find '{log_file_path.name}'. Please generate logs first.")
+        logging.error(
+            f"Could not find '{log_file_path.name}'. Please generate logs first."
+        )
         return
 
     try:
@@ -33,7 +36,7 @@ def analyze_logs(log_file_path: Path, report_file_path: Path) -> None:
                     parts = line.split(" ")
                     if not parts:
                         continue
-                        
+
                     ip = parts[0]
 
                     # --- THE DATA SANITIZER ---
@@ -44,7 +47,7 @@ def analyze_logs(log_file_path: Path, report_file_path: Path) -> None:
 
         # 2. Save the results to a clean CSV
         logging.info(f"Analysis complete. Saving to {report_file_path.name}...\n")
-        
+
         with report_file_path.open(mode="w", newline="", encoding="utf-8") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(["IP_Address", "Request_Count", "Action_Required"])
@@ -57,16 +60,21 @@ def analyze_logs(log_file_path: Path, report_file_path: Path) -> None:
 
                 # Log alert to the terminal
                 if action == "BLOCK":
-                    logging.warning(f"🚨 ALERT! IP {ip} exceeded rate limit ({count} requests) -> ACTION: {action}")
+                    logging.warning(
+                        f"🚨 ALERT! IP {ip} exceeded rate limit ({count} requests) -> ACTION: {action}"
+                    )
                 else:
-                    logging.info(f"✅ IP {ip} is within normal limits ({count} requests) -> ACTION: {action}")
+                    logging.info(
+                        f"✅ IP {ip} is within normal limits ({count} requests) -> ACTION: {action}"
+                    )
 
     except Exception as e:
         logging.error(f"An error occurred while analyzing logs: {e}")
+
 
 if __name__ == "__main__":
     current_dir = Path(__file__).parent
     analyze_logs(
         log_file_path=current_dir / "server_logs.txt",
-        report_file_path=current_dir / "ddos_report.csv"
+        report_file_path=current_dir / "ddos_report.csv",
     )

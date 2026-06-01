@@ -14,17 +14,19 @@ Run:
 """
 
 
-def display_books(book_list):
+def display_books(book_list: list) -> None:
     """Print every book in book_list in a readable format."""
     if not book_list:
         print("No books in the list")
     else:
         print("\nList of all books:")
         for title, author, year, genre in book_list:
-            print(f"  Title: {title} | Author: {author} | Year: ({year}) | Genre: {genre}")
+            print(
+                f"  Title: {title} | Author: {author} | Year: ({year}) | Genre: {genre}"
+            )
 
 
-def add_book(book_list):
+def add_book(book_list: list) -> None:
     """Prompt the user for book details and append to book_list if title is unique."""
     title = input("Enter the title of the book: ")
     author = input("Enter the author of the book: ")
@@ -42,7 +44,7 @@ def add_book(book_list):
     display_books(book_list)
 
 
-def remove_book(book_list):
+def remove_book(book_list: list) -> None:
     """Remove the first book whose title matches user input."""
     remove_title = input("Enter the title of the book you want to remove: ").strip()
     for book in book_list:
@@ -56,22 +58,24 @@ def remove_book(book_list):
     display_books(book_list)
 
 
-def show_unique_genres(book_list):
+def show_unique_genres(book_list: list) -> None:
     """Display all unique genre values present in the bookstore."""
     unique_genres = {book[3] for book in book_list}
     print(f"Unique genres: {unique_genres}")
 
 
-def update_book(book_list):
+def update_book(book_list: list) -> None:
     """Update a specific field (title/author/year/genre) of an existing book."""
     title_to_update = input("Enter the title of the book to update: ").strip()
 
     for index, book in enumerate(book_list):
         if book[0] == title_to_update:
             book_up = list(book)
-            field = input(
-                "Enter the field to update (title, author, year, genre): "
-            ).lower().strip()
+            field = (
+                input("Enter the field to update (title, author, year, genre): ")
+                .lower()
+                .strip()
+            )
 
             if field == "title":
                 new_value = input("Enter the new title: ")
@@ -104,7 +108,7 @@ def update_book(book_list):
     print(f'"{title_to_update}" not found in the list.')
 
 
-def main():
+def main() -> None:
     # Pre-existing book collection
     BookStore = [
         ("The Great Gatsby", "F. Scott Fitzgerald", 1925, "Fiction"),

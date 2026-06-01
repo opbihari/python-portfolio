@@ -19,7 +19,7 @@ csv_file = os.path.join(script_dir, "threat_feed.csv")
 threat_levels = ["Low", "Medium", "High", "Critical"]
 
 
-def generate_threat_feed(num_ips):
+def generate_threat_feed(num_ips: int) -> None:
     """Create the threat_feed.csv with `num_ips` fake entries."""
     print(f"Generating {num_ips} fake threat signatures...")
 
@@ -37,7 +37,7 @@ def generate_threat_feed(num_ips):
     print(f"Success! {csv_file} has been created.")
 
 
-def viewing():
+def viewing() -> None:
     """Print every entry in the threat_feed.csv to the console."""
     with open(csv_file, mode="r") as file:
         reader = csv.reader(file)

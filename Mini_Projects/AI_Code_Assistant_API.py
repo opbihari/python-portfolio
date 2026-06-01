@@ -271,7 +271,7 @@ class AnthropicService(AIService):
         """Generate Python code snippet"""
         request_prompt = (
             f'Write a Python snippet for: "{prompt}"\n\n'
-            'Return ONLY valid JSON with these fields:\n'
+            "Return ONLY valid JSON with these fields:\n"
             '{"title": "...", "desc": "...", "code": "..."}'
         )
 
@@ -379,9 +379,7 @@ class MockService(AIService):
         )
 
         if output:
-            explanation += (
-                f"\n\nWhen executed, it produces the following output:\n```\n{output}\n```"
-            )
+            explanation += f"\n\nWhen executed, it produces the following output:\n```\n{output}\n```"
 
         return explanation
 
@@ -412,7 +410,7 @@ def get_ai_service() -> AIService:
 
 
 @app.route("/api/health", methods=["GET"])
-def health():
+def health() -> tuple:
     """Health check endpoint"""
     service = get_ai_service()
     return (
@@ -428,7 +426,7 @@ def health():
 
 
 @app.route("/api/generate-snippet", methods=["POST"])
-def generate_snippet():
+def generate_snippet() -> tuple:
     """
     Generate a Python code snippet from a natural language prompt
     """
@@ -437,14 +435,24 @@ def generate_snippet():
 
         if not data or "prompt" not in data:
             return (
-                jsonify({"success": False, "error": "Missing 'prompt' field in request body"}),
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Missing 'prompt' field in request body",
+                    }
+                ),
                 400,
             )
 
         prompt = data.get("prompt", "").strip()
         if not prompt or len(prompt) < 3:
             return (
-                jsonify({"success": False, "error": "Prompt must be at least 3 characters long"}),
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Prompt must be at least 3 characters long",
+                    }
+                ),
                 400,
             )
 
@@ -465,7 +473,7 @@ def generate_snippet():
 
 
 @app.route("/api/explain-code", methods=["POST"])
-def explain_code():
+def explain_code() -> tuple:
     """
     Explain Python code with optional execution output
     """
@@ -474,14 +482,21 @@ def explain_code():
 
         if not data or "code" not in data:
             return (
-                jsonify({"success": False, "error": "Missing 'code' field in request body"}),
+                jsonify(
+                    {"success": False, "error": "Missing 'code' field in request body"}
+                ),
                 400,
             )
 
         code = data.get("code", "").strip()
         if not code or len(code) < 3:
             return (
-                jsonify({"success": False, "error": "Code must be at least 3 characters long"}),
+                jsonify(
+                    {
+                        "success": False,
+                        "error": "Code must be at least 3 characters long",
+                    }
+                ),
                 400,
             )
 
@@ -501,7 +516,7 @@ def explain_code():
 
 
 @app.route("/api/refactor-code", methods=["POST"])
-def refactor_code():
+def refactor_code() -> tuple:
     """
     Suggest refactoring improvements for Python code
     """
@@ -510,7 +525,9 @@ def refactor_code():
 
         if not data or "code" not in data:
             return (
-                jsonify({"success": False, "error": "Missing 'code' field in request body"}),
+                jsonify(
+                    {"success": False, "error": "Missing 'code' field in request body"}
+                ),
                 400,
             )
 
@@ -531,9 +548,14 @@ def refactor_code():
         )
 
         # Use explain_code as a general-purpose text generator
-        refactored_response = service.explain_code(code, output="REFACTOR_REQUEST: " + prompt)
+        refactored_response = service.explain_code(
+            code, output="REFACTOR_REQUEST: " + prompt
+        )
 
-        return jsonify({"success": True, "refactored_content": refactored_response}), 200
+        return (
+            jsonify({"success": True, "refactored_content": refactored_response}),
+            200,
+        )
 
     except Exception as e:
         logger.error(f"Error in refactor_code: {e}")

@@ -22,9 +22,8 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_file = os.path.join(script_dir, "contact.csv")
 
 
-
 # Loading file
-def load_contacts():
+def load_contacts() -> dict:
     """Read contacts.csv and return a dict keyed by integer contact ID."""
     contacts = {}  # Initialize as a dictionary
     if os.path.isfile(csv_file):
@@ -43,7 +42,7 @@ def load_contacts():
 
 
 # Saving contacts
-def save_contacts(contacts):
+def save_contacts(contacts: dict) -> None:
     """Overwrite contact.csv with the current in-memory contacts dict."""
     with open(csv_file, mode="w", newline="") as con_file:
         csv_save = csv.writer(con_file)
@@ -60,7 +59,7 @@ def save_contacts(contacts):
 
 
 # Adding contact
-def add_contact(contacts):
+def add_contact(contacts: dict) -> None:
     """Prompt user for details, assign next available ID, persist and display."""
     name = input("Enter the name: ")
     phone = input("Enter the phone number: ")
@@ -74,7 +73,7 @@ def add_contact(contacts):
 
 
 # Deleting contact
-def delete_contact(contacts):
+def delete_contact(contacts: dict) -> None:
     """Remove a contact by its numeric ID and update the CSV."""
     contact_id = int(input("Enter the contact id to delete: "))
     if contact_id in contacts:
@@ -87,7 +86,7 @@ def delete_contact(contacts):
 
 
 # Viewing contacts
-def view_contacts(contacts):
+def view_contacts(contacts: dict) -> None:
     """Print all contacts with their ID, name, phone, and email."""
     if not contacts:
         print("No contacts found")
@@ -104,7 +103,7 @@ def view_contacts(contacts):
 
 
 # Main area where all functions will work
-def main():
+def main() -> None:
     contacts = load_contacts()
     while True:
         print("\nContact Management System")
