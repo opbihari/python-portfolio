@@ -9,10 +9,13 @@ Run:
 """
 
 import csv
+import os
 import random
 
 # Output file
-csv_file = "threat_feed.csv"
+# Resolve path relative to script directory to avoid permission/write issues in virtual drive roots (like G:\)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_file = os.path.join(script_dir, "threat_feed.csv")
 threat_levels = ["Low", "Medium", "High", "Critical"]
 
 

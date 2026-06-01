@@ -114,27 +114,29 @@ def main():
 
     # Display initial list
     display_books(BookStore)
+    while True:
+        print("\nOnline Bookstore System Menu:")
+        print("1. Add Book")
+        print("2. Remove Book")
+        print("3. Show Unique Genres")
+        print("4. Update Book Details")
+        print("5. Exit")
 
-    # Add a new book
-    if input("\nDo you want to add a new book? (yes/no): ").lower() == "yes":
-        add_book(BookStore)
-
-    # Remove a book
-    if input("\nDo you want to remove a book? (yes/no): ").lower() == "yes":
-        remove_book(BookStore)
-    else:
-        print("No book removed.")
-        display_books(BookStore)
-
-    # Show unique genres
-    show_unique_genres(BookStore)
-
-    # Update a book's details
-    if input("\nDo you want to update a book's details? (yes/no): ").lower() == "yes":
-        update_book(BookStore)
-    else:
-        print("No book updated.")
-        display_books(BookStore)
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            add_book(BookStore)
+        elif choice == "2":
+            remove_book(BookStore)
+        elif choice == "3":
+            show_unique_genres(BookStore)
+        elif choice == "4":
+            update_book(BookStore)
+        elif choice == "5":
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+    display_books(BookStore)
 
 
 if __name__ == "__main__":

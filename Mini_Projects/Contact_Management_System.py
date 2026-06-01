@@ -17,7 +17,10 @@ Run:
 import csv
 import os
 
-csv_file = "contact.csv"
+# Use absolute path relative to the script's directory to avoid permission/write issues in virtual drive roots (like G:\)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+csv_file = os.path.join(script_dir, "contact.csv")
+
 
 
 # Loading file

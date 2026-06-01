@@ -1,7 +1,15 @@
 import csv
+import os
+import re
+import sys
+
+# Reconfigure stdout to use UTF-8 so emojis print correctly on Windows terminal without UnicodeEncodeError
+sys.stdout.reconfigure(encoding='utf-8')
 
 def check_ip_reputation(target_ip):
-    csv_file = "threat_feed.csv"
+    target_ip = target_ip.strip()
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_file = os.path.join(script_dir, "threat_feed.csv")
     
     try:
         print(f"Scanning database for {target_ip}...")
@@ -23,7 +31,7 @@ def check_ip_reputation(target_ip):
 # The Interactive Loop
 while True:
     print("\n--- Firewall Security Scanner ---")
-    user_input = input("Enter an IP to check (or type 'exit' to quit): ")
+    user_input = input("Enter an IP to check (or type 'exit' to quit): ").strip()
     
     if user_input.lower() == 'exit':
         print("Shutting down scanner.")
