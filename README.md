@@ -1,8 +1,5 @@
 # Python Scripting & Cybersecurity Portfolio
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Tests: PASS](https://img.shields.io/badge/tests-PASS-success.svg)](#-repository-health-checker)
-
 Welcome to my Python portfolio! I am an incoming Bachelor of Computer Applications (BCA) student with a strong focus on Python scripting, backend development, and cybersecurity. 
 
 **I am currently actively seeking a part-time online internship** where I can apply my skills in building APIs, parsing data, and creating security tools.
