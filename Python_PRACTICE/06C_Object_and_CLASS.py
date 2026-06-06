@@ -78,3 +78,75 @@ student1 = student("Shiva-kumar",400)
 student1.add_marks(100)
 student1.deduct_marks(50)
 student1.display_marks()
+
+#4.Problem Statement: 
+# Design a Python program with an Inventory class to manage the stock of products. 
+# The class should allow updating the stock for products and displaying the current stock levels.
+class INVENTORY:
+    def __init__(self,name,stock):
+        self.name = name
+        self.stock= stock
+    def full_update_inventory(self,amount):
+        self.stock += amount
+        print(f"{self.name} updated to : {self.stock}")
+    def add_stock(self,amount):
+        self.stock += amount
+        print(f"{self.name} added to : {self.stock}")
+    def remove_stock(self,amount):
+        if amount < self.stock:
+            self.stock -= amount
+            print(f"{self.name} removed : {self.stock}")
+        else:
+            print("insufficient stock")
+    def display(self):
+        print(f"current stock : {self.stock}")
+
+inventory = INVENTORY("Shiva-kumar",100)
+inventory.display()
+inventory.add_stock(50)
+inventory.remove_stock(25)
+inventory.display()
+
+#4.Problem Statement: 
+# Design a program that uses a Book class to store details of books in a library. 
+# Allow users to search for books by title or author and display the details of the matching book(s).
+
+class bookstore:
+    def __init__(self,title,author):
+        self.title = title
+        self.author = author
+
+    def search(self,title,author):
+        if self.title == title or self.author == author:
+            print(f"Book found : {self.title}")
+            print(f"Author : {self.author}")
+        else:
+            print("Book not found")
+
+    def display(self):
+        print(f"Book : {self.title}")
+        print(f"Author : {self.author}")
+
+book1 = bookstore("Shiva-kumar","Shiva-kumar")
+book1.display()
+book1.search("Shiva-kumar","Shiva-kumar")
+
+#5.Problem Statement: 
+# Create a Loan class that evaluates if a person qualifies for a loan based on their salary and the loan amount requested. 
+#The class should have methods to check if the loan can be approved or rejected based on simple criteria.
+class loan:
+    def __init__(self,name,salary,loan_amount):
+        self.name = name
+        self.salary = salary
+        self.loan_amount = loan_amount
+    def loan_evalute(self):
+        if self.salary > self.loan_amount * 4:
+           print(f"Name : {self.name}")
+           print("Loan Approved")
+        else:
+           print(f"Name : {self.name}")
+           print("Loan Rejected")
+
+loan1 = loan("Shiva-kumar",100000,10000)
+loan1.loan_evalute()
+
