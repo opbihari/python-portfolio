@@ -147,6 +147,12 @@ class loan:
            print(f"Name : {self.name}")
            print("Loan Rejected")
 
-loan1 = loan("Shiva-kumar",100000,10000)
+loan1 = loan("Shiva-kumar",1000,10000)
 loan1.loan_evalute()
 
+#6.problem statement
+#Create a base class Animal with a method named sound that prints "Animal sound: Generic Sound". 
+# Then, create a derived class Dog that inherits from the Animal class and overrides the sound method to print "Dog sound: Bark".
+#  Demonstrate single inheritance by creating objects for both classes and calling their respective sound methods.
+
+class animal:
