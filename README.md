@@ -32,7 +32,9 @@ A lightweight, full-stack security tool to parse server logs, detect DDoS patter
 * **`Python_Course_Materials/` & `phthon_practice/`**: Foundational Jupyter notebooks demonstrating proficiency in data structures, algorithms, and iterative logic.
 
 ---
-
+##devsecops --- i will add it in few weeks
+____
+##aws and azure --- coming soon
 ## 🛡️ Repository Health Checker
 
 To ensure code stability across all interactive CLI programs and projects without manual testing, I built a custom automated health checker:
