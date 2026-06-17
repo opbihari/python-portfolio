@@ -149,5 +149,3 @@ class loan:
 
 loan1 = loan("Shiva-kumar",1000,10000)
 loan1.loan_evalute()
-
-__init__
