@@ -21,3 +21,10 @@ python-portfolio/
 ├── ⚙️ .github/workflows/          # GitHub Actions pipelines & automated checks
 └── README.md
 ```
+## ⚡ Current Focus
+Actively executing a comprehensive 5-month DevSecOps and Cloud Automation blueprint. My current day-to-day involves building AWS infrastructure (Boto3), mastering secure CI/CD pipelines (GitHub Actions), and reinforcing core algorithmic logic.
+
+## 📬 Let's Connect
+* **LinkedIn:** []
+* **Email:** [rajshivamrasaunk@gmail.com]
+* **whatsapp** [+91 7667142176]
