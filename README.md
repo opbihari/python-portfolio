@@ -10,17 +10,18 @@
 This repository serves as a living portfolio demonstrating hands-on expertise in **Backend Automation**, **Web Application Security**, and **Algorithmic Problem Solving**. It documents my technical progression and practical implementations in DevSecOps, networking concepts, and secure cloud infrastructure to prepare for industry roles.
 
 ## 📂 Repository Structure
+## 📂 Repository Structure
 
-```text
-python-portfolio/
-├── ☁️ AWS_Automation/             # Boto3 scripts, cloud resource provisioning
-├── 🔒 Security_and_DevSecOps/     # Log parsers, vulnerability testing workflows
-├── 🧩 LeetCode_Solutions/         # Technical interview prep & core logic building
-│   ├── Arrays_and_Hashing/
-│   └── SQL_50/
-├── ⚙️ .github/workflows/          # GitHub Actions pipelines & automated checks
-└── README.md
-```
+* 📁 **[`python-portfolio/`](./)**
+  * ☁️ **[`AWS_Automation/`](./AWS_Automation)** — Boto3 scripts, cloud resource provisioning
+  * 🔒 **[`Security_and_DevSecOps/`](./Security_and_DevSecOps)** — Log parsers, vulnerability testing workflows
+  * 🧩 **[`LeetCode_Solutions/`](./LeetCode_Solutions)** — Technical interview prep & core logic building
+    * 📁 [`Arrays_and_Hashing/`](./LeetCode_Solutions/Arrays_and_Hashing)
+    * 📁 [`SQL_50/`](./LeetCode_Solutions/SQL_50)
+  * ⚙️ **[`.github/workflows/`](./.github/workflows)** — GitHub Actions pipelines & automated checks
+  * 📄 **[`README.md`](./README.md)**
+
+
 ## ⚡ Current Focus
 Actively executing a comprehensive 5-month DevSecOps and Cloud Automation blueprint. My current day-to-day involves building AWS infrastructure (Boto3), mastering secure CI/CD pipelines (GitHub Actions), and reinforcing core algorithmic logic.
 
