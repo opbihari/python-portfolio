@@ -1,65 +1,142 @@
-# Python Scripting & Cybersecurity Portfolio
+# Python Portfolio — @opbihari
 
-Welcome to my Python portfolio! I am an incoming Bachelor of Computer Applications (BCA) student with a strong focus on Python scripting, backend development, and cybersecurity. 
+[![CI — Python Tests](https://github.com/opbihari/python-portfolio/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/opbihari/python-portfolio/actions/workflows/python-package-conda.yml)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-**I am currently actively seeking a part-time online internship** where I can apply my skills in building APIs, parsing data, and creating security tools.
-
----
-
-## 🚀 Featured Projects
-
-### 1. AI Code Assistant API
-A Flask-based REST API server that routes code-explanation, snippet-generation, and refactoring requests to configurable AI back-ends.
-- **Highlights:** Successfully consumes and integrates external LLM APIs (Google Gemini, OpenAI, Anthropic), handles JSON payloads, and demonstrates robust backend architecture.
-- **Tech Stack:** Python, Flask, Flask-CORS, External APIs
-- 📁 **[View Project Folder →](./Mini_Projects)** (See `AI_Code_Assistant_API.py`)
-
-### 2. Python Web Application Firewall (WAF)
-A lightweight, full-stack security tool to parse server logs, detect DDoS patterns, and dynamically block malicious IP addresses.
-- **Highlights:** Reads and sanitizes unstructured server logs to detect rate-limit anomalies and dynamically checks incoming connections against a CSV threat feed.
-- **Tech Stack:** Python, FastAPI, Uvicorn, HTML5, CSS3, JavaScript (Fetch API)
-- 📁 **[View Project Folder →](./Cybersecurity_Project)**
+> Incoming BCA student | Python · FastAPI · Cybersecurity · Data Engineering  
+> Actively seeking a **part-time online internship** in backend development or security tooling.
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
-* **`Cybersecurity_Project/`**: Consolidated Web Application Firewall (WAF) featuring log generation, DDoS detection, and a FastAPI server dashboard.
-* **`IP_Blacklist_Checker_Project/`**: Cybersecurity tools for generating fake IP threat feeds and verifying IPs against blacklists via an interactive CLI.
-* **`Web_Scraping_Project/`**: Data extraction tools built using `requests` and `BeautifulSoup` to parse HTML DOMs and save structured data to CSV.
-* **`Mini_Projects/`**: Includes the AI Code Assistant API, a CLI Contact Management System, and an Online Bookstore System.
-* **`Frontend_Assets/`**: Organized UI components and templates for full-stack integration.
-* **`Python_Course_Materials/` & `phthon_practice/`**: Foundational Jupyter notebooks demonstrating proficiency in data structures, algorithms, and iterative logic.
-
----
-##devsecops --- i will add it in few weeks
-____
-##aws and azure --- coming soon
-## 🛡️ Repository Health Checker
-
-To ensure code stability across all interactive CLI programs and projects without manual testing, I built a custom automated health checker:
-- **`check_repo.py`**: A master script that uses Python's `subprocess` to spin up each interactive app and feed it predefined inputs, verifying everything exits cleanly.
-- **`tests/`**: A suite of `pytest` unit tests validating the core logic of the Cybersecurity Project.
-
-You can run the full diagnostic check with:
-```bash
-python check_repo.py
+```
+python-portfolio/
+├── Security/                  — Cybersecurity & network tools
+│   ├── Cybersecurity_Project/ — Consolidated WAF (canonical version)
+│   ├── DDoS_Detector/         — Standalone DDoS detection pipeline
+│   ├── FastAPI_WAF/           — FastAPI WAF reference implementation
+│   └── IP_Blacklist_Checker/  — IP threat feed validator
+├── Mini_Projects/             — Standalone Python applications
+├── Web_Scraping/              — Data extraction tools
+├── Python_PRACTICE/           — Foundations: notebooks + scripts
+├── LeetCode_Solutions/        — DSA practice organized by pattern
+├── Frontend_Assets/           — UI components for full-stack demos
+└── tests/                     — pytest unit tests
 ```
 
 ---
 
-## 💻 Getting Started
+## Featured Projects
 
-1. Clone this repository: 
-   ```bash
-   git clone https://github.com/opbihari/python-portfolio.git
-   ```
-2. Install the required dependencies: 
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the automated tests to verify the environment:
-   ```bash
-   python check_repo.py
-   ```
-4. Run any of the interactive CLI scripts or start the local API servers!
+### Security Domain
+
+| Project | Description | Tech Stack | Status |
+|---------|-------------|-----------|--------|
+| [Cybersecurity Project](./Security/Cybersecurity_Project/) | Full-stack WAF: log ingestion → DDoS detection → FastAPI dashboard | Python · FastAPI · Uvicorn · HTML/CSS/JS | Active |
+| [DDoS Detector](./Security/DDoS_Detector/) | Standalone pipeline: log generation, IP rate-limit analysis, CSV reporting | Python · CSV | Archive |
+| [FastAPI WAF](./Security/FastAPI_WAF/) | Early WAF prototype with FastAPI REST endpoints | Python · FastAPI | Reference |
+| [IP Blacklist Checker](./Security/IP_Blacklist_Checker/) | Generates fake threat feeds and verifies IPs via interactive CLI | Python · CSV | Active |
+
+### Applications
+
+| Project | Description | Tech Stack | Status |
+|---------|-------------|-----------|--------|
+| [AI Code Assistant API](./Mini_Projects/ai_code_assistant_api.py) | Flask REST API routing code tasks to Gemini / OpenAI / Anthropic backends | Python · Flask · External APIs | Active |
+| [Contact Management System](./Mini_Projects/contact_management_system.py) | Full CRUD CLI app persisting contacts to CSV | Python | Active |
+| [Online Book Store v2](./Mini_Projects/online_book_store_system_v2.py) | OOP-based bookstore system with inventory management | Python | Active |
+
+### Data Engineering
+
+| Project | Description | Tech Stack | Status |
+|---------|-------------|-----------|--------|
+| [Web Scraper](./Web_Scraping/web_scraper.py) | Scrapes quotes from the web and saves structured data to CSV | Python · requests · BeautifulSoup | Active |
+
+---
+
+## LeetCode Solutions
+
+Organized by algorithmic pattern following the [NeetCode Roadmap](https://neetcode.io/roadmap).
+
+| Pattern | Problems | Folder |
+|---------|----------|--------|
+| Arrays & Hashing | — | [View →](./LeetCode_Solutions/Arrays_and_Hashing/) |
+| Two Pointers | — | [View →](./LeetCode_Solutions/Two_Pointers/) |
+| Sliding Window | — | [View →](./LeetCode_Solutions/Sliding_Window/) |
+| Binary Search | — | [View →](./LeetCode_Solutions/Binary_Search/) |
+| Trees & Graphs | — | [View →](./LeetCode_Solutions/Trees_and_Graphs/) |
+| Dynamic Programming | — | [View →](./LeetCode_Solutions/Dynamic_Programming/) |
+| SQL 50 | — | [View →](./LeetCode_Solutions/SQL_50/) |
+
+---
+
+## Python Practice
+
+Foundational notebooks and scripts covering Python core concepts:
+
+| Module | Topic | Format |
+|--------|-------|--------|
+| 01A | Variables & Data Types | Jupyter Notebook |
+| 01B | Input / Output | Jupyter Notebook |
+| 02A | Functions — Basics | Jupyter Notebook |
+| 02B | Conditionals — Advanced | Jupyter Notebook |
+| 03 | Loops & Algorithms | Jupyter Notebook |
+| 04A | Lists & Tuples | Jupyter Notebook |
+| 04B | Sets & Dictionaries | Jupyter Notebook |
+| 05A | File I/O (Text) | Jupyter Notebook |
+| 05B | File I/O (CSV) | Jupyter Notebook |
+| 06A | Lambda Functions | Python Script |
+| 06B | Lambda + Filter | Python Script |
+| 06C | Object & CLASS | Python Script |
+| 07A | Encapsulation | Python Script |
+
+---
+
+## Getting Started
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/opbihari/python-portfolio.git
+cd python-portfolio
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the test suite
+pytest tests/
+
+# 4. Launch the Cybersecurity WAF dashboard (example)
+cd Security/Cybersecurity_Project
+python log_generator.py   # generate sample logs
+python detector.py        # run DDoS analysis
+python firewall_server.py # start FastAPI server at http://127.0.0.1:8000
+```
+
+---
+
+## CI / CD
+
+This repository uses **GitHub Actions** for automated testing on every push.
+
+- Linting: `flake8` (syntax errors + undefined names)
+- Tests: `pytest` against the `tests/` suite
+
+[![CI Status](https://github.com/opbihari/python-portfolio/actions/workflows/python-package-conda.yml/badge.svg)](https://github.com/opbihari/python-portfolio/actions/workflows/python-package-conda.yml)
+
+---
+
+## Roadmap
+
+| Domain | Status |
+|--------|--------|
+| DevSecOps tools | Coming soon |
+| AWS / Azure automation scripts | Coming soon |
+| LeetCode solutions (pattern-by-pattern) | In progress |
+
+---
+
+## License
+
+[MIT](./LICENSE) © opbihari

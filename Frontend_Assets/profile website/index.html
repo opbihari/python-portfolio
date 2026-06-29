@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Developer Portfolio</title>
+    <!-- Modern Typography from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="bg-glow top-glow"></div>
+    <div class="bg-glow bottom-glow"></div>
+
+    <div class="container">
+        
+        <!-- Header / Hero Section -->
+        <header class="hero slide-up">
+            <div class="hero-content">
+                <h1 class="title">Python Projects <br> <span class="gradient-text">& Foundations</span></h1>
+                <p class="subtitle">
+                    Welcome to my Python portfolio! This repository contains a collection of Python projects and foundational coding exercises that demonstrate my skills in software development, problem-solving, and algorithmic thinking. It serves as a showcase of my ability to write clean, maintainable, and efficient Python code.
+                </p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn primary-btn">View Projects</a>
+                    <a href="#contact" class="btn secondary-btn">Contact Me</a>
+                </div>
+            </div>
+            
+            <div class="tech-stack glass-panel">
+                <h3>🛠️ Technologies & Tools</h3>
+                <div class="tags">
+                    <span class="tag">Python 3.x</span>
+                    <span class="tag">Jupyter Notebook</span>
+                    <span class="tag">Flask</span>
+                    <span class="tag">BeautifulSoup</span>
+                    <span class="tag">REST APIs</span>
+                    <span class="tag">LLM Integrations</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Projects Section -->
+        <section id="projects" class="section">
+            <h2 class="section-title fade-in">🚀 Featured Mini-Projects</h2>
+            
+            <div class="project-grid">
+                
+                <!-- Project 1 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">AI_Sage_Web_Project</span>
+                        <h3>Python Function Practice with AI</h3>
+                    </div>
+                    <p class="project-desc">
+                        A robust Flask-based backend API that integrates with multiple LLM providers (Google Gemini, OpenAI GPT-4, Anthropic Claude). It exposes endpoints to automatically generate Python code snippets from natural language prompts, explain code logic, and suggest refactoring improvements.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>RESTful API Design (Flask), LLM Integration, Environment Variable Management, JSON Parsing, Error Handling, Mock Services.</p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">DDoS_Detector_Project</span>
+                        <h3>DDoS Detector & Firewall Simulator</h3>
+                    </div>
+                    <p class="project-desc">
+                        A security-focused project that analyzes server logs to identify potential Distributed Denial of Service (DDoS) attacks. It processes raw text logs, counts IP requests, flags suspicious activity, and outputs the analysis to a CSV report. Includes scripts to generate sample logs and simulate a basic firewall response.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>Cybersecurity Concepts (Rate Limiting), Log File Parsing, Data Sanitization, Dictionary Operations for Counting, CSV Generation.</p>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">IP_Blacklist_Checker_Project</span>
+                        <h3>IP Blacklist Checker</h3>
+                    </div>
+                    <p class="project-desc">
+                        An interactive security tool that checks IP addresses against a simulated threat intelligence database (CSV). It provides real-time alerts based on threat levels and previous blocks, demonstrating how to build a basic command-line security scanner.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>File I/O (CSV Parsing), Interactive CLI Loops, Threat Intelligence Simulation, Exception Handling.</p>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">Web_Scraping_Project</span>
+                        <h3>Web Scraping Data Extractor</h3>
+                    </div>
+                    <p class="project-desc">
+                        A web scraper built using Python's <code>requests</code> and <code>BeautifulSoup</code> libraries. It connects to a target website, parses the HTML DOM to extract specific data elements, and saves the structured output into a CSV file. It also includes a search function to quickly retrieve scraped data.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>Web Scraping (BeautifulSoup), HTTP Requests, HTML Parsing, DOM Traversal, CSV Data Storage.</p>
+                    </div>
+                </div>
+
+                <!-- Project 5 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">Contact_Management_System.ipynb</span>
+                        <h3>Contact Management System</h3>
+                    </div>
+                    <p class="project-desc">
+                        A fully functional CLI-based contact management system that allows users to add, view, and delete contacts. The application features persistent data storage utilizing CSV files, ensuring that data is saved correctly across sessions.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>File I/O (CSV manipulation), Dictionary and List Comprehensions, CRUD Operations, State Persistence, CLI Menus.</p>
+                    </div>
+                </div>
+
+                <!-- Project 6 -->
+                <div class="project-card glass-panel fade-in" data-tilt>
+                    <div class="card-header">
+                        <span class="folder-badge">Online_Book_Store_System.ipynb</span>
+                        <h3>Online Book Store Inventory System</h3>
+                    </div>
+                    <p class="project-desc">
+                        An interactive bookstore inventory management application. It handles tasks such as adding new books, tracking unique genres, updating information for existing books, removing sold books, and maintaining an up-to-date inventory list.
+                    </p>
+                    <div class="concepts">
+                        <h4>Concepts Demonstrated:</h4>
+                        <p>Advanced List Operations, Tuple Unpacking, Data Validation, Error Handling, Set Operations (for unique items).</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Foundations Section -->
+        <section id="foundations" class="section">
+            <h2 class="section-title fade-in">📚 Foundational Python Concepts & Algorithms</h2>
+            <p class="section-desc fade-in">The repository also includes comprehensive exercises covering core Python programming concepts. These files reflect a deep understanding of standard Python features and clean coding practices applied to real-world scenarios.</p>
+            
+            <div class="timeline fade-in">
+                <div class="timeline-item glass-panel">
+                    <div class="timeline-dot"></div>
+                    <h3>Variables & Basic Syntax</h3>
+                    <p><em>Focus:</em> Data types, string manipulation, and basic operators.</p>
+                </div>
+                
+                <div class="timeline-item glass-panel">
+                    <div class="timeline-dot"></div>
+                    <h3>Control Flow & Conditionals</h3>
+                    <p><em>Highlights:</em> Built logic for practical scenarios such as Loan Eligibility Calculators, Tax/Tip Calculators, Gym Membership Discounts, and ATM Withdrawal Validators.</p>
+                </div>
+                
+                <div class="timeline-item glass-panel">
+                    <div class="timeline-dot"></div>
+                    <h3>Loops & Data Structures</h3>
+                    <p><em>Highlights:</em> Iterative algorithms, games like "Odd or Even", multiplication table generators, and data filtering (e.g., extracting positive numbers, skipping multiples).</p>
+                </div>
+                
+                <div class="timeline-item glass-panel">
+                    <div class="timeline-dot"></div>
+                    <h3>Functions & Advanced Logic</h3>
+                    <p><em>Focus:</em> Modularizing code with functions, standard libraries, and intermediate algorithmic challenges.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Contact Section -->
+        <footer id="contact" class="footer glass-panel fade-in">
+            <h2>💡 Why Work With Me?</h2>
+            <p>
+                I am a passionate Python developer focused on writing clean, efficient, and well-documented code. I have a strong foundation in backend logic, data structures, and algorithmic problem-solving. I am currently available for freelance opportunities and would love to help you build your next software solution.
+            </p>
+            <div class="contact-links">
+                <a href="mailto:your.email@example.com" class="btn primary-btn">Email Me</a>
+                <a href="https://github.com/yourusername" target="_blank" class="btn outline-btn">GitHub Profile</a>
+                <a href="https://linkedin.com/in/yourusername" target="_blank" class="btn outline-btn">LinkedIn</a>
+            </div>
+            <p class="copyright">Feel free to explore the notebooks and reach out for any collaboration or freelance work!</p>
+        </footer>
+
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
