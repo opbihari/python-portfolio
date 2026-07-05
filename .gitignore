@@ -1,129 +1,33 @@
-# =============================================================================
-#  PYTHON-PORTFOLIO — .gitignore
-#  PRIVACY FIRST: No credentials, secrets, local logs, or cache ever committed
-# =============================================================================
-
-# ---------------------------------------------------------------------------
-# SECRETS & CREDENTIALS — Never push these
-# ---------------------------------------------------------------------------
-.env
-.env.*
-*.env
-*.env.local
-*.env.production
-*.env.development
-
-# AWS credentials
-credentials
-.aws/
-aws_credentials
-aws_config
-
-# Google Cloud credentials
-gcloud/
-service_account*.json
-*-credentials.json
-application_default_credentials.json
-
-# Azure credentials
-.azure/
-azure_credentials.json
-
-# Generic secrets
-secrets.json
-secrets.yaml
-secrets.yml
-config/local.py
-local_settings.py
-private_key.pem
-*.pem
-*.key
-*.p12
-
-# ---------------------------------------------------------------------------
-# PYTHON CACHE & BUILD ARTIFACTS
-# ---------------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-*.pyo
-*.pyd
-.Python
-*.pyc
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-*.egg
-MANIFEST
-.eggs/
+# Jupyter Notebook
+.ipynb_checkpoints
 
-# Virtual environments
-venv/
-.venv/
+# Environments
+.env
+.venv
 env/
+venv/
 ENV/
 env.bak/
 venv.bak/
-.conda/
-conda-env/
 
-# ---------------------------------------------------------------------------
-# TEST ARTIFACTS & LOCAL LOGS
-# ---------------------------------------------------------------------------
-*.log
-*.log.*
-test_logs/
-local_logs/
-logs/
-server_logs.txt
-
-# pytest cache
-.pytest_cache/
-.coverage
-coverage.xml
-htmlcov/
-*.cover
-.hypothesis/
-
-# ---------------------------------------------------------------------------
-# JUPYTER
-# ---------------------------------------------------------------------------
-.ipynb_checkpoints/
-*.ipynb_checkpoints
-
-# ---------------------------------------------------------------------------
-# IDE & EDITOR FILES
-# ---------------------------------------------------------------------------
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
+# OS generated files
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# ---------------------------------------------------------------------------
-# NODE / FRONTEND BUILD
-# ---------------------------------------------------------------------------
-node_modules/
-3dweb1/
+.vscode/
 *.zip
-Frontend_Assets/*.zip
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
-# ---------------------------------------------------------------------------
-# MISC
-# ---------------------------------------------------------------------------
-*.csv.bak
-*.bak
-*.tmp
-prompt_for_gemini.md
-
-# Embedded git repositories
-Python_Function_Practice_With_AI/
 3dweb1/
+Python_Function_Practice_With_AI/
+
+# Google Drive temp folders
+.tmp*/
+
+# Local-only HTML files (served by FastAPI, not needed in repo root)
+neon.html
+index.html

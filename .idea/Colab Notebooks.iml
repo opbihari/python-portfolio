@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/DDoS_Detector_Project/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/Python_Function_Practice_With_AI/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/Web_Scraping_Project/.venv" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

@@ -7,7 +7,7 @@ import os
 # Add project root to sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from Security.Cybersecurity_Project.detector import analyze_logs
+from Cybersecurity_Project.detector import analyze_logs
 
 
 def test_analyze_logs(tmp_path: Path):
