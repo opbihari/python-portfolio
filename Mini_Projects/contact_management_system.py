@@ -162,6 +162,32 @@ def find_contact(contacts):
         else:
             print("Invalid choice. Please select from 1 to 5.")
 
+#updating contacts
+def update_contact(contacts):
+    try:
+        contact_id = int(input("Enter the contact ID to update:  "))
+    except ValueError:
+        print("Please enter numbers only.")
+        return
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return
+    if contact_id in contacts:
+        info = contacts[contact_id]
+        print(f"id..{contact_id} \nname..{info['name']} \nphone number..{info['phone']} \nemail..{info['email']}")
+        new_name = input("enter the name or press enter to move forward  ").strip().lower()
+        new_number = input("enter phone number  or press enter to move forward  ").strip()
+        new_email = input("enter email or press enter to move forward  ").strip()
+        if new_name:
+            info['name'] = new_name
+        if new_number.isdigit():
+            info['phone'] = new_number
+        if new_email:
+            info['email'] = new_email
+        save_contacts(contacts)
+        view_contacts(contacts)
+    else:
+        print(f"{contact_id} not found")
 # Main loop
 def main():
     contacts = load_contacts()
@@ -171,7 +197,8 @@ def main():
         print("2. Delete Contact")
         print("3. View Contacts")
         print("4. Find Contact")
-        print("5. Exit")
+        print("5. update contact")
+        print("6. Exit")
 
         try:
             choice = int(input("Enter your choice: "))
@@ -184,6 +211,8 @@ def main():
             elif choice == 4:
                 find_contact(contacts)
             elif choice == 5:
+                update_contact(contacts)
+            elif choice == 6:
                 print("Exiting the program. Goodbye!")
                 break
             else:
