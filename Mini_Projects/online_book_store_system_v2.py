@@ -30,15 +30,9 @@ def add_book(book_list: list) -> None:
     """Prompt the user for book details and append to book_list if title is unique."""
     title = input("Enter the title of the book: ")
     author = input("Enter the author of the book: ")
-    
-    while True:
-        try:
-         
-         year = int(input("Enter the publication year: "))
-         break
-        except ValueError:
-            print("enter number only")
+    year = int(input("Enter the publication year: "))
     genre = input("Enter the genre of the book: ")
+
     # Collect existing titles for duplicate check
     existing_titles = {book[0] for book in book_list}
     if title in existing_titles:
