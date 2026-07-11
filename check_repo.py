@@ -61,7 +61,7 @@ def main():
     all_passed &= run_test(
         "Contact Management System",
         ["python", "Mini_Projects/Contact_Management_System.py"],
-        input_data="4\n",
+        input_data="3\n6\n",  # View Contacts, then Exit
     )
     all_passed &= run_test(
         "Online Bookstore System",
