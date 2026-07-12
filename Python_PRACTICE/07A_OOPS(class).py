@@ -140,12 +140,13 @@ class loan:
         self.salary = salary
         self.loan_amount = loan_amount
     def loan_evalute(self):
-        if self.salary > self.loan_amount * 4:
+        if (self.salary >= 20000) and (self.loan_amount <= self.salarly):
            print(f"Name : {self.name}")
            print("Loan Approved")
         else:
            print(f"Name : {self.name}")
            print("Loan Rejected")
+    def
 
 loan1 = loan("Shiva-kumar",1000,10000)
 loan1.loan_evalute()
