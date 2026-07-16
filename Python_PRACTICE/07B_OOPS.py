@@ -2,10 +2,20 @@ import csv
 
 loan_data = "loan_data.csv"
 
-def load_data(loan_data):
-   with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
-    reader = csv.reader(loan_data_file)
-    
+old_user = False
+
+        
+while True:
+    try:
+        phone_number = int(input("Enter the phone number  "))
+        if len(phone_number) == 10:
+            break
+        else:
+            print("Phone number should be 10 digits")
+    except:
+        print("Invalid phone number ")
+
+
 
     
 
@@ -16,6 +26,21 @@ class loan:
         self.loan_amount = loan_amount
         self.credit_score = credit_score
         self.phone_number = phone_number
+    def load_data(self, loan_data):
+        with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
+            data_reader = csv.reader(loan_data_file)
+            return data_reader
+
+    def search_phone(self, phone_number):
+        data_reader = self.loan_data(loan_data)
+        for row in data_reader:
+            if row[3] == phone_number:
+                print("Phone Number Found")
+                old_user = True
+                info = row[0],row[1],row[2],row[3],row[4]
+            print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[3]}\ncredit score {info[4]}")
+       
+    
     def requirements(self):
         if self.salary >= 20000:
             print(f"Salary  {self.salary} ✅ ")
