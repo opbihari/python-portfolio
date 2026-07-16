@@ -1,19 +1,21 @@
 import csv
 
 loan_data = "loan_data.csv"
-def reader(loan_data):
-   with open(loan_data, mode="w", encoding="utf-8", newline="") as loan_data_file:
-    writer = csv.writer(loan_data_file)
+
+def load_data(loan_data):
+   with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
+    reader = csv.reader(loan_data_file)
     
 
     
 
 class loan:
-    def __init__(self,name,salary,loan_amount,credit_score):
+    def __init__(self,name,salary,loan_amount,phone_number,credit_score):
         self.name = name
         self.salary = salary
         self.loan_amount = loan_amount
         self.credit_score = credit_score
+        self.phone_number = phone_number
     def requirements(self):
         if self.salary >= 20000:
             print(f"Salary  {self.salary} ✅ ")
@@ -42,5 +44,5 @@ class loan:
            print("Loan Rejected")
         
 
-loan1 = loan("Shiva-kumar",1000,10000,720)
+loan1 = loan("Shiva-kumar",1000,10000,676464564,720)
 loan1.loan_evalute()
