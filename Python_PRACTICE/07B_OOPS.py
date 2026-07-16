@@ -1,6 +1,8 @@
 import csv
+import os
 
-loan_data = "loan_data.csv"
+# Always find loan_data.csv in the same folder as this script
+loan_data = os.path.join(os.path.dirname(os.path.abspath(__file__)), "loan_data.csv")
 
 old_user = False   
 
@@ -15,22 +17,21 @@ class loan:
         with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
             data_reader = csv.reader(loan_data_file)
             for row in data_reader:
-                if row[0] == phone_number:
+                if row and row[0] == phone_number:
                     print("Phone Number Already Exists")
                     global old_user
                     old_user = True
-                    info = row[0],row[1],row[2],row[3],row[4]
-                    print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[0]}\ncredit score {info[4]}")
+                    info = row[0], row[1], row[2], row[3], row[4]
+                    print(f"name {info[1]}\nsalary {info[2]}\nLoan Amount {info[3]}\nphone number {info[0]}\ncredit score {info[4]}")
                     return info
-                else:
-                    print("enter details")
+        print("enter details")
     def requirements(self):
         if self.salary >= 20000:
             print(f"Salary  {self.salary} ✅ ")
         else:
             print(f"Salary  {self.salary} ❌ ")
             print("Salary should be greater than 20000")
-        if self.loan_amount >= self.salary:
+        if (self.loan_amount <= (8 * self.salary)):
             print(f"Loan Amount : {self.loan_amount} ✅ ")
         else:
             print(f"Loan Amount : {self.loan_amount} ❌ ")
@@ -98,8 +99,10 @@ if __name__ == "__main__":
     loan_obj = loan.__new__(loan)
     info = loan_obj.search_phone(phone_number)
     if old_user == False:
-        loan.new_user(phone_number)
+        loan_obj.new_user()
     elif old_user == True:
+        # Reinitialize loan_obj with actual data so update_user() can access attributes
+        loan_obj = loan(info[1], int(info[2]), int(info[3]), info[0], int(info[4]))
         invalid_input = True
         while invalid_input:
             try:
@@ -110,7 +113,7 @@ if __name__ == "__main__":
                 elif not choise_1:
                     invalid_input = False
                     if info:
-                        loan_detail = loan(info[0], int(info[1]), int(info[2]), info[3], int(info[4]))
+                        loan_detail = loan(info[1], int(info[2]), int(info[3]), info[0], int(info[4]))
                         loan_detail.loan_evalute()
                     else:
                         print("No info found")
