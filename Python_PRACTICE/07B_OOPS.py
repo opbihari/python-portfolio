@@ -116,3 +116,5 @@ if __name__ == "__main__":
                         print("No info found")
                 else:
                     print("Invalid choise  try again ")
+            except Exception as e:
+                print(f"An error occurred: {e}")
