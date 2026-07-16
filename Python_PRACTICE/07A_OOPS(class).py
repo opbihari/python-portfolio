@@ -1,3 +1,4 @@
+import sys; sys.stdout.reconfigure(encoding='utf-8')
 # practice 1
 # Think of a Car class as a template for creating car objects.
 # The class defines what properties every car will have, like the car's color, brand, and speed.
@@ -131,22 +132,5 @@ book1 = bookstore("Shiva-kumar","Shiva-kumar")
 book1.display()
 book1.search("Shiva-kumar","Shiva-kumar")
 
-#5.Problem Statement: 
-# Create a Loan class that evaluates if a person qualifies for a loan based on their salary and the loan amount requested. 
-#The class should have methods to check if the loan can be approved or rejected based on simple criteria.
-class loan:
-    def __init__(self,name,salary,loan_amount):
-        self.name = name
-        self.salary = salary
-        self.loan_amount = loan_amount
-    def loan_evalute(self):
-        if (self.salary >= 20000) and (self.loan_amount <= self.salarly):
-           print(f"Name : {self.name}")
-           print("Loan Approved")
-        else:
-           print(f"Name : {self.name}")
-           print("Loan Rejected")
-    def
 
-loan1 = loan("Shiva-kumar",1000,10000)
-loan1.loan_evalute()
+
