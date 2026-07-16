@@ -17,6 +17,7 @@ class loan:
             for row in data_reader:
                 if row[0] == phone_number:
                     print("Phone Number Already Exists")
+                    global old_user
                     old_user = True
                     info = row[0],row[1],row[2],row[3],row[4]
                     print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[0]}\ncredit score {info[4]}")
