@@ -15,11 +15,11 @@ class loan:
         with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
             data_reader = csv.reader(loan_data_file)
             for row in data_reader:
-                if row[3] == phone_number:
+                if row[0] == phone_number:
                     print("Phone Number Already Exists")
                     old_user = True
                     info = row[0],row[1],row[2],row[3],row[4]
-                    print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[3]}\ncredit score {info[4]}")
+                    print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[0]}\ncredit score {info[4]}")
                     return info
                 else:
                     print("enter details")
@@ -58,11 +58,31 @@ class loan:
         loan1.loan_evalute()
         with open(loan_data,"a",encoding="utf-8",newline="") as loan_data_file:
             data_writer = csv.writer(loan_data_file)
-            data_writer.writerow([name,salary,loan_amount,phone_number,credit_score])
-    def update_user():
-        with open(loan_data,"a",encoding="utf-8",newline="") as loan_data_file:
-            data_addend = csv.writer(loan_data_file)
-            
+            data_writer.writerow([phone_number,name,salary,loan_amount,credit_score])
+    def update_user(self):
+        name = input("Enter new name (leave blank to keep current): ").strip() or self.name
+        salary = input("Enter new salary (leave blank to keep current): ").strip()
+        salary = int(salary) if salary else self.salary
+        loan_amount = input("Enter new loan amount (leave blank to keep current): ").strip()
+        loan_amount = int(loan_amount) if loan_amount else self.loan_amount
+        credit_score = input("Enter new credit score (leave blank to keep current): ").strip()
+        credit_score = int(credit_score) if credit_score else self.credit_score
+
+        all_rows = []
+        with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
+            data_reader = csv.reader(loan_data_file)
+            for row in data_reader:
+                if row[0] == self.phone_number:
+                    all_rows.append([self.phone_number, name, salary, loan_amount, credit_score])
+                else:
+                    all_rows.append(row)
+        with open(loan_data, mode="w", encoding="utf-8", newline="") as loan_data_file:
+            data_writer = csv.writer(loan_data_file)
+            data_writer.writerows(all_rows)
+        print("User details updated successfully.")
+        updated = loan(name, salary, loan_amount, self.phone_number, credit_score)
+        updated.loan_evalute()
+
 
 if __name__ == "__main__":
     while True:
@@ -85,7 +105,7 @@ if __name__ == "__main__":
                 choise_1 = (input("press enter to evalute or 1 to update detail")).strip()
                 if choise_1 == "1":
                     invalid_input = False
-                    update_user()
+                    loan_obj.update_user()
                 elif not choise_1:
                     invalid_input = False
                     if info:
