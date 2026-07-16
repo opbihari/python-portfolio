@@ -1,3 +1,13 @@
+import csv
+
+loan_data = "loan_data.csv"
+def reader(loan_data):
+   with open(loan_data, mode="w", encoding="utf-8", newline="") as loan_data_file:
+    writer = csv.writer(loan_data_file)
+    
+
+    
+
 class loan:
     def __init__(self,name,salary,loan_amount,credit_score):
         self.name = name
