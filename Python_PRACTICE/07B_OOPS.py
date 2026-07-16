@@ -51,11 +51,22 @@ class loan:
            print(f"Name : {self.name}")
            self.requirements()
            print("Loan Rejected")
+    def get_safe_input(prompt, cast_type):
+        while True:
+            user_input = input(prompt).strip()
+            
+            if not user_input:
+                print("Input cannot be empty. Please try again.")
+                continue
+        try:
+            return cast_type(user_input)
+        except ValueError:
+            print(f"Invalid input! Expected a valid {cast_type.__name__}.")
     def new_user(self):
         name = input("Enter the name ")
-        salary = int(input("Enter the salary "))
-        loan_amount = int(input("Enter the loan amount "))
-        credit_score = int(input("Enter the credit score "))
+        salary = loan.get_safe_input("Enter the salary ",int)
+        loan_amount = loan.get_safe_input("Enter the loan amount ",int)
+        credit_score = loan.get_safe_input("Enter the credit score ",int)
         loan1 = loan(name,salary,loan_amount,phone_number,credit_score)
         loan1.loan_evalute()
         with open(loan_data,"a",encoding="utf-8",newline="") as loan_data_file:
