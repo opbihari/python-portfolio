@@ -54,14 +54,11 @@ class loan:
     def get_safe_input(prompt, cast_type):
         while True:
             user_input = input(prompt).strip()
-            
-            if not user_input:
-                print("Input cannot be empty. Please try again.")
-                continue
-        try:
-            return cast_type(user_input)
-        except ValueError:
-            print(f"Invalid input! Expected a valid {cast_type.__name__}.")
+            if user_input:
+                try:
+                    return cast_type(user_input)
+                except ValueError:
+                    print(f"Invalid input! Expected a valid {cast_type.__name__}.")
     def new_user(self):
         name = input("Enter the name ")
         salary = loan.get_safe_input("Enter the salary ",int)
@@ -73,14 +70,10 @@ class loan:
             data_writer = csv.writer(loan_data_file)
             data_writer.writerow([phone_number,name,salary,loan_amount,credit_score])
     def update_user(self):
-        name = input("Enter new name (leave blank to keep current): ").strip() or self.name
-        salary = input("Enter new salary (leave blank to keep current): ").strip()
-        salary = int(salary) if salary else self.salary
-        loan_amount = input("Enter new loan amount (leave blank to keep current): ").strip()
-        loan_amount = int(loan_amount) if loan_amount else self.loan_amount
-        credit_score = input("Enter new credit score (leave blank to keep current): ").strip()
-        credit_score = int(credit_score) if credit_score else self.credit_score
-
+        name = loan.get_safe_input("Enter new name (leave blank to keep current): ",str).strip() or self.name
+        salary = loan.get_safe_input("Enter new salary (leave blank to keep current): ",int).strip() or self.salary
+        loan_amount = loan.get_safe_input("Enter new loan amount (leave blank to keep current): ",int).strip() or self.loan_amount
+        credit_score = loan.get_safe_input("Enter new credit score (leave blank to keep current): ",int).strip() or self.credit_score
         all_rows = []
         with open(loan_data, mode="r", encoding="utf-8", newline="") as loan_data_file:
             data_reader = csv.reader(loan_data_file)
