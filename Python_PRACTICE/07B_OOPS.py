@@ -20,7 +20,7 @@ class loan:
                     old_user = True
                     info = row[0],row[1],row[2],row[3],row[4]
                     print(f"name {info[0]}\nsalary {info[1]}\nLoan Amount {info[2]}\nphone number {info[3]}\ncredit score {info[4]}")
-                    break
+                    return info
                 else:
                     print("enter details")
     def requirements(self):
@@ -59,6 +59,10 @@ class loan:
         with open(loan_data,"a",encoding="utf-8",newline="") as loan_data_file:
             data_writer = csv.writer(loan_data_file)
             data_writer.writerow([name,salary,loan_amount,phone_number,credit_score])
+    def update_user():
+        with open(loan_data,"a",encoding="utf-8",newline="") as loan_data_file:
+            data_addend = csv.writer(loan_data_file)
+            
 
 if __name__ == "__main__":
     while True:
@@ -70,21 +74,24 @@ if __name__ == "__main__":
                 print("Phone number should be 10 digits")
         except:
             print("Invalid phone number ")
-    loan.search_phone(phone_number)
+    loan_obj = loan.__new__(loan)
+    info = loan_obj.search_phone(phone_number)
     if old_user == False:
         loan.new_user(phone_number)
     elif old_user == True:
-        while True:
+        invalid_input = True
+        while invalid_input:
             try:
-                choise_1 = int(input("press enter to evalute or 1 to update detail"))
-                if choise_1 == 1:
-                    break
+                choise_1 = (input("press enter to evalute or 1 to update detail")).strip()
+                if choise_1 == "1":
+                    invalid_input = False
+                    update_user()
                 elif not choise_1:
-                    pass
-                    
-
-        
-        
-            
-            
-        
+                    invalid_input = False
+                    if info:
+                        loan_detail = loan(info[0], int(info[1]), int(info[2]), info[3], int(info[4]))
+                        loan_detail.loan_evalute()
+                    else:
+                        print("No info found")
+                else:
+                    print("Invalid choise  try again ")
