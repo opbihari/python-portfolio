@@ -8,7 +8,7 @@ def load_contacts():
     contacts = {} # Initialize as a dictionary
     if os.path.isfile(csv_file):
         with open(csv_file, mode="r", encoding="utf-8") as con_file:
-            csv_PADH = csv.reader(con_file)
+            csv_PADH = csv.DictReader(con_file)
             next(csv_PADH, None) # Skip header row
             for line in csv_PADH:
                 if line and len(line) == 4: # Ensure line is not empty and has all columns
@@ -26,28 +26,44 @@ def load_contacts():
 # Saving contact
 def save_contacts(contacts):
     with open(csv_file, mode="w", newline="", encoding="utf-8") as con_file:
-        csv_save = csv.writer(con_file)
-        csv_save.writerow(["id", "name", "phone", "email"])
+        fieldnames=("id","name","phone","email")
+        csv_save = csv.DictWriter(con_file,fieldnames=fieldnames)
+        csv_save.writeheader
         for contact_id, contact_info in contacts.items():
-            csv_save.writerow([
-                contact_id,
-                contact_info["name"],
-                contact_info["phone"],
-                contact_info["email"]
-            ])
+            try:
+                csv_save.writerow({
+                    "id": contact_id,
+                    "name":contact_info["name"],
+                    "phone":contact_info["phone"],
+                    "email":contact_info["email"]
+                })
+            except Exception as e:
+                print(f"ERROR failed to save {e}")
 
 # Adding contact
 def add_contact(contacts):
-    name = input("Enter the name: ")
-    phone = input("Enter the phone number: ")
-    email = input("Enter the email id: ")
+    while True:
+        try:
+            name = input("Enter the name: ")
+            if name:
+                break
+            else:
+                print("enter a name to save")
+        except Exception as e:
+            print(e)
+    while True:
+        phone = input("enter the phone number: ").strip()
+        if phone.isdigit():
+            break
+        else:
+            print("Please enter only digits for the phone number.")
+    email = input("Enter the email id: ").strip()
     
     # Correctly get max key or set to 1 if contacts is empty
     contact_id = max(contacts.keys()) + 1 if contacts else 1
     contacts[contact_id] = {"name": name, "phone": phone, "email": email}
     
     save_contacts(contacts)
-    print(f"\nContact '{name}' added successfully!")
     view_contacts(contacts)
 
 # Deleting contact
