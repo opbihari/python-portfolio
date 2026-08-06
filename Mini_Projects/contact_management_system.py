@@ -5,22 +5,24 @@ csv_file = "contact.csv"
 
 # Loading file
 def load_contacts():
-    contacts = {} # Initialize as a dictionary
+    contacts = {}
     if os.path.isfile(csv_file):
         with open(csv_file, mode="r", encoding="utf-8") as con_file:
-            csv_PADH = csv.DictReader(con_file)
-            next(csv_PADH, None) # Skip header row
-            for line in csv_PADH:
-                if line and len(line) == 4: # Ensure line is not empty and has all columns
-                    try:
-                        contact_id = int(line[0])
-                        contacts[contact_id] = {
-                            "name": line[1],
-                            "phone": line[2],
-                            "email": line[3]
-                        }
-                    except ValueError:
-                        print(f"Skipping corrupt line {line}")
+            # Use DictReader to read rows with header names id,name,phone,email
+            csv_reader = csv.DictReader(con_file)
+            for row in csv_reader:
+                if not row:
+                    continue
+                try:
+                    contact_id = int(row.get("id") or 0)
+                except ValueError:
+                    # skip rows with invalid id
+                    continue
+                contacts[contact_id] = {
+                    "name": (row.get("name") or "").strip(),
+                    "phone": (row.get("phone") or "").strip(),
+                    "email": (row.get("email") or "").strip(),
+                }
     return contacts
 
 # Saving contact
@@ -28,7 +30,7 @@ def save_contacts(contacts):
     with open(csv_file, mode="w", newline="", encoding="utf-8") as con_file:
         fieldnames=("id","name","phone","email")
         csv_save = csv.DictWriter(con_file,fieldnames=fieldnames)
-        csv_save.writeheader
+        csv_save.writeheader()
         for contact_id, contact_info in contacts.items():
             try:
                 csv_save.writerow({
@@ -50,7 +52,7 @@ def add_contact(contacts):
             else:
                 print("enter a name to save")
         except Exception as e:
-            print(e)
+             print(e)
     while True:
         phone = input("enter the phone number: ").strip()
         if phone.isdigit():
