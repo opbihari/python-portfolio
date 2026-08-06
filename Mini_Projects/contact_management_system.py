@@ -14,7 +14,7 @@ def load_contacts():
                 if not row:
                     continue
                 try:
-                    contact_id = int(row.get("id") or 0)
+                    contact_id = int(row["id"]) # Assume 'id' column always exists and is valid
                 except ValueError:
                     # skip rows with invalid id
                     continue 
@@ -59,7 +59,16 @@ def add_contact(contacts):
             break
         else:
             print("Please enter only digits for the phone number.")
-    email = input("Enter the email id: ").strip()
+    try:
+        while True:
+            email = input("enter the email address: ").strip()
+            if "@" in email and "." in email:
+                break
+            else:
+                print("Please enter a valid email address (e.g., user@example.com).")
+    except Exception as e:
+        print("enter the email in the correct format")
+        email = ""
     
     # Correctly get max key or set to 1 if contacts is empty
     contact_id = max(contacts.keys()) + 1 if contacts else 1
@@ -197,11 +206,17 @@ def update_contact(contacts):
         new_number = input("enter phone number  or press enter to move forward  ").strip()
         new_email = input("enter email or press enter to move forward  ").strip()
         if new_name:
-            info['name'] = new_name
-        if new_number.isdigit():
-            info['phone'] = new_number
+            info['name'] = new_name.title() # Capitalize first letter of each word
+        if new_number:
+            if new_number.isdigit():
+                info['phone'] = new_number
+            else:
+                print("Invalid phone number format. Phone number not updated.")
         if new_email:
-            info['email'] = new_email
+            if "@" in new_email and "." in new_email:
+                info['email'] = new_email
+            else:
+                print("Invalid email format. Email not updated.")
         save_contacts(contacts)
         view_contacts(contacts)
     else:
@@ -234,7 +249,7 @@ def main():
                 print("Exiting the program. Goodbye!")
                 break
             else:
-                print("Invalid choice. Please select from 1, 2, 3, 4, 5, 6.")
+                print("Invalid choice. Please select from 1 to 6.")
         except ValueError:
             print("Please enter numbers only.")
         except Exception as e:
