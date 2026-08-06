@@ -219,22 +219,22 @@ def main():
         print("6. Exit")
 
         try:
-            choice = int(input("Enter your choice: "))
-            if choice == 1:
+            choice = (input("Enter your choice: "))
+            if choice == "1":
                 add_contact(contacts)
-            elif choice == 2:
+            elif choice == "2":
                 delete_contact(contacts)
-            elif choice == 3:
+            elif choice == "3":
                 view_contacts(contacts)
-            elif choice == 4:
+            elif choice == "4":
                 find_contact(contacts)
-            elif choice == 5:
+            elif choice == "5":
                 update_contact(contacts)
-            elif choice == 6:
+            elif choice == "6":
                 print("Exiting the program. Goodbye!")
                 break
             else:
-                print("Invalid choice. Please select from 1, 2, 3, 4, 5.")
+                print("Invalid choice. Please select from 1, 2, 3, 4, 5, 6.")
         except ValueError:
             print("Please enter numbers only.")
         except Exception as e:
