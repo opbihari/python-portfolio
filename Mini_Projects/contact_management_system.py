@@ -17,7 +17,7 @@ def load_contacts():
                     contact_id = int(row.get("id") or 0)
                 except ValueError:
                     # skip rows with invalid id
-                    continue
+                    continue 
                 contacts[contact_id] = {
                     "name": (row.get("name") or "").strip(),
                     "phone": (row.get("phone") or "").strip(),
