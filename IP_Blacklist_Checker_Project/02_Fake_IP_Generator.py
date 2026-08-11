@@ -49,10 +49,20 @@ def viewing() -> None:
                 f"Times Blocked: {row_data[2]}"
             )
 
+def get_user_count() -> int:
+    while True:
+        try:
+            count = int(input("Enter number of IPs to generate: ").strip())
+            if count <= 0:
+                print("Please enter a positive number greater than 0.")
+                continue
+            return count
+        except ValueError:
+            print("Invalid input! Please enter a valid whole number (e.g., 10, 50).")
 
 if __name__ == "__main__":
     # Ask how many IPs to generate and run the generator
-    generate_threat_feed(int(input("Enter the number of IPs to generate: ")))
+    generate_threat_feed(get_user_count())
 
     choice_to_view = input(
         "Do you want to view the threat feed? Y for Yes, N for No: "
