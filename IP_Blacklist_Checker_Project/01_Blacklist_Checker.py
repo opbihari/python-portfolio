@@ -6,11 +6,20 @@ import sys
 # Reconfigure stdout to use UTF-8 so emojis print correctly on Windows terminal without UnicodeEncodeError
 sys.stdout.reconfigure(encoding="utf-8")
 
+IP_PATTERN = r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+
+def is_valid_ip(ip_str: str) -> bool:
+    return bool(re.match(IP_PATTERN, ip_str.strip()))
 
 def check_ip_reputation(target_ip: str) -> str:
     target_ip = target_ip.strip()
+    if not is_valid_ip(target_ip):
+        return f"[!] '{target_ip}' is not a valid IPv4 address format."
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     csv_file = os.path.join(script_dir, "threat_feed.csv")
+    if not os.path.isfile(csv_file):
+        return "[!] Error: threat_feed.csv database file not found!"
 
     try:
         print(f"Scanning database for {target_ip}...")
@@ -19,9 +28,14 @@ def check_ip_reputation(target_ip: str) -> str:
             next(reader)  # Skip the header row
 
             for row in reader:
-                # row[0] is the IP, row[1] is Threat Level, row[2] is Times Blocked
-                if row[0] == target_ip:
-                    return f"🚨 CRITICAL ALERT! IP {target_ip} is blacklisted.\nThreat Level: {row[1]}\nPrevious Blocks: {row[2]}"
+                if not row or len(row) < 3:
+                    continue 
+                ip_in_feed = row[0].strip()
+
+                if ip_in_feed == target_ip:
+                    threat_type = row[1]
+                    risk_level = row[2]
+                    return f"🚨 CRITICAL ALERT! IP {target_ip} is blacklisted.\nThreat Level: {threat_type}\nPrevious Blocks: {risk_level}"
 
             # If the loop finishes the whole file and finds nothing:
             return (

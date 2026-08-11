@@ -1,8 +1,8 @@
 import csv
 import os
+from fastapi import FastAPI, Response, status, HTTPException
 
 csv_file = "contact.csv"
-
 # Loading file
 def load_contacts():
     contacts = {}
@@ -44,31 +44,25 @@ def save_contacts(contacts):
 
 # Adding contact
 def add_contact(contacts):
-    while True:
-        try:
-            name = input("Enter the name: ")
-            if name:
-                break
-            else:
-                print("enter a name to save")
-        except Exception as e:
-             print(e)
+    name = ""
+    while not name:
+        name = input("Enter the name: ").strip()
+        if not name:
+            print("Name cannot be empty.")
+
     while True:
         phone = input("enter the phone number: ").strip()
         if phone.isdigit():
             break
         else:
             print("Please enter only digits for the phone number.")
-    try:
-        while True:
-            email = input("enter the email address: ").strip()
-            if "@" in email and "." in email:
-                break
-            else:
-                print("Please enter a valid email address (e.g., user@example.com).")
-    except Exception as e:
-        print("enter the email in the correct format")
-        email = ""
+
+    while True:
+        email = input("enter the email address: ").strip()
+        if "@" in email and "." in email:
+            break
+        else:
+            print("Please enter a valid email address (e.g., user@example.com).")
     
     # Correctly get max key or set to 1 if contacts is empty
     contact_id = max(contacts.keys()) + 1 if contacts else 1
@@ -76,6 +70,7 @@ def add_contact(contacts):
     
     save_contacts(contacts)
     view_contacts(contacts)
+    print(f"\nContact '{name}' added successfully.")
 
 # Deleting contact
 def delete_contact(contacts):
@@ -92,7 +87,6 @@ def delete_contact(contacts):
         del contacts[contact_id]
         save_contacts(contacts)
         print(f"\nContact ID {contact_id} deleted successfully.")
-        view_contacts(contacts)
     else:
         print(f"\nContact ID {contact_id} not found.")
 
@@ -155,7 +149,7 @@ def find_contact(contacts):
             while True:
                 phone_number = input("Enter phone number: ").strip()
                 if phone_number.isdigit():
-                    break
+                    break 
                 else:
                     print("Please enter only digits.")
                     
@@ -204,12 +198,12 @@ def update_contact(contacts):
         print(f"id..{contact_id} \nname..{info['name']} \nphone number..{info['phone']} \nemail..{info['email']}")
         new_name = input("enter the name or press enter to move forward  ").strip().lower()
         new_number = input("enter phone number  or press enter to move forward  ").strip()
-        new_email = input("enter email or press enter to move forward  ").strip()
+        new_email = input("enter email or press enter to move forward  ").strip().lower()
         if new_name:
             info['name'] = new_name.title() # Capitalize first letter of each word
         if new_number:
-            if new_number.isdigit():
-                info['phone'] = new_number
+            if new_number and new_number.isdigit():
+              info['phone'] = new_number
             else:
                 print("Invalid phone number format. Phone number not updated.")
         if new_email:
@@ -218,7 +212,7 @@ def update_contact(contacts):
             else:
                 print("Invalid email format. Email not updated.")
         save_contacts(contacts)
-        view_contacts(contacts)
+        print(f"\nContact ID {contact_id} updated successfully.")
     else:
         print(f"{contact_id} not found")
 # Main loop
