@@ -17,6 +17,12 @@ import random
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_file = os.path.join(script_dir, "threat_feed.csv")
 threat_levels = ["Low", "Medium", "High", "Critical"]
+#here new class will added  
+class ip_address:
+    def __init__(self, ip_address, threat_level, times_blocked):
+        self.ip_address = ip_address
+        self.threat_level = threat_level
+        self.times_blocked = times_blocked
 
 
 def generate_threat_feed(num_ips: int) -> None:
@@ -59,6 +65,8 @@ def get_user_count() -> int:
             return count
         except ValueError:
             print("Invalid input! Please enter a valid whole number (e.g., 10, 50).")
+
+
 
 if __name__ == "__main__":
     # Ask how many IPs to generate and run the generator
