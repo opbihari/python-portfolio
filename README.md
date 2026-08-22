@@ -1,65 +1,32 @@
-# Python Scripting & Cybersecurity Portfolio
+# Python & DevSecOps Portfolio
 
-Welcome to my Python portfolio! I am an incoming Bachelor of Computer Applications (BCA) student with a strong focus on Python scripting, backend development, and cybersecurity. 
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=FastAPI&logoColor=white)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![Cybersecurity](https://img.shields.io/badge/Cybersecurity-FF0000?style=for-the-badge&logo=dependabot&logoColor=white)
+![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=white)
 
-**I am currently actively seeking a part-time online internship** where I can apply my skills in building APIs, parsing data, and creating security tools.
+## Introduction
+This repository is a curated collection of production-ready scripts, automation tools, and backend utilities. It encompasses various domains including cybersecurity simulations, backend API development, web scraping, and foundational Python practices.
 
----
+## Featured Projects
 
-## 🚀 Featured Projects
+| Project Name | Description | Tech Stack |
+| --- | --- | --- |
+| [Cybersecurity Project](./Cybersecurity_Project) | Simulates a basic intrusion detection system and firewall log generation. | Python, CSV |
+| [DDoS Detector Project](./DDoS_Detector_Project) | Analyzes server logs to detect potential DDoS attacks and flags malicious IPs. | Python |
+| [FastAPI Web Application Firewall](./FastAPI_Web_Application_Firewall) | A FastAPI-based server demonstrating basic firewall mechanics and serving an interactive UI. | Python, FastAPI |
+| [IP Blacklist Checker](./IP_Blacklist_Checker_Project) | Validates and checks IP addresses against a simulated threat feed using Regex. | Python, Regex |
+| [Mini Projects](./Mini_Projects) | A collection of mini-applications including a FastAPI Contact Management System, an Online Book Store, and an AI Code Assistant API built with Flask. | Python, FastAPI, Flask, AI APIs |
+| [Web Scraping Project](./Web_Scraping_Project) | Extracts structured quote data from a target website and saves it to a CSV file. | Python, BeautifulSoup, Requests |
+| [Python Practice](./Python_PRACTICE) | A comprehensive suite of Jupyter notebooks and scripts covering Python basics, algorithms, data structures, and OOP. | Python, Jupyter Notebook |
+| [3D Portfolio Website](./3dweb1/3D-Portfolio-Websites-Free-05-main) | A frontend project showcasing a 3D portfolio web design. | HTML, CSS, JavaScript |
 
-### 1. AI Code Assistant API
-A Flask-based REST API server that routes code-explanation, snippet-generation, and refactoring requests to configurable AI back-ends.
-- **Highlights:** Successfully consumes and integrates external LLM APIs (Google Gemini, OpenAI, Anthropic), handles JSON payloads, and demonstrates robust backend architecture.
-- **Tech Stack:** Python, Flask, Flask-CORS, External APIs
-- 📁 **[View Project Folder →](./Mini_Projects)** (See `AI_Code_Assistant_API.py`)
+## Skills Summary
 
-### 2. Python Web Application Firewall (WAF)
-A lightweight, full-stack security tool to parse server logs, detect DDoS patterns, and dynamically block malicious IP addresses.
-- **Highlights:** Reads and sanitizes unstructured server logs to detect rate-limit anomalies and dynamically checks incoming connections against a CSV threat feed.
-- **Tech Stack:** Python, FastAPI, Uvicorn, HTML5, CSS3, JavaScript (Fetch API)
-- 📁 **[View Project Folder →](./Cybersecurity_Project)**
-
----
-
-## 📂 Repository Structure
-
-* **`Cybersecurity_Project/`**: Consolidated Web Application Firewall (WAF) featuring log generation, DDoS detection, and a FastAPI server dashboard.
-* **`IP_Blacklist_Checker_Project/`**: Cybersecurity tools for generating fake IP threat feeds and verifying IPs against blacklists via an interactive CLI.
-* **`Web_Scraping_Project/`**: Data extraction tools built using `requests` and `BeautifulSoup` to parse HTML DOMs and save structured data to CSV.
-* **`Mini_Projects/`**: Includes the AI Code Assistant API, a CLI Contact Management System, and an Online Bookstore System.
-* **`Frontend_Assets/`**: Organized UI components and templates for full-stack integration.
-* **`Python_Course_Materials/` & `phthon_practice/`**: Foundational Jupyter notebooks demonstrating proficiency in data structures, algorithms, and iterative logic.
-
----
-##devsecops --- i will add it in few weeks
-____
-##aws and azure --- coming soon
-## 🛡️ Repository Health Checker
-
-To ensure code stability across all interactive CLI programs and projects without manual testing, I built a custom automated health checker:
-- **`check_repo.py`**: A master script that uses Python's `subprocess` to spin up each interactive app and feed it predefined inputs, verifying everything exits cleanly.
-- **`tests/`**: A suite of `pytest` unit tests validating the core logic of the Cybersecurity Project.
-
-You can run the full diagnostic check with:
-```bash
-python check_repo.py
-```
-
----
-
-## 💻 Getting Started
-
-1. Clone this repository: 
-   ```bash
-   git clone https://github.com/opbihari/python-portfolio.git
-   ```
-2. Install the required dependencies: 
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the automated tests to verify the environment:
-   ```bash
-   python check_repo.py
-   ```
-4. Run any of the interactive CLI scripts or start the local API servers!
+| Domain | Languages / Frameworks / Tools |
+| --- | --- |
+| **Backend Development** | Python, FastAPI, Flask |
+| **Cybersecurity** | Log Analysis, Threat Detection, DDoS Simulation, Regex |
+| **Data Processing** | BeautifulSoup, Requests, CSV, Data Validation |
+| **Frontend/UI** | HTML, CSS, JavaScript |
